@@ -19,7 +19,7 @@
 	<key>keyEquivalent</key>
 	<string>^~C</string>
 	<key>name</key>
-	<string>C</string>
+	<string>C Improved</string>
 	<key>patterns</key>
 	<array>
 		<dict>
@@ -1121,6 +1121,6 @@
 	<key>scopeName</key>
 	<string>source.c</string>
 	<key>uuid</key>
-	<string>25066DC2-6B1D-11D9-9D5B-000D93589AF6</string>
+	<string>24242A3A-CC4A-414D-B1FA-18D2BABB6754</string>
 </dict>
 </plist>
