@@ -2,6 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>comment</key>
+	<string>
+	        https://github.com/abusalimov/SublimeImprovedC
+
+	        Derived from C.tmLanguage - the original TextMate and Sublime Text
+	        syntax definition.
+
+	        Incorporates some fixes originating from facelessuser's Better C++
+	        (https://github.com/facelessuser/sublime-languages)
+
+	</string>
 	<key>fileTypes</key>
 	<array>
 		<string>c</string>
