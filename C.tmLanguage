@@ -260,12 +260,12 @@
     		       | (?= \s*[A-Za-z_] ) (?&lt;!&amp;&amp;)       (?&lt;=[*&amp;&gt;])   #  or type modifier before name
     		     )
     		)
-    		(\s*) (?!(while|for|do|if|else|switch|catch|enumerate|return|r?iterate)\s*\()
+    		(\s*) (?!(while|for|do|if|else|switch|catch|enumerate|return|r?iterate))
     		(
-    			(?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++ |                  # actual name
-    			(?: (?&lt;=operator) (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )  # if it is a C++ operator
+    			(?: [A-Za-z_][A-Za-z0-9_]*+ | ::[^:] )++               # actual name
+    			(?: (?&lt;=operator) (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )?  # if it is a C++ operator
     		)
-    		 \s*(?=\()</string>
+    		\s*(?=\()</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
