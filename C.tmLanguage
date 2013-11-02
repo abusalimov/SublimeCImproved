@@ -168,7 +168,7 @@
         		        (
         		            \s* \g&lt;id&gt; \s*       # first argument
         		            ((,) \s* \g&lt;id&gt; \s*)*  # additional arguments
-        		            (?:\.\.\.)?          # varargs ellipsis?
+        		            (?:(,)?\s*\.\.\.\s*)?          # varargs ellipsis?
         		        )
         		    (\))                         # a close parenthesis
         		)?
@@ -204,6 +204,11 @@
 				<dict>
 					<key>name</key>
 					<string>punctuation.definition.parameters.c</string>
+				</dict>
+				<key>9</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.separator.parameters.c</string>
 				</dict>
 			</dict>
 			<key>end</key>
