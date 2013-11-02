@@ -92,7 +92,7 @@
 				</dict>
 			</dict>
 			<key>end</key>
-			<string>(?=(?://|/\*))|$</string>
+			<string>(?&lt;=[^\\])\s*\n</string>
 			<key>name</key>
 			<string>meta.preprocessor.macro.c</string>
 			<key>patterns</key>
@@ -105,7 +105,7 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>$base</string>
+					<string>#strict_block_innards</string>
 				</dict>
 			</array>
 		</dict>
@@ -488,11 +488,25 @@
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#sizeof</string>
+					<string>#strict_block_innards</string>
 				</dict>
 				<dict>
 					<key>include</key>
-					<string>#access</string>
+					<string>#block</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>$base</string>
+				</dict>
+			</array>
+		</dict>
+		<key>strict_block_innards</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#lex</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -555,7 +569,6 @@
 					</dict>
 					<key>match</key>
 					<string>(?x)
-			        (?x)
 			(?:
 			     (?: (?= \s )           (?&lt;!else|new|return) (?&lt;=\w)\s+      #  or word + space before name
 			     )
@@ -567,14 +580,6 @@
 			 \s*(\()</string>
 					<key>name</key>
 					<string>meta.initialization.c</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#block</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>$base</string>
 				</dict>
 			</array>
 		</dict>
