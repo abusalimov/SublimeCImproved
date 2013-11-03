@@ -315,8 +315,6 @@
 	<dict>
 		<key>lex</key>
 		<dict>
-			<key>name</key>
-			<string>meta.block.c</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -325,73 +323,147 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(break|case|continue|default|do|else|for|goto|if|_Pragma|return|switch|while)\b</string>
-					<key>name</key>
-					<string>keyword.control.c</string>
+					<string>\s*\b((?:__|(?!\w+__))asm(?:__)?|break|case|continue|default|do|else|for|goto|if|_Pragma|return|switch|while|__extension__)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.control.c</string>
+						</dict>
+					</dict>
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(asm|__asm__|auto|bool|_Bool|char|_Complex|double|enum|float|_Imaginary|int|long|short|signed|struct|typedef|union|unsigned|void)\b</string>
-					<key>name</key>
-					<string>storage.type.c</string>
+					<string>\s*\b(sizeof|(?:__|(?!\w+__))typeof(?:__)?)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.operator.c</string>
+						</dict>
+					</dict>
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(const|extern|register|restrict|static|volatile|inline)\b</string>
-					<key>name</key>
-					<string>storage.modifier.c</string>
+					<string>\s*\b(auto|bool|_Bool|char|_Complex|double|enum|float|_Imaginary|int|long|short|signed|struct|typedef|union|unsigned|void)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>storage.type.c</string>
+						</dict>
+					</dict>
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(NULL|true|false|TRUE|FALSE)\b</string>
-					<key>name</key>
-					<string>constant.language.c</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#sizeof</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>(\.|-&gt;)[a-zA-Z_][a-zA-Z_0-9]*\b(?!\s*\()</string>
-					<key>name</key>
-					<string>variable.other.dot-access.c</string>
+					<string>\s*\b(extern|static|register|__attribute__|(?:__|(?!\w+__))(?:const|restrict|volatile|inline)(?:__)?)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>storage.modifier.c</string>
+						</dict>
+					</dict>
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\b</string>
-					<key>name</key>
-					<string>constant.numeric.c</string>
+					<string>\s*\b(NULL|true|false|TRUE|FALSE)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>constant.language.c</string>
+						</dict>
+					</dict>
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(u_char|u_short|u_int|u_long|ushort|uint|u_quad_t|quad_t|qaddr_t|caddr_t|daddr_t|dev_t|fixpt_t|blkcnt_t|blksize_t|gid_t|in_addr_t|in_port_t|ino_t|key_t|mode_t|nlink_t|id_t|pid_t|off_t|segsz_t|swblk_t|uid_t|id_t|clock_t|size_t|ssize_t|time_t|useconds_t|suseconds_t)\b</string>
-					<key>name</key>
-					<string>support.type.sys-types.c</string>
+					<string>\s*\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>constant.numeric.c</string>
+						</dict>
+					</dict>
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(pthread_attr_t|pthread_cond_t|pthread_condattr_t|pthread_mutex_t|pthread_mutexattr_t|pthread_once_t|pthread_rwlock_t|pthread_rwlockattr_t|pthread_t|pthread_key_t)\b</string>
-					<key>name</key>
-					<string>support.type.pthread.c</string>
+					<string>\s*\b(__builtin_\w+)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>support.type.intrinsic.c</string>
+						</dict>
+					</dict>
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(int8_t|int16_t|int32_t|int64_t|uint8_t|uint16_t|uint32_t|uint64_t|int_least8_t|int_least16_t|int_least32_t|int_least64_t|uint_least8_t|uint_least16_t|uint_least32_t|uint_least64_t|int_fast8_t|int_fast16_t|int_fast32_t|int_fast64_t|uint_fast8_t|uint_fast16_t|uint_fast32_t|uint_fast64_t|intptr_t|uintptr_t|intmax_t|intmax_t|uintmax_t|uintmax_t)\b</string>
-					<key>name</key>
-					<string>support.type.stdint.c</string>
+					<string>\s*\b(u_char|u_short|u_int|u_long|ushort|uint|(?:u_quad|quad|qaddr|caddr|daddr|dev|fixpt|blkcnt|blksize|gid|in_addr|in_port|ino|key|mode|nlink|id|pid|off|segsz|swblk|uid|id|clock|size|ssize|time|useconds|suseconds)_t)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>support.type.sys-types.c</string>
+						</dict>
+					</dict>
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(noErr|kNilOptions|kInvalidID|kVariableLengthArray)\b</string>
-					<key>name</key>
-					<string>support.constant.mac-classic.c</string>
+					<string>\s*\b(pthread_(?:t|attr_t|once_t|key_t|(?:cond|mutex|rwlock)(?:attr)?_t))\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>support.type.pthread.c</string>
+						</dict>
+					</dict>
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(AbsoluteTime|Boolean|Byte|ByteCount|ByteOffset|BytePtr|CompTimeValue|ConstLogicalAddress|ConstStrFileNameParam|ConstStringPtr|Duration|Fixed|FixedPtr|Float32|Float32Point|Float64|Float80|Float96|FourCharCode|Fract|FractPtr|Handle|ItemCount|LogicalAddress|OptionBits|OSErr|OSStatus|OSType|OSTypePtr|PhysicalAddress|ProcessSerialNumber|ProcessSerialNumberPtr|ProcHandle|Ptr|ResType|ResTypePtr|ShortFixed|ShortFixedPtr|SignedByte|SInt16|SInt32|SInt64|SInt8|Size|StrFileName|StringHandle|StringPtr|TimeBase|TimeRecord|TimeScale|TimeValue|TimeValue64|UInt16|UInt32|UInt64|UInt8|UniChar|UniCharCount|UniCharCountPtr|UniCharPtr|UnicodeScalarValue|UniversalProcHandle|UniversalProcPtr|UnsignedFixed|UnsignedFixedPtr|UnsignedWide|UTF16Char|UTF32Char|UTF8Char)\b</string>
-					<key>name</key>
-					<string>support.type.mac-classic.c</string>
+					<string>\s*\b(u?int(?:(?:_least|_fast)?(?:8|16|32|64)_t|ptr_t|max_t))\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>support.type.stdint.c</string>
+						</dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\s*\b(noErr|kNilOptions|kInvalidID|kVariableLengthArray)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>support.constant.mac-classic.c</string>
+						</dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\s*\b(AbsoluteTime|Boolean|Byte|ByteCount|ByteOffset|BytePtr|CompTimeValue|ConstLogicalAddress|ConstStrFileNameParam|ConstStringPtr|Duration|Fixed|FixedPtr|Float32|Float32Point|Float64|Float80|Float96|FourCharCode|Fract|FractPtr|Handle|ItemCount|LogicalAddress|OptionBits|OSErr|OSStatus|OSType|OSTypePtr|PhysicalAddress|ProcessSerialNumber|ProcessSerialNumberPtr|ProcHandle|Ptr|ResType|ResTypePtr|ShortFixed|ShortFixedPtr|SignedByte|SInt16|SInt32|SInt64|SInt8|Size|StrFileName|StringHandle|StringPtr|TimeBase|TimeRecord|TimeScale|TimeValue|TimeValue64|UInt16|UInt32|UInt64|UInt8|UniChar|UniCharCount|UniCharCountPtr|UniCharPtr|UnicodeScalarValue|UniversalProcHandle|UniversalProcPtr|UnsignedFixed|UnsignedFixedPtr|UnsignedWide|UTF16Char|UTF32Char|UTF8Char)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>support.type.mac-classic.c</string>
+						</dict>
+					</dict>
 				</dict>
 				<dict>
 					<key>begin</key>
@@ -458,6 +530,12 @@
 							<string>#string_escaped_char</string>
 						</dict>
 					</array>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(\.|-&gt;)[a-zA-Z_][a-zA-Z_0-9]*\b(?!\s*\()</string>
+					<key>name</key>
+					<string>variable.other.dot-access.c</string>
 				</dict>
 			</array>
 		</dict>
