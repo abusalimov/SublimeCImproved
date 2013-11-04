@@ -1322,26 +1322,21 @@
 		</dict>
 		<key>preprocessor-orphaned-block-end</key>
 		<dict>
-			<key>patterns</key>
-			<array>
+			<key>match</key>
+			<string>^\s*(#\s*(endif)\b)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
 				<dict>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>meta.preprocessor.c</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>keyword.control.import.c</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>^\s*(#\s*(endif)\b)</string>
+					<key>name</key>
+					<string>meta.preprocessor.c</string>
 				</dict>
-			</array>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.import.c</string>
+				</dict>
+			</dict>
 		</dict>
 		<key>sizeof</key>
 		<dict>
