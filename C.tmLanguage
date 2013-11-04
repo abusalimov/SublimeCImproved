@@ -866,7 +866,7 @@
 				</dict>
 			</dict>
 			<key>end</key>
-			<string>(?&lt;=\})|(;)</string>
+			<string>(?&lt;=\})|;</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -905,7 +905,7 @@
 
 				( (?: [A-Za-z_]\w*+ | ::[^:] )++ )
 
-				(?= \s* [\(\[=;] | $ )
+				(?= \s* (?: [\(\[=;] | $ ) )
 			</string>
 			<key>captures</key>
 			<dict>
