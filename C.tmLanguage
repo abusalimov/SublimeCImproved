@@ -260,6 +260,28 @@
 					</dict>
 				</dict>
 				<dict>
+					<key>include</key>
+					<string>#lex_keywords</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#lex_constant</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#lex_numbers</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#lex_strings</string>
+				</dict>
+			</array>
+		</dict>
+		<key>lex_keywords</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
 					<key>match</key>
 					<string>\s*\b(sizeof|(?:__|(?!\w+__))typeof(?:__)?)\b</string>
 					<key>captures</key>
@@ -307,6 +329,12 @@
 						</dict>
 					</dict>
 				</dict>
+			</array>
+		</dict>
+		<key>lex_constant</key>
+		<dict>
+			<key>patterns</key>
+			<array>
 				<dict>
 					<key>match</key>
 					<string>\s*\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\b</string>
@@ -319,6 +347,12 @@
 						</dict>
 					</dict>
 				</dict>
+			</array>
+		</dict>
+		<key>lex_numbers</key>
+		<dict>
+			<key>patterns</key>
+			<array>
 				<dict>
 					<key>match</key>
 					<string>\s*\b(__builtin_\w+)\b</string>
@@ -391,6 +425,12 @@
 						</dict>
 					</dict>
 				</dict>
+			</array>
+		</dict>
+		<key>lex_strings</key>
+		<dict>
+			<key>patterns</key>
+			<array>
 				<dict>
 					<key>begin</key>
 					<string>"</string>
