@@ -527,6 +527,42 @@
 						</dict>
 					</dict>
 				</dict>
+				<dict>
+					<key>match</key>
+					<string>(?x)
+						\s*\b
+						(?:__)?
+						(   (?:DECL(?:ARE)?|DEF(?:INE)?)_[A-Z0-9_]+
+						  | [A-Z_][A-Z0-9_]*_(?:DECL(?:ARE)?|DEF(?:INE)?)
+						  | EXPORT_SYMBOL(?:_GPL)?
+						  | LIST_HEAD )
+						\b
+					</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>support.function.macro.linux-kernel.c</string>
+						</dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(?x)
+						\s*\b
+						( CONFIG_[A-Z0-9_]+ )
+						\b
+					</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>support.variable.config.c</string>
+						</dict>
+					</dict>
+				</dict>
 			</array>
 		</dict>
 		<key>support_functions</key>
