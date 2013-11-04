@@ -14,10 +14,10 @@ Moreover a function declaration which follows the macro (`int irq_attach(...)`) 
 
 Standard C | C Improved
 ---------- | ----------
-![Standard C macro symbols](http://habrastorage.org/storage3/3dc/b35/687/3dcb356871830161a5f4c01c8a762287.png) | ![C Improved macro symbols](http://habrastorage.org/storage3/903/10c/4bb/90310c4bb046fd14b6b928772e6a034e.png)
+![Standard C macro symbols](http://habrastorage.org/storage3/9ab/a6c/99c/9aba6c99c480b90e7cfb1a841f550787.png) | ![C Improved macro symbols](http://habrastorage.org/storage3/46a/476/c85/46a476c85af7ff8feb6395d4dfdb96ba.png)
 
 ### Macro parameters highlighting
 
 Standard C | C Improved
 ---------- | ----------
-![Standard C macro parameters](http://habrastorage.org/storage3/0f2/5d8/dbe/0f25d8dbedde773b611b3c50c0662416.png) | ![C Improved macro parameters](http://habrastorage.org/storage3/3c4/6e4/3cd/3c46e43cd104dd7ae58cc42e65ad7176.png)
+![Standard C macro parameters](http://habrastorage.org/storage3/1f8/118/fda/1f8118fda926989ac597a36ab0466473.png) | ![C Improved macro parameters](http://habrastorage.org/storage3/f31/11a/004/f3111a004bb12c613e909eb16886f101.png)
