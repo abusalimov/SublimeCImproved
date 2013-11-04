@@ -21,3 +21,9 @@ Standard C | C Improved
 Standard C | C Improved
 ---------- | ----------
 ![Standard C macro parameters](http://habrastorage.org/storage3/1f8/118/fda/1f8118fda926989ac597a36ab0466473.png) | ![C Improved macro parameters](http://habrastorage.org/storage3/f31/11a/004/f3111a004bb12c613e909eb16886f101.png)
+
+### Linux kernel support macros
+
+Standard C | C Improved
+---------- | ----------
+![Standard C macro parameters](http://habrastorage.org/storage3/c7b/b01/316/c7bb01316e29e0994ec32aa212911a37.png) | ![C Improved macro parameters](http://habrastorage.org/storage3/024/daa/2ac/024daa2acbc19b9d6060faf59b23d12b.png)
