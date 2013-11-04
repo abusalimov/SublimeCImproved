@@ -868,7 +868,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\*/.*\n</string>
+					<string>\*/(?=[^*].*\n)</string>
 					<key>name</key>
 					<string>invalid.illegal.stray-comment-end.c</string>
 				</dict>
