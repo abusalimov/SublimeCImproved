@@ -4,14 +4,15 @@ Sublime C Improved
 This package provides better support of C/C++/Objective-C languages in Sublime Text.
 It addresses some issues with macro syntax highlighting and symbol list being populated incorrectly.
 
-C Improved vs. the standard C bundle
+Issues addressed
 --
+
+### Function call inside macro recognized as a symbol definition
 In the following example ST recognizes `check_range(...)` inside a macro as a function definition though it is actually a function call.
 This leads to incorrect highlighting (green instead of blue) and also adds a bogus symbol into a symbol list.
 Moreover a function declaration which follows the macro (`int irq_attach(...)`) is not recognized at all.
 
-![Standard C syntax](http://habrastorage.org/storage3/efc/ae1/08c/efcae108c9dfd854ad70235b9da98881.png)
+| Standard C | C Improved |
+| --- | --- |
+| ![Standard C macro symbols](http://habrastorage.org/storage3/446/d49/0db/446d490db58b1c6d1e314ce04da53c7f.png) | ![C Improved macro symbols](http://habrastorage.org/storage3/db6/aa2/b2e/db6aa2b2e46cb485ad75975c10f4826e.png) |
 
-Syntax definition provided by C Improved makes things work as expected:
-
-![Improved C syntax](http://habrastorage.org/storage3/994/4e7/b57/9944e7b5705d5e41f624964d252263da.png)
