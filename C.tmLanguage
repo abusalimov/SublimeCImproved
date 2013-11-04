@@ -51,6 +51,10 @@
 		</dict>
 		<dict>
 			<key>include</key>
+			<string>#support_types</string>
+		</dict>
+		<dict>
+			<key>include</key>
 			<string>#macro</string>
 		</dict>
 		<dict>
@@ -185,6 +189,10 @@
 			<string>#block</string>
 		</dict>
 		<dict>
+			<key>include</key>
+			<string>#support_macros</string>
+		</dict>
+		<dict>
 			<key>name</key>
 			<string>meta.function.c</string>
 			<key>begin</key>
@@ -236,6 +244,10 @@
 				</dict>
 			</array>
 		</dict>
+		<dict>
+			<key>include</key>
+			<string>#support_functions</string>
+		</dict>
 	</array>
 	<key>repository</key>
 	<dict>
@@ -246,18 +258,6 @@
 				<dict>
 					<key>include</key>
 					<string>#comments</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\s*\b((?:__|(?!\w+__))asm(?:__)?|break|case|continue|default|do|else|for|goto|if|_Pragma|return|switch|while|__extension__)\b</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>keyword.control.c</string>
-						</dict>
-					</dict>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -295,6 +295,18 @@
 				</dict>
 				<dict>
 					<key>match</key>
+					<string>\s*\b((?:__|(?!\w+__))asm(?:__)?|break|case|continue|default|do|else|for|goto|if|_Pragma|return|switch|while|__extension__)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.control.c</string>
+						</dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key>
 					<string>\s*\b(auto|bool|_Bool|char|_Complex|double|enum|float|_Imaginary|int|long|short|signed|struct|typedef|union|unsigned|void)\b</string>
 					<key>captures</key>
 					<dict>
@@ -317,6 +329,12 @@
 						</dict>
 					</dict>
 				</dict>
+			</array>
+		</dict>
+		<key>lex_constant</key>
+		<dict>
+			<key>patterns</key>
+			<array>
 				<dict>
 					<key>match</key>
 					<string>\s*\b(NULL|true|false|TRUE|FALSE)\b</string>
@@ -331,7 +349,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>lex_constant</key>
+		<key>lex_numbers</key>
 		<dict>
 			<key>patterns</key>
 			<array>
@@ -349,22 +367,10 @@
 				</dict>
 			</array>
 		</dict>
-		<key>lex_numbers</key>
+		<key>support_types</key>
 		<dict>
 			<key>patterns</key>
 			<array>
-				<dict>
-					<key>match</key>
-					<string>\s*\b(__builtin_\w+)\b</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>support.type.intrinsic.c</string>
-						</dict>
-					</dict>
-				</dict>
 				<dict>
 					<key>match</key>
 					<string>\s*\b(u_char|u_short|u_int|u_long|ushort|uint|(?:u_quad|quad|qaddr|caddr|daddr|dev|fixpt|blkcnt|blksize|gid|in_addr|in_port|ino|key|mode|nlink|id|pid|off|segsz|swblk|uid|id|clock|size|ssize|time|useconds|suseconds)_t)\b</string>
@@ -499,9 +505,45 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>(\.|-&gt;)[a-zA-Z_][a-zA-Z_0-9]*\b(?!\s*\()</string>
+					<string>(\.|-&gt;)[a-zA-Z_]\w*\b(?!\s*\()</string>
 					<key>name</key>
 					<string>variable.other.dot-access.c</string>
+				</dict>
+			</array>
+		</dict>
+		<key>support_macros</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\s*\b(__builtin_\w+)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>support.function.intrinsic.c</string>
+						</dict>
+					</dict>
+				</dict>
+			</array>
+		</dict>
+		<key>support_functions</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\s*\b(hypot(f|l)?|s(scanf|ystem|nprintf|ca(nf|lb(n(f|l)?|ln(f|l)?))|i(n(h(f|l)?|f|l)?|gn(al|bit))|tr(s(tr|pn)|nc(py|at|mp)|c(spn|hr|oll|py|at|mp)|to(imax|d|u(l(l)?|max)|k|f|l(d|l)?)|error|pbrk|ftime|len|rchr|xfrm)|printf|et(jmp|vbuf|locale|buf)|qrt(f|l)?|w(scanf|printf)|rand)|n(e(arbyint(f|l)?|xt(toward(f|l)?|after(f|l)?))|an(f|l)?)|c(s(in(h(f|l)?|f|l)?|qrt(f|l)?)|cos(h(f)?|f|l)?|imag(f|l)?|t(ime|an(h(f|l)?|f|l)?)|o(s(h(f|l)?|f|l)?|nj(f|l)?|pysign(f|l)?)|p(ow(f|l)?|roj(f|l)?)|e(il(f|l)?|xp(f|l)?)|l(o(ck|g(f|l)?)|earerr)|a(sin(h(f|l)?|f|l)?|cos(h(f|l)?|f|l)?|tan(h(f|l)?|f|l)?|lloc|rg(f|l)?|bs(f|l)?)|real(f|l)?|brt(f|l)?)|t(ime|o(upper|lower)|an(h(f|l)?|f|l)?|runc(f|l)?|gamma(f|l)?|mp(nam|file))|i(s(space|n(ormal|an)|cntrl|inf|digit|u(nordered|pper)|p(unct|rint)|finite|w(space|c(ntrl|type)|digit|upper|p(unct|rint)|lower|al(num|pha)|graph|xdigit|blank)|l(ower|ess(equal|greater)?)|al(num|pha)|gr(eater(equal)?|aph)|xdigit|blank)|logb(f|l)?|max(div|abs))|di(v|fftime)|_Exit|unget(c|wc)|p(ow(f|l)?|ut(s|c(har)?|wc(har)?)|error|rintf)|e(rf(c(f|l)?|f|l)?|x(it|p(2(f|l)?|f|l|m1(f|l)?)?))|v(s(scanf|nprintf|canf|printf|w(scanf|printf))|printf|f(scanf|printf|w(scanf|printf))|w(scanf|printf)|a_(start|copy|end|arg))|qsort|f(s(canf|e(tpos|ek))|close|tell|open|dim(f|l)?|p(classify|ut(s|c|w(s|c))|rintf)|e(holdexcept|set(e(nv|xceptflag)|round)|clearexcept|testexcept|of|updateenv|r(aiseexcept|ror)|get(e(nv|xceptflag)|round))|flush|w(scanf|ide|printf|rite)|loor(f|l)?|abs(f|l)?|get(s|c|pos|w(s|c))|re(open|e|ad|xp(f|l)?)|m(in(f|l)?|od(f|l)?|a(f|l|x(f|l)?)?))|l(d(iv|exp(f|l)?)|o(ngjmp|cal(time|econv)|g(1(p(f|l)?|0(f|l)?)|2(f|l)?|f|l|b(f|l)?)?)|abs|l(div|abs|r(int(f|l)?|ound(f|l)?))|r(int(f|l)?|ound(f|l)?)|gamma(f|l)?)|w(scanf|c(s(s(tr|pn)|nc(py|at|mp)|c(spn|hr|oll|py|at|mp)|to(imax|d|u(l(l)?|max)|k|f|l(d|l)?|mbs)|pbrk|ftime|len|r(chr|tombs)|xfrm)|to(b|mb)|rtomb)|printf|mem(set|c(hr|py|mp)|move))|a(s(sert|ctime|in(h(f|l)?|f|l)?)|cos(h(f|l)?|f|l)?|t(o(i|f|l(l)?)|exit|an(h(f|l)?|2(f|l)?|f|l)?)|b(s|ort))|g(et(s|c(har)?|env|wc(har)?)|mtime)|r(int(f|l)?|ound(f|l)?|e(name|alloc|wind|m(ove|quo(f|l)?|ainder(f|l)?))|a(nd|ise))|b(search|towc)|m(odf(f|l)?|em(set|c(hr|py|mp)|move)|ktime|alloc|b(s(init|towcs|rtowcs)|towc|len|r(towc|len))))\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>support.function.C99.c</string>
+						</dict>
+					</dict>
 				</dict>
 			</array>
 		</dict>
@@ -758,77 +800,86 @@
 					<string>#lex</string>
 				</dict>
 				<dict>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.whitespace.support.function.leading.c</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>support.function.C99.c</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>(\s*)\b(hypot(f|l)?|s(scanf|ystem|nprintf|ca(nf|lb(n(f|l)?|ln(f|l)?))|i(n(h(f|l)?|f|l)?|gn(al|bit))|tr(s(tr|pn)|nc(py|at|mp)|c(spn|hr|oll|py|at|mp)|to(imax|d|u(l(l)?|max)|k|f|l(d|l)?)|error|pbrk|ftime|len|rchr|xfrm)|printf|et(jmp|vbuf|locale|buf)|qrt(f|l)?|w(scanf|printf)|rand)|n(e(arbyint(f|l)?|xt(toward(f|l)?|after(f|l)?))|an(f|l)?)|c(s(in(h(f|l)?|f|l)?|qrt(f|l)?)|cos(h(f)?|f|l)?|imag(f|l)?|t(ime|an(h(f|l)?|f|l)?)|o(s(h(f|l)?|f|l)?|nj(f|l)?|pysign(f|l)?)|p(ow(f|l)?|roj(f|l)?)|e(il(f|l)?|xp(f|l)?)|l(o(ck|g(f|l)?)|earerr)|a(sin(h(f|l)?|f|l)?|cos(h(f|l)?|f|l)?|tan(h(f|l)?|f|l)?|lloc|rg(f|l)?|bs(f|l)?)|real(f|l)?|brt(f|l)?)|t(ime|o(upper|lower)|an(h(f|l)?|f|l)?|runc(f|l)?|gamma(f|l)?|mp(nam|file))|i(s(space|n(ormal|an)|cntrl|inf|digit|u(nordered|pper)|p(unct|rint)|finite|w(space|c(ntrl|type)|digit|upper|p(unct|rint)|lower|al(num|pha)|graph|xdigit|blank)|l(ower|ess(equal|greater)?)|al(num|pha)|gr(eater(equal)?|aph)|xdigit|blank)|logb(f|l)?|max(div|abs))|di(v|fftime)|_Exit|unget(c|wc)|p(ow(f|l)?|ut(s|c(har)?|wc(har)?)|error|rintf)|e(rf(c(f|l)?|f|l)?|x(it|p(2(f|l)?|f|l|m1(f|l)?)?))|v(s(scanf|nprintf|canf|printf|w(scanf|printf))|printf|f(scanf|printf|w(scanf|printf))|w(scanf|printf)|a_(start|copy|end|arg))|qsort|f(s(canf|e(tpos|ek))|close|tell|open|dim(f|l)?|p(classify|ut(s|c|w(s|c))|rintf)|e(holdexcept|set(e(nv|xceptflag)|round)|clearexcept|testexcept|of|updateenv|r(aiseexcept|ror)|get(e(nv|xceptflag)|round))|flush|w(scanf|ide|printf|rite)|loor(f|l)?|abs(f|l)?|get(s|c|pos|w(s|c))|re(open|e|ad|xp(f|l)?)|m(in(f|l)?|od(f|l)?|a(f|l|x(f|l)?)?))|l(d(iv|exp(f|l)?)|o(ngjmp|cal(time|econv)|g(1(p(f|l)?|0(f|l)?)|2(f|l)?|f|l|b(f|l)?)?)|abs|l(div|abs|r(int(f|l)?|ound(f|l)?))|r(int(f|l)?|ound(f|l)?)|gamma(f|l)?)|w(scanf|c(s(s(tr|pn)|nc(py|at|mp)|c(spn|hr|oll|py|at|mp)|to(imax|d|u(l(l)?|max)|k|f|l(d|l)?|mbs)|pbrk|ftime|len|r(chr|tombs)|xfrm)|to(b|mb)|rtomb)|printf|mem(set|c(hr|py|mp)|move))|a(s(sert|ctime|in(h(f|l)?|f|l)?)|cos(h(f|l)?|f|l)?|t(o(i|f|l(l)?)|exit|an(h(f|l)?|2(f|l)?|f|l)?)|b(s|ort))|g(et(s|c(har)?|env|wc(har)?)|mtime)|r(int(f|l)?|ound(f|l)?|e(name|alloc|wind|m(ove|quo(f|l)?|ainder(f|l)?))|a(nd|ise))|b(search|towc)|m(odf(f|l)?|em(set|c(hr|py|mp)|move)|ktime|alloc|b(s(init|towcs|rtowcs)|towc|len|r(towc|len))))\b</string>
+					<key>include</key>
+					<string>#support_types</string>
 				</dict>
 				<dict>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.whitespace.function-call.leading.c</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>support.function.any-method.c</string>
-						</dict>
-						<key>3</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.definition.parameters.c</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>(?x) (?: (?= \s )  (?:(?&lt;=else|new|return) | (?&lt;!\w)) (\s+))?
-			(\b
-				(?!(while|for|do|if|else|switch|catch|enumerate|return|r?iterate)\s*\()(?:(?!NS)[A-Za-z_][A-Za-z0-9_]*+\b | :: )++                  # actual name
-			)
-			 \s*(\()</string>
-					<key>name</key>
-					<string>meta.function-call.c</string>
+					<key>include</key>
+					<string>#support_macros</string>
 				</dict>
 				<dict>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>variable.other.c</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.definition.parameters.c</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>(?x)
-			(?:
-			     (?: (?= \s )           (?&lt;!else|new|return) (?&lt;=\w)\s+      #  or word + space before name
-			     )
-			)
-			(
-				(?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++    |              # actual name
-				(?: (?&lt;=operator) (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )?  # if it is a C++ operator
-			)
-			 \s*(\()</string>
+					<key>include</key>
+					<string>#initialization</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#function_call</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#support_functions</string>
+				</dict>
+			</array>
+		</dict>
+		<key>initialization</key>
+		<dict>
+			<key>name</key>
+			<string>meta.initialization.c</string>
+			<key>match</key>
+			<string>(?x)
+				(?: (?&lt;! \W new | \W else
+				        | \W (?:return|sizeof|typeof)
+				        | \W __typeof | \W __typeof__ )
+				    (?&lt;= \w ) \s
+
+				  | #  or type modifier / closing bracket / comma before name
+				    (?&lt;= [^&amp;]&amp; | [,*\)\}] ) ) \s*
+
+				( (?: [A-Za-z_]\w*+ | ::[^:] )++ )
+
+				(?= \s* [\(\[=;] | $ )
+			</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
 					<key>name</key>
-					<string>meta.initialization.c</string>
+					<string>variable.other.c</string>
+				</dict>
+			</dict>
+		</dict>
+		<key>function_call</key>
+		<dict>
+			<key>name</key>
+			<string>meta.function-call.c</string>
+			<key>begin</key>
+			<string>(?x)
+				\s*
+				(?= # don't consume to recognize support functions
+				    (?: [A-Za-z_]\w*+ | ::[^:] )++
+				    \s*\( )
+			</string>
+			<key>end</key>
+			<string>(?x) (?&lt;= \) )</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#lex</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#support_functions</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(?:[A-Za-z_]\w*+|::[^:])++</string>
+					<key>name</key>
+					<string>support.function.any-method.c</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#parens</string>
 				</dict>
 			</array>
 		</dict>
@@ -1337,13 +1388,6 @@
 					<string>keyword.control.import.c</string>
 				</dict>
 			</dict>
-		</dict>
-		<key>sizeof</key>
-		<dict>
-			<key>match</key>
-			<string>\b(sizeof)\b</string>
-			<key>name</key>
-			<string>keyword.operator.sizeof.c</string>
 		</dict>
 		<key>string_escaped_char</key>
 		<dict>
