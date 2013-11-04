@@ -51,10 +51,6 @@
 		</dict>
 		<dict>
 			<key>include</key>
-			<string>#support_types</string>
-		</dict>
-		<dict>
-			<key>include</key>
 			<string>#macro</string>
 		</dict>
 		<dict>
@@ -185,6 +181,10 @@
 			</array>
 		</dict>
 		<dict>
+			<key>include</key>
+			<string>#block</string>
+		</dict>
+		<dict>
 			<key>begin</key>
 			<string>\s*\b(typedef)</string>
 			<key>beginCaptures</key>
@@ -214,10 +214,6 @@
 		<dict>
 			<key>include</key>
 			<string>#support_types</string>
-		</dict>
-		<dict>
-			<key>include</key>
-			<string>#block</string>
 		</dict>
 		<dict>
 			<key>include</key>
@@ -820,15 +816,15 @@
 				</dict>
 				<dict>
 					<key>include</key>
+					<string>#initialization</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>#support_types</string>
 				</dict>
 				<dict>
 					<key>include</key>
 					<string>#support_macros</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#initialization</string>
 				</dict>
 				<dict>
 					<key>include</key>
