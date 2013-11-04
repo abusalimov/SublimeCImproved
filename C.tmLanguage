@@ -252,42 +252,35 @@
 			<string>#block</string>
 		</dict>
 		<dict>
+			<key>name</key>
+			<string>meta.function.c</string>
 			<key>begin</key>
 			<string>(?x)
-    		(?:  ^                                 # begin-of-line
-    		  |
-    		     (?: (?= \s )           (?&lt;!else|new|return) (?&lt;=\w)      #  or word + space before name
-    		       | (?= \s*[A-Za-z_] ) (?&lt;!&amp;&amp;)       (?&lt;=[*&amp;&gt;])   #  or type modifier before name
-    		     )
-    		)
-    		(\s*) (?!(while|for|do|if|else|switch|catch|enumerate|return|r?iterate))
-    		(
-    			(?: [A-Za-z_][A-Za-z0-9_]*+ | ::[^:] )++               # actual name
-    			(?: (?&lt;=operator) (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )?  # if it is a C++ operator
-    		)
-    		\s*(?=\()</string>
+				(?: ^
+				  | (?&lt;! \W new | \W else
+				        | \W (?:return|sizeof|typeof)
+				        | \W __typeof | \W __typeof__ )
+				    (?&lt;= \w ) \s
+
+				  | #  or type modifier / closing bracket before name
+				    (?&lt;= [^&amp;]&amp; | [*&gt;\)\]\}] ) ) \s*
+
+				(   (?: [A-Za-z_]\w*+ | ::[^:] )++
+				    (?: (?&lt;= \Woperator )  # C++ operator?
+				        (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )? )
+
+				\s* (?= \( )
+			</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>punctuation.whitespace.function.leading.c</string>
-				</dict>
-				<key>3</key>
-				<dict>
-					<key>name</key>
 					<string>entity.name.function.c</string>
-				</dict>
-				<key>4</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.definition.parameters.c</string>
 				</dict>
 			</dict>
 			<key>end</key>
-			<string>(?&lt;=\})|(?=#)|(;)</string>
-			<key>name</key>
-			<string>meta.function.c</string>
+			<string>(?&lt;=\})|(;)</string>
 			<key>patterns</key>
 			<array>
 				<dict>
