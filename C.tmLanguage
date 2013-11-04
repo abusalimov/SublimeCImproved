@@ -1269,7 +1269,7 @@
 		<key>preprocessor-rule-other</key>
 		<dict>
 			<key>begin</key>
-			<string>^\s*(#\s*(if(n?def)?)\b.*?(?:(?=(?://|/\*))|$))</string>
+			<string>^\s*(#\s*(if(n?def)?)\b)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -1296,7 +1296,7 @@
 		<key>preprocessor-rule-other-block</key>
 		<dict>
 			<key>begin</key>
-			<string>^\s*(#\s*(if(n?def)?)\b.*?(?:(?=(?://|/\*))|$))</string>
+			<string>^\s*(#\s*(if(n?def)?)\b)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
