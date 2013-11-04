@@ -193,56 +193,8 @@
 			<string>#support_macros</string>
 		</dict>
 		<dict>
-			<key>name</key>
-			<string>meta.function.c</string>
-			<key>begin</key>
-			<string>(?x)
-				(?: ^
-				  | (?&lt;! \W new | \W else
-				        | \W (?:return|sizeof|typeof)
-				        | \W __typeof | \W __typeof__ )
-				    (?&lt;= \w ) \s
-
-				  | #  or type modifier / closing bracket before name
-				    (?&lt;= [^&amp;]&amp; | [*&gt;\)\]\}] ) ) \s*
-
-				(   (?: [A-Za-z_]\w*+ | ::[^:] )++
-				    (?: (?&lt;= \Woperator )  # C++ operator?
-				        (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )? )
-
-				\s* (?= \( )
-			</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.function.c</string>
-				</dict>
-			</dict>
-			<key>end</key>
-			<string>(?&lt;=\})|(;)</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#comments</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#parens</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\b(const|override)\b</string>
-					<key>name</key>
-					<string>storage.modifier.c</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#block</string>
-				</dict>
-			</array>
+			<key>include</key>
+			<string>#function</string>
 		</dict>
 		<dict>
 			<key>include</key>
@@ -854,6 +806,59 @@
 				<dict>
 					<key>include</key>
 					<string>#support_functions</string>
+				</dict>
+			</array>
+		</dict>
+		<key>function</key>
+		<dict>
+			<key>name</key>
+			<string>meta.function.c</string>
+			<key>begin</key>
+			<string>(?x)
+				(?: ^
+				  | (?&lt;! \W new | \W else
+				        | \W (?:return|sizeof|typeof)
+				        | \W __typeof | \W __typeof__ )
+				    (?&lt;= \w ) \s
+
+				  | #  or type modifier / closing bracket before name
+				    (?&lt;= [^&amp;]&amp; | [*&gt;\)\]\}] ) ) \s*
+
+				(   (?: [A-Za-z_]\w*+ | ::[^:] )++
+				    (?: (?&lt;= \Woperator )  # C++ operator?
+				        (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )? )
+
+				\s* (?= \( )
+			</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.c</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(?&lt;=\})|(;)</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#comments</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#parens</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\b(const|override)\b</string>
+					<key>name</key>
+					<string>storage.modifier.c</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#block</string>
 				</dict>
 			</array>
 		</dict>
