@@ -185,6 +185,37 @@
 			</array>
 		</dict>
 		<dict>
+			<key>begin</key>
+			<string>\s*\b(typedef)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>storage.type.c</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>;</string>
+			<key>name</key>
+			<string>meta.typedef.c</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#lex</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#initialization</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#support_types</string>
+		</dict>
+		<dict>
 			<key>include</key>
 			<string>#block</string>
 		</dict>
@@ -259,7 +290,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\s*\b(auto|bool|_Bool|char|_Complex|double|enum|float|_Imaginary|int|long|short|signed|struct|typedef|union|unsigned|void)\b</string>
+					<string>\s*\b(auto|bool|_Bool|char|_Complex|double|enum|float|_Imaginary|int|long|short|signed|struct|union|unsigned|void)\b</string>
 					<key>captures</key>
 					<dict>
 						<key>1</key>
