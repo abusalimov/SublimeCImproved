@@ -871,7 +871,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>#comments</string>
+					<string>#lex</string>
 				</dict>
 				<dict>
 					<key>include</key>
