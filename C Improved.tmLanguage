@@ -459,7 +459,7 @@
 		<key>preprocessor-macro</key>
 		<dict>
 			<key>begin</key> <string>(?x) (?= ^ \s* \# \s* define \s+ [a-zA-Z_]\w*+ )</string>
-			<key>end</key> <string>(?x) (?&lt;= ^ | [^\\] ) \s* \n</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*\n)</string>
 			<key>name</key> <string>meta.preprocessor.macro.c</string>
 			<key>patterns</key>
 			<array>
@@ -490,7 +490,7 @@
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
 				<key>2</key> <dict> <key>name</key> <string>entity.name.function.preprocessor.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?x) (?&lt;= ^ | [^\\] ) \s* (\n) | \)</string>
+			<key>end</key> <string>(?x) (?&lt;=^|[^\\]) \s*(\n) | \)</string>
 			<key>endCaptures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-end-of-line.c</string> </dict>
