@@ -38,81 +38,10 @@
 		<dict> <key>include</key> <string>#preprocessor-rule-other</string> </dict>
 		<dict> <key>include</key> <string>#lex</string> </dict>
 		<dict> <key>include</key> <string>#macro</string> </dict>
-		<dict>
-			<key>begin</key> <string>^\s*#\s*(error|warning)\b</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.error.c</string> </dict>
-			</dict>
-			<key>end</key> <string>$</string>
-			<key>name</key> <string>meta.preprocessor.diagnostic.c</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>match</key> <string>(?&gt;\\\s*\n)</string>
-					<key>name</key> <string>punctuation.separator.continuation.c</string>
-				</dict>
-			</array>
-		</dict>
-		<dict>
-			<key>begin</key> <string>^\s*#\s*(include|import)\b\s+</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.include.c</string> </dict>
-			</dict>
-			<key>end</key> <string>(?=(?://|/\*))|$</string>
-			<key>name</key> <string>meta.preprocessor.c.include</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>match</key> <string>(?&gt;\\\s*\n)</string>
-					<key>name</key> <string>punctuation.separator.continuation.c</string>
-				</dict>
-				<dict>
-					<key>begin</key> <string>"</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.begin.c</string> </dict>
-					</dict>
-					<key>end</key> <string>"</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.end.c</string> </dict>
-					</dict>
-					<key>name</key> <string>string.quoted.double.include.c</string>
-				</dict>
-				<dict>
-					<key>begin</key> <string>&lt;</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.begin.c</string> </dict>
-					</dict>
-					<key>end</key> <string>&gt;</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.end.c</string> </dict>
-					</dict>
-					<key>name</key> <string>string.quoted.other.lt-gt.include.c</string>
-				</dict>
-			</array>
-		</dict>
+		<dict> <key>include</key> <string>#preprocessor-diagnostic</string> </dict>
+		<dict> <key>include</key> <string>#preprocessor-include</string> </dict>
 		<dict> <key>include</key> <string>#pragma-mark</string> </dict>
-		<dict>
-			<key>begin</key> <string>^\s*#\s*(define|defined|elif|else|if|ifdef|ifndef|line|pragma|undef)\b</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
-			</dict>
-			<key>end</key> <string>(?=(?://|/\*))|$</string>
-			<key>name</key> <string>meta.preprocessor.c</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>match</key> <string>(?&gt;\\\s*\n)</string>
-					<key>name</key> <string>punctuation.separator.continuation.c</string>
-				</dict>
-			</array>
-		</dict>
+		<dict> <key>include</key> <string>#preprocessor-directive</string> </dict>
 		<dict> <key>include</key> <string>#block</string> </dict>
 		<dict>
 			<key>begin</key> <string>\s*\b(typedef)</string>
@@ -647,6 +576,83 @@
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>$base</string> </dict>
+			</array>
+		</dict>
+		<key>preprocessor-diagnostic</key>
+		<dict>
+			<key>begin</key> <string>^\s*#\s*(error|warning)\b</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.error.c</string> </dict>
+			</dict>
+			<key>end</key> <string>$</string>
+			<key>name</key> <string>meta.preprocessor.diagnostic.c</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key> <string>(?&gt;\\\s*\n)</string>
+					<key>name</key> <string>punctuation.separator.continuation.c</string>
+				</dict>
+			</array>
+		</dict>
+		<key>preprocessor-include</key>
+		<dict>
+			<key>begin</key> <string>^\s*#\s*(include|import)\b\s+</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.include.c</string> </dict>
+			</dict>
+			<key>end</key> <string>(?=(?://|/\*))|$</string>
+			<key>name</key> <string>meta.preprocessor.c.include</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key> <string>(?&gt;\\\s*\n)</string>
+					<key>name</key> <string>punctuation.separator.continuation.c</string>
+				</dict>
+				<dict>
+					<key>begin</key> <string>"</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.begin.c</string> </dict>
+					</dict>
+					<key>end</key> <string>"</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.end.c</string> </dict>
+					</dict>
+					<key>name</key> <string>string.quoted.double.include.c</string>
+				</dict>
+				<dict>
+					<key>begin</key> <string>&lt;</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.begin.c</string> </dict>
+					</dict>
+					<key>end</key> <string>&gt;</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.end.c</string> </dict>
+					</dict>
+					<key>name</key> <string>string.quoted.other.lt-gt.include.c</string>
+				</dict>
+			</array>
+		</dict>
+		<key>preprocessor-directive</key>
+		<dict>
+			<key>begin</key> <string>^\s*#\s*(define|defined|elif|else|if|ifdef|ifndef|line|pragma|undef)\b</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
+			</dict>
+			<key>end</key> <string>(?=(?://|/\*))|$</string>
+			<key>name</key> <string>meta.preprocessor.c</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key> <string>(?&gt;\\\s*\n)</string>
+					<key>name</key> <string>punctuation.separator.continuation.c</string>
+				</dict>
 			</array>
 		</dict>
 		<key>pragma-mark</key>
