@@ -34,15 +34,8 @@
 
 	<key>patterns</key>
 	<array>
-		<dict> <key>include</key> <string>#preprocessor-rule-enabled</string> </dict>
-		<dict> <key>include</key> <string>#preprocessor-rule-disabled</string> </dict>
-		<dict> <key>include</key> <string>#preprocessor-rule-other</string> </dict>
 		<dict> <key>include</key> <string>#lex</string> </dict>
-		<dict> <key>include</key> <string>#preprocessor-macro</string> </dict>
-		<dict> <key>include</key> <string>#preprocessor-diagnostic</string> </dict>
-		<dict> <key>include</key> <string>#preprocessor-include</string> </dict>
-		<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
-		<dict> <key>include</key> <string>#preprocessor-directive</string> </dict>
+		<dict> <key>include</key> <string>#preprocessor</string> </dict>
 		<dict> <key>include</key> <string>#block</string> </dict>
 		<dict>
 			<key>begin</key> <string>\s*\b(typedef)</string>
@@ -445,6 +438,22 @@
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>$base</string> </dict>
+			</array>
+		</dict>
+		<key>preprocessor</key>
+		<dict>
+			<key>begin</key> <string>(?=^\s*#\s*[a-z_]+\b)</string>
+			<key>end</key> <string></string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#preprocessor-rule-enabled</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-rule-disabled</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-rule-other</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-macro</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-diagnostic</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-include</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-directive</string> </dict>
 			</array>
 		</dict>
 		<key>preprocessor-macro</key>
