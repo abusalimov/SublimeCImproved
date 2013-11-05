@@ -277,127 +277,6 @@
 				</dict>
 			</array>
 		</dict>
-		<key>preprocessor-macro</key>
-		<dict>
-			<key>begin</key> <string>(?x) (?= ^ \s* \# \s* define \s+ [a-zA-Z_]\w*+ )</string>
-			<key>end</key> <string>(?x) (?&lt;= ^ | [^\\] ) \s* \n</string>
-			<key>name</key> <string>meta.preprocessor.macro.c</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>patterns</key>
-					<array>
-						<dict> <key>include</key> <string>#preprocessor-macro-func</string> </dict>
-						<dict> <key>include</key> <string>#preprocessor-macro-obj</string> </dict>
-						<dict>
-							<key>match</key> <string>(?&gt;\\\s*\n)</string>
-							<key>name</key> <string>punctuation.separator.continuation.c</string>
-						</dict>
-						<dict> <key>include</key> <string>#strict_block_innards</string> </dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
-		<key>preprocessor-macro-func</key>
-		<dict>
-			<key>begin</key>
-			<string>(?x)
-				^ \s* \# \s* (define) \s+  # define
-				( [a-zA-Z_]\w*+ )          # macro name
-				\(
-			</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>entity.name.function.preprocessor.c</string> </dict>
-			</dict>
-			<key>end</key> <string>(?x) (?&lt;= ^ | [^\\] ) \s* (\n) | \)</string>
-			<key>endCaptures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-end-of-line.c</string> </dict>
-			</dict>
-			<key>contentName</key>
-			<string>meta.preprocessor.macro.parameters.c</string>
-			<key>patterns</key>
-			<array>
-				<dict> <key>include</key> <string>#comments</string> </dict>
-				<dict>
-					<key>match</key>
-					<string>(?x)
-						( [a-zA-Z_]\w*+ )
-						\s*
-						( .*? ) (?= \s*
-						    (?: [\(\),\n] | \.\.\. | (?&gt;\\\s*\n) | /[/*] ) )
-					</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key> <dict> <key>name</key> <string>variable.parameter.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.missing-separator.c</string> </dict>
-					</dict>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>(?x)
-						(?: (?&lt;! ^ | \w ) \s* (,)
-						  | \s* (,) \s* (?= \) ) )
-					</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-separator.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-separator.c</string> </dict>
-					</dict>
-				</dict>
-				<dict>
-					<key>match</key> <string>\s*,</string>
-					<key>name</key> <string>punctuation.separator.parameter.c</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>(?x)
-						( \.\.\. )
-						\s*
-						( .*? ) (?= \s*
-						    (?: [\(\)\n] | (?&gt;\\\s*\n) | /[/*] ) )
-					</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key> <dict> <key>name</key> <string>punctuation.definition.ellipsis.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.closing-paren-expected.c</string> </dict>
-					</dict>
-				</dict>
-				<dict>
-					<key>match</key> <string>(?&gt;\\\s*\n)</string>
-					<key>name</key> <string>punctuation.separator.continuation.c</string>
-				</dict>
-				<dict>
-					<key>begin</key> <string>\(</string>
-					<key>end</key> <string>\)</string>
-					<key>name</key> <string>invalid.illegal.unexpected-parens.c</string>
-				</dict>
-				<dict>
-					<key>match</key> <string>\n</string>
-					<key>name</key> <string>invalid.illegal.unexpected-newline.c</string>
-				</dict>
-				<dict>
-					<key>match</key> <string>[^\(\)\s]</string>
-					<key>name</key> <string>invalid.illegal.unexpected-character.c</string>
-				</dict>
-			</array>
-		</dict>
-		<key>preprocessor-macro-obj</key>
-		<dict>
-			<key>match</key>
-			<string>(?x)
-				^ \s* \# \s* (define) \s+  # define
-				( [a-zA-Z_]\w*+ )          # macro name
-				(?! \( )
-			</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>entity.name.function.preprocessor.c</string> </dict>
-			</dict>
-		</dict>
 		<key>block</key>
 		<dict>
 			<key>begin</key> <string>\{</string>
@@ -558,18 +437,6 @@
 				</dict>
 			</array>
 		</dict>
-		<key>preprocessor-disabled</key>
-		<dict>
-			<key>begin</key> <string>^\s*#\s*if(n?def)?\b.*$</string>
-			<key>end</key> <string>^\s*#\s*endif\b</string>
-			<key>patterns</key>
-			<array>
-				<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
-			</array>
-			<key>comment</key>
-			<string>eat nested preprocessor if(def)s</string>
-		</dict>
 		<key>parens</key>
 		<dict>
 			<key>begin</key> <string>\(</string>
@@ -579,6 +446,127 @@
 			<array>
 				<dict> <key>include</key> <string>$base</string> </dict>
 			</array>
+		</dict>
+		<key>preprocessor-macro</key>
+		<dict>
+			<key>begin</key> <string>(?x) (?= ^ \s* \# \s* define \s+ [a-zA-Z_]\w*+ )</string>
+			<key>end</key> <string>(?x) (?&lt;= ^ | [^\\] ) \s* \n</string>
+			<key>name</key> <string>meta.preprocessor.macro.c</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#preprocessor-macro-func</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-macro-obj</string> </dict>
+						<dict>
+							<key>match</key> <string>(?&gt;\\\s*\n)</string>
+							<key>name</key> <string>punctuation.separator.continuation.c</string>
+						</dict>
+						<dict> <key>include</key> <string>#strict_block_innards</string> </dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<key>preprocessor-macro-func</key>
+		<dict>
+			<key>begin</key>
+			<string>(?x)
+				^ \s* \# \s* (define) \s+  # define
+				( [a-zA-Z_]\w*+ )          # macro name
+				\(
+			</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>entity.name.function.preprocessor.c</string> </dict>
+			</dict>
+			<key>end</key> <string>(?x) (?&lt;= ^ | [^\\] ) \s* (\n) | \)</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-end-of-line.c</string> </dict>
+			</dict>
+			<key>contentName</key>
+			<string>meta.preprocessor.macro.parameters.c</string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#comments</string> </dict>
+				<dict>
+					<key>match</key>
+					<string>(?x)
+						( [a-zA-Z_]\w*+ )
+						\s*
+						( .*? ) (?= \s*
+						    (?: [\(\),\n] | \.\.\. | (?&gt;\\\s*\n) | /[/*] ) )
+					</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>variable.parameter.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.missing-separator.c</string> </dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(?x)
+						(?: (?&lt;! ^ | \w ) \s* (,)
+						  | \s* (,) \s* (?= \) ) )
+					</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-separator.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-separator.c</string> </dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key> <string>\s*,</string>
+					<key>name</key> <string>punctuation.separator.parameter.c</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(?x)
+						( \.\.\. )
+						\s*
+						( .*? ) (?= \s*
+						    (?: [\(\)\n] | (?&gt;\\\s*\n) | /[/*] ) )
+					</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>punctuation.definition.ellipsis.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.closing-paren-expected.c</string> </dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key> <string>(?&gt;\\\s*\n)</string>
+					<key>name</key> <string>punctuation.separator.continuation.c</string>
+				</dict>
+				<dict>
+					<key>begin</key> <string>\(</string>
+					<key>end</key> <string>\)</string>
+					<key>name</key> <string>invalid.illegal.unexpected-parens.c</string>
+				</dict>
+				<dict>
+					<key>match</key> <string>\n</string>
+					<key>name</key> <string>invalid.illegal.unexpected-newline.c</string>
+				</dict>
+				<dict>
+					<key>match</key> <string>[^\(\)\s]</string>
+					<key>name</key> <string>invalid.illegal.unexpected-character.c</string>
+				</dict>
+			</array>
+		</dict>
+		<key>preprocessor-macro-obj</key>
+		<dict>
+			<key>match</key>
+			<string>(?x)
+				^ \s* \# \s* (define) \s+  # define
+				( [a-zA-Z_]\w*+ )          # macro name
+				(?! \( )
+			</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>entity.name.function.preprocessor.c</string> </dict>
+			</dict>
 		</dict>
 		<key>preprocessor-diagnostic</key>
 		<dict>
@@ -845,6 +833,18 @@
 			<array>
 				<dict> <key>include</key> <string>#block_innards</string> </dict>
 			</array>
+		</dict>
+		<key>preprocessor-disabled</key>
+		<dict>
+			<key>begin</key> <string>^\s*#\s*if(n?def)?\b.*$</string>
+			<key>end</key> <string>^\s*#\s*endif\b</string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
+			</array>
+			<key>comment</key>
+			<string>eat nested preprocessor if(def)s</string>
 		</dict>
 		<key>preprocessor-orphaned-block-end</key>
 		<dict>
