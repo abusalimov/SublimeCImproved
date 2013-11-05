@@ -31,6 +31,7 @@
 	<string>^~C</string>
 	<key>name</key>
 	<string>C Improved</string>
+
 	<key>patterns</key>
 	<array>
 		<dict> <key>include</key> <string>#preprocessor-rule-enabled</string> </dict>
@@ -57,11 +58,12 @@
 				<dict> <key>include</key> <string>#initialization</string> </dict>
 			</array>
 		</dict>
-		<dict> <key>include</key> <string>#support_types</string> </dict>
-		<dict> <key>include</key> <string>#support_macros</string> </dict>
+		<dict> <key>include</key> <string>#support-type</string> </dict>
+		<dict> <key>include</key> <string>#support-macro</string> </dict>
 		<dict> <key>include</key> <string>#function</string> </dict>
-		<dict> <key>include</key> <string>#support_functions</string> </dict>
+		<dict> <key>include</key> <string>#support-function</string> </dict>
 	</array>
+
 	<key>repository</key>
 	<dict>
 		<key>lex</key>
@@ -69,13 +71,13 @@
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#comments</string> </dict>
-				<dict> <key>include</key> <string>#lex_keywords</string> </dict>
-				<dict> <key>include</key> <string>#lex_constant</string> </dict>
-				<dict> <key>include</key> <string>#lex_numbers</string> </dict>
-				<dict> <key>include</key> <string>#lex_strings</string> </dict>
+				<dict> <key>include</key> <string>#lex-keyword</string> </dict>
+				<dict> <key>include</key> <string>#lex-constant</string> </dict>
+				<dict> <key>include</key> <string>#lex-number</string> </dict>
+				<dict> <key>include</key> <string>#lex-string</string> </dict>
 			</array>
 		</dict>
-		<key>lex_keywords</key>
+		<key>lex-keyword</key>
 		<dict>
 			<key>patterns</key>
 			<array>
@@ -109,7 +111,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>lex_constant</key>
+		<key>lex-constant</key>
 		<dict>
 			<key>patterns</key>
 			<array>
@@ -122,7 +124,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>lex_numbers</key>
+		<key>lex-number</key>
 		<dict>
 			<key>patterns</key>
 			<array>
@@ -135,7 +137,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>lex_strings</key>
+		<key>lex-string</key>
 		<dict>
 			<key>patterns</key>
 			<array>
@@ -180,7 +182,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>support_types</key>
+		<key>support-type</key>
 		<dict>
 			<key>patterns</key>
 			<array>
@@ -221,7 +223,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>support_macros</key>
+		<key>support-macro</key>
 		<dict>
 			<key>patterns</key>
 			<array>
@@ -262,7 +264,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>support_functions</key>
+		<key>support-function</key>
 		<dict>
 			<key>patterns</key>
 			<array>
@@ -425,10 +427,10 @@
 			<array>
 				<dict> <key>include</key> <string>#lex</string> </dict>
 				<dict> <key>include</key> <string>#initialization</string> </dict>
-				<dict> <key>include</key> <string>#support_types</string> </dict>
-				<dict> <key>include</key> <string>#support_macros</string> </dict>
+				<dict> <key>include</key> <string>#support-type</string> </dict>
+				<dict> <key>include</key> <string>#support-macro</string> </dict>
 				<dict> <key>include</key> <string>#function_call</string> </dict>
-				<dict> <key>include</key> <string>#support_functions</string> </dict>
+				<dict> <key>include</key> <string>#support-function</string> </dict>
 			</array>
 		</dict>
 		<key>function</key>
@@ -497,7 +499,7 @@
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#lex</string> </dict>
-				<dict> <key>include</key> <string>#support_functions</string> </dict>
+				<dict> <key>include</key> <string>#support-function</string> </dict>
 				<dict>
 					<key>match</key> <string>(?:[A-Za-z_]\w*+|::[^:])++</string>
 					<key>name</key> <string>support.function.any-method.c</string>
@@ -891,6 +893,7 @@
 			</array>
 		</dict>
 	</dict>
+
 	<key>scopeName</key>
 	<string>source.c</string>
 	<key>uuid</key>
