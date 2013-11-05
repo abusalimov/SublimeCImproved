@@ -662,7 +662,7 @@
 		</dict>
 		<key>preprocessor-rule-disabled</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#(if)\s+(0)\b).*</string>
+			<key>begin</key> <string>^\s*(#\s*(if)\s+(0)\b).*</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>meta.preprocessor.c</string> </dict>
@@ -699,7 +699,7 @@
 		</dict>
 		<key>preprocessor-rule-disabled-block</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#(if)\s+(0)\b).*</string>
+			<key>begin</key> <string>^\s*(#\s*(if)\s+(0)\b).*</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>meta.preprocessor.c</string> </dict>
@@ -736,7 +736,7 @@
 		</dict>
 		<key>preprocessor-rule-enabled</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#(if)\s+(0*1)\b)</string>
+			<key>begin</key> <string>^\s*(#\s*(if)\s+(0*1)\b)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>meta.preprocessor.c</string> </dict>
@@ -774,7 +774,7 @@
 		</dict>
 		<key>preprocessor-rule-enabled-block</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#(if)\s+(0*1)\b)</string>
+			<key>begin</key> <string>^\s*(#\s*(if)\s+(0*1)\b)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>meta.preprocessor.c</string> </dict>
