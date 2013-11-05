@@ -315,7 +315,7 @@
 				    (?&lt;= \w ) \s
 
 				  | #  or type modifier / closing bracket before name
-				    (?&lt;= [^&amp;]&amp; | [*&gt;\)\]\}] ) ) \s*
+				    (?&lt;= [^&amp;]&amp; | [*&gt;)}\]] ) ) \s*
 
 				(   (?: [A-Za-z_]\w*+ | ::[^:] )++
 				    (?: (?&lt;= \Woperator )  # C++ operator?
@@ -348,11 +348,11 @@
 				    (?&lt;= \w ) \s
 
 				  | #  or type modifier / closing bracket / comma before name
-				    (?&lt;= [^&amp;]&amp; | [,*\)\}] ) ) \s*
+				    (?&lt;= [^&amp;]&amp; | [,*)}] ) ) \s*
 
 				( (?: [A-Za-z_]\w*+ | ::[^:] )++ )
 
-				(?= \s* (?: [\(\[=;] | $ ) )
+				(?= \s* (?: [(\[=;] | $ ) )
 			</string>
 			<key>captures</key>
 			<dict>
@@ -506,7 +506,7 @@
 						( [a-zA-Z_]\w*+ )
 						\s*
 						( .*? ) (?= \s*
-						    (?: [\(\),\n] | \.\.\. | (?&gt;\\\s*\n) | /[/*] ) )
+						    (?: [(),\n] | \.\.\. | (?&gt;\\\s*\n) | /[/*] ) )
 					</string>
 					<key>captures</key>
 					<dict>
@@ -536,7 +536,7 @@
 						( \.\.\. )
 						\s*
 						( .*? ) (?= \s*
-						    (?: [\(\)\n] | (?&gt;\\\s*\n) | /[/*] ) )
+						    (?: [()\n] | (?&gt;\\\s*\n) | /[/*] ) )
 					</string>
 					<key>captures</key>
 					<dict>
@@ -558,7 +558,7 @@
 					<key>name</key> <string>invalid.illegal.unexpected-newline.c</string>
 				</dict>
 				<dict>
-					<key>match</key> <string>[^\(\)\s]</string>
+					<key>match</key> <string>[^()\s]</string>
 					<key>name</key> <string>invalid.illegal.unexpected-character.c</string>
 				</dict>
 			</array>
