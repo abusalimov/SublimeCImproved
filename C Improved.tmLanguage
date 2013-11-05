@@ -38,10 +38,10 @@
 		<dict> <key>include</key> <string>#preprocessor-rule-disabled</string> </dict>
 		<dict> <key>include</key> <string>#preprocessor-rule-other</string> </dict>
 		<dict> <key>include</key> <string>#lex</string> </dict>
-		<dict> <key>include</key> <string>#macro</string> </dict>
+		<dict> <key>include</key> <string>#preprocessor-macro</string> </dict>
 		<dict> <key>include</key> <string>#preprocessor-diagnostic</string> </dict>
 		<dict> <key>include</key> <string>#preprocessor-include</string> </dict>
-		<dict> <key>include</key> <string>#pragma-mark</string> </dict>
+		<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
 		<dict> <key>include</key> <string>#preprocessor-directive</string> </dict>
 		<dict> <key>include</key> <string>#block</string> </dict>
 		<dict>
@@ -277,7 +277,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>macro</key>
+		<key>preprocessor-macro</key>
 		<dict>
 			<key>begin</key> <string>(?x) (?= ^ \s* \# \s* define \s+ [a-zA-Z_]\w*+ )</string>
 			<key>end</key> <string>(?x) (?&lt;= ^ | [^\\] ) \s* \n</string>
@@ -287,8 +287,8 @@
 				<dict>
 					<key>patterns</key>
 					<array>
-						<dict> <key>include</key> <string>#macro_func</string> </dict>
-						<dict> <key>include</key> <string>#macro_obj</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-macro-func</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-macro-obj</string> </dict>
 						<dict>
 							<key>match</key> <string>(?&gt;\\\s*\n)</string>
 							<key>name</key> <string>punctuation.separator.continuation.c</string>
@@ -298,7 +298,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>macro_func</key>
+		<key>preprocessor-macro-func</key>
 		<dict>
 			<key>begin</key>
 			<string>(?x)
@@ -384,7 +384,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>macro_obj</key>
+		<key>preprocessor-macro-obj</key>
 		<dict>
 			<key>match</key>
 			<string>(?x)
@@ -558,17 +558,17 @@
 				</dict>
 			</array>
 		</dict>
-		<key>disabled</key>
+		<key>preprocessor-disabled</key>
 		<dict>
 			<key>begin</key> <string>^\s*#\s*if(n?def)?\b.*$</string>
-			<key>comment</key>
-			<string>eat nested preprocessor if(def)s</string>
 			<key>end</key> <string>^\s*#\s*endif\b</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#disabled</string> </dict>
-				<dict> <key>include</key> <string>#pragma-mark</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
 			</array>
+			<key>comment</key>
+			<string>eat nested preprocessor if(def)s</string>
 		</dict>
 		<key>parens</key>
 		<dict>
@@ -657,7 +657,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>pragma-mark</key>
+		<key>preprocessor-pragma-mark</key>
 		<dict>
 			<key>captures</key>
 			<dict>
@@ -699,8 +699,8 @@
 					<key>name</key> <string>comment.block.preprocessor.if-branch</string>
 					<key>patterns</key>
 					<array>
-						<dict> <key>include</key> <string>#disabled</string> </dict>
-						<dict> <key>include</key> <string>#pragma-mark</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
 					</array>
 				</dict>
 			</array>
@@ -736,8 +736,8 @@
 					<key>name</key> <string>comment.block.preprocessor.if-branch.in-block</string>
 					<key>patterns</key>
 					<array>
-						<dict> <key>include</key> <string>#disabled</string> </dict>
-						<dict> <key>include</key> <string>#pragma-mark</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
 					</array>
 				</dict>
 			</array>
@@ -766,8 +766,8 @@
 					<key>end</key> <string>(?=^\s*#\s*endif\b)</string>
 					<key>patterns</key>
 					<array>
-						<dict> <key>include</key> <string>#disabled</string> </dict>
-						<dict> <key>include</key> <string>#pragma-mark</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
 					</array>
 				</dict>
 				<dict>
@@ -804,8 +804,8 @@
 					<key>end</key> <string>(?=^\s*#\s*endif\b)</string>
 					<key>patterns</key>
 					<array>
-						<dict> <key>include</key> <string>#disabled</string> </dict>
-						<dict> <key>include</key> <string>#pragma-mark</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
 					</array>
 				</dict>
 				<dict>
