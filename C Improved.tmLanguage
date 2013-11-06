@@ -340,7 +340,9 @@
 			</array>
 		</dict>
 		<key>initialization</key>
-		<dict> <key>name</key> <string>meta.initialization.c</string> <key>match</key>
+		<dict>
+			<key>name</key> <string>meta.initialization.c</string>
+			<key>match</key>
 			<string>(?x)
 				(?: (?&lt;! \W new | \W else
 				        | \W (?:return|sizeof|typeof)
@@ -360,7 +362,9 @@
 			</dict>
 		</dict>
 		<key>function_call</key>
-		<dict> <key>name</key> <string>meta.function-call.c</string> <key>begin</key>
+		<dict>
+			<key>name</key> <string>meta.function-call.c</string>
+			<key>begin</key>
 			<string>(?x)
 				\s*
 				(?= # don't consume to recognize support functions
