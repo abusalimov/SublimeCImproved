@@ -37,24 +37,12 @@
 		<dict> <key>include</key> <string>#lex</string> </dict>
 		<dict> <key>include</key> <string>#preprocessor</string> </dict>
 		<dict> <key>include</key> <string>#block</string> </dict>
-		<dict>
-			<key>begin</key> <string>\s*\b(typedef)</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
-			</dict>
-			<key>end</key> <string>;</string>
-			<key>name</key> <string>meta.typedef.c</string>
-			<key>patterns</key>
-			<array>
-				<dict> <key>include</key> <string>#lex</string> </dict>
-				<dict> <key>include</key> <string>#initialization</string> </dict>
-			</array>
-		</dict>
 		<dict> <key>include</key> <string>#support-type</string> </dict>
 		<dict> <key>include</key> <string>#support-macro</string> </dict>
 		<dict> <key>include</key> <string>#function</string> </dict>
 		<dict> <key>include</key> <string>#support-function</string> </dict>
+		<dict> <key>include</key> <string>#typedef</string> </dict>
+		<dict> <key>include</key> <string>#compound</string> </dict>
 	</array>
 
 	<key>repository</key>
@@ -268,6 +256,52 @@
 						<key>1</key> <dict> <key>name</key> <string>support.function.C99.c</string> </dict>
 					</dict>
 				</dict>
+			</array>
+		</dict>
+		<key>typedef</key>
+		<dict>
+			<key>begin</key> <string>\s*\b(typedef)\b</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
+			</dict>
+			<key>end</key> <string>;</string>
+			<key>name</key> <string>meta.typedef.c</string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#lex</string> </dict>
+				<dict> <key>include</key> <string>#compound</string> </dict>
+				<dict> <key>include</key> <string>#block</string> </dict>
+				<dict>
+					<key>match</key> <string>\s*\b([A-Za-z_]\w*+)(?=\s*[\[;])</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>entity.name.type.c</string> </dict>
+					</dict>
+				</dict>
+			</array>
+		</dict>
+		<key>compound</key>
+		<dict>
+			<key>begin</key> <string>\s*\b(struct|union|enum)\b</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
+			</dict>
+			<key>end</key> <string>(?&lt;=\})|(?![A-Za-z_])</string>
+			<key>name</key> <string>meta.compound.c</string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#lex</string> </dict>
+				<dict>
+					<key>match</key> <string>\s*\b([A-Za-z_]\w*+)(?=\s*\{)</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>entity.name.class.c</string> </dict>
+					</dict>
+				</dict>
+				<dict> <key>include</key> <string>#block</string> </dict>
+				<dict> <key>include</key> <string>#parens</string> </dict>
 			</array>
 		</dict>
 		<key>block</key>
