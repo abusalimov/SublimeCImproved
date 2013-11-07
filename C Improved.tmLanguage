@@ -295,11 +295,34 @@
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?&lt;=\})|(?![A-Za-z_])</string>
+			<key>end</key>
+			<string>(?x)
+				(?: (?![A-Za-z_(){}\s]|/[/*]|$)
+				  | (?&lt;!\})(?= \s*
+				        # Generally, prefer function definition over an
+				        # attribute defined through a macro, unless a block
+				        # has been seen.
+				        # struct __aligned(16) foo {...}; - function __aligned
+				        # struct foo {...} __aligned(16); - structure foo
+				        (?! \b__attribute__\b )
+				        (?: [A-Za-z_]\w*+ | ::[^:] )++
+				        (?: (?&lt;= \Woperator )  # C++ operator?
+				            (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )?
+				        \s* \( ) )
+			</string>
 			<key>name</key> <string>meta.compound.c</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#lex</string> </dict>
+				<dict>
+					<key>begin</key> <string>(?&lt;=\})</string>
+					<key>end</key> <string>(?![A-Za-z_(){}\s]|/[/*]|$)</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#lex</string> </dict>
+						<dict> <key>include</key> <string>#block</string> </dict>
+						<dict> <key>include</key> <string>#parens</string> </dict>
+					</array>
+				</dict>
 				<dict>
 					<key>match</key> <string>\s*\b([A-Za-z_]\w*+)(?=\s*\{)</string>
 					<key>captures</key>
@@ -307,6 +330,7 @@
 						<key>1</key> <dict> <key>name</key> <string>entity.name.class.c</string> </dict>
 					</dict>
 				</dict>
+				<dict> <key>include</key> <string>#lex</string> </dict>
 				<dict> <key>include</key> <string>#block</string> </dict>
 				<dict> <key>include</key> <string>#parens</string> </dict>
 			</array>
