@@ -345,7 +345,9 @@
 			</array>
 		</dict>
 		<key>function</key>
-		<dict> <key>name</key> <string>meta.function.c</string> <key>begin</key>
+		<dict>
+			<key>name</key> <string>meta.function.c</string>
+			<key>begin</key>
 			<string>(?x)
 				(?: ^
 				  | (?&lt;! \W new | \W else
