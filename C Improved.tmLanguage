@@ -37,12 +37,10 @@
 		<dict> <key>include</key> <string>#lex</string> </dict>
 		<dict> <key>include</key> <string>#preprocessor</string> </dict>
 		<dict> <key>include</key> <string>#block</string> </dict>
-		<dict> <key>include</key> <string>#support-type</string> </dict>
-		<dict> <key>include</key> <string>#support-macro</string> </dict>
-		<dict> <key>include</key> <string>#function</string> </dict>
-		<dict> <key>include</key> <string>#support-function</string> </dict>
 		<dict> <key>include</key> <string>#typedef</string> </dict>
 		<dict> <key>include</key> <string>#compound</string> </dict>
+		<dict> <key>include</key> <string>#function</string> </dict>
+		<dict> <key>include</key> <string>#support</string> </dict>
 	</array>
 
 	<key>repository</key>
@@ -161,6 +159,15 @@
 					<key>match</key> <string>(\.|-&gt;)[a-zA-Z_]\w*\b(?!\s*\()</string>
 					<key>name</key> <string>variable.other.dot-access.c</string>
 				</dict>
+			</array>
+		</dict>
+		<key>support</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#support-type</string> </dict>
+				<dict> <key>include</key> <string>#support-macro</string> </dict>
+				<dict> <key>include</key> <string>#support-function</string> </dict>
 			</array>
 		</dict>
 		<key>support-type</key>
@@ -333,10 +340,8 @@
 			<array>
 				<dict> <key>include</key> <string>#lex</string> </dict>
 				<dict> <key>include</key> <string>#initialization</string> </dict>
-				<dict> <key>include</key> <string>#support-type</string> </dict>
-				<dict> <key>include</key> <string>#support-macro</string> </dict>
 				<dict> <key>include</key> <string>#function_call</string> </dict>
-				<dict> <key>include</key> <string>#support-function</string> </dict>
+				<dict> <key>include</key> <string>#support</string> </dict>
 			</array>
 		</dict>
 		<key>function</key>
@@ -409,7 +414,7 @@
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#lex</string> </dict>
-				<dict> <key>include</key> <string>#support-function</string> </dict>
+				<dict> <key>include</key> <string>#support</string> </dict>
 				<dict>
 					<key>match</key> <string>(?:[A-Za-z_]\w*+|::[^:])++</string>
 					<key>name</key> <string>support.function.any-method.c</string>
