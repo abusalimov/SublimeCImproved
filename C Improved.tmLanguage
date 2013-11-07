@@ -75,7 +75,7 @@
 					</dict>
 				</dict>
 				<dict>
-					<key>match</key> <string>\s*\b(auto|bool|_Bool|char|_Complex|double|enum|float|_Imaginary|int|long|short|signed|struct|union|unsigned|void)\b</string>
+					<key>match</key> <string>\s*\b(auto|bool|_Bool|char|_Complex|double|float|_Imaginary|int|long|short|signed|unsigned|void)\b</string>
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
