@@ -353,18 +353,22 @@
 				<dict> <key>include</key> <string>#preprocessor-rule-disabled-block</string> </dict>
 				<dict> <key>include</key> <string>#preprocessor-rule-other-block</string> </dict>
 				<dict> <key>include</key> <string>#preprocessor-orphaned-block-end</string> </dict>
-				<dict> <key>include</key> <string>#strict_block_innards</string> </dict>
+				<dict> <key>include</key> <string>#block_innards_no_span</string> </dict>
 				<dict> <key>include</key> <string>#block</string> </dict>
-				<dict> <key>include</key> <string>$base</string> </dict>
+
+				<dict> <key>include</key> <string>#typedef</string> </dict>
+				<dict> <key>include</key> <string>#compound</string> </dict>
+				<dict> <key>include</key> <string>#function</string> </dict>
+				<dict> <key>include</key> <string>#support</string> </dict>
 			</array>
 		</dict>
-		<key>strict_block_innards</key>
+		<key>block_innards_no_span</key>
 		<dict>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#lex</string> </dict>
 				<dict> <key>include</key> <string>#initialization</string> </dict>
-				<dict> <key>include</key> <string>#function_call</string> </dict>
+				<dict> <key>include</key> <string>#function_call_no_span</string> </dict>
 				<dict> <key>include</key> <string>#support</string> </dict>
 			</array>
 		</dict>
@@ -436,7 +440,23 @@
 				    (?: [A-Za-z_]\w*+ | ::[^:] )++
 				    \s*\( )
 			</string>
-			<key>end</key> <string>(?x) (?&lt;= \) )</string>
+			<key>end</key> <string>(?&lt;=\))</string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#function_call_no_span</string> </dict>
+				<dict> <key>include</key> <string>#parens</string> </dict>
+			</array>
+		</dict>
+		<key>function_call_no_span</key>
+		<dict>
+			<key>begin</key>
+			<string>(?x)
+				\s*
+				(?= # don't consume to recognize support functions
+				    (?: [A-Za-z_]\w*+ | ::[^:] )++
+				    \s*\( )
+			</string>
+			<key>end</key> <string>(?=\()</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#lex</string> </dict>
@@ -445,7 +465,6 @@
 					<key>match</key> <string>(?:[A-Za-z_]\w*+|::[^:])++</string>
 					<key>name</key> <string>support.function.any-method.c</string>
 				</dict>
-				<dict> <key>include</key> <string>#parens</string> </dict>
 			</array>
 		</dict>
 		<key>comments</key>
@@ -541,7 +560,7 @@
 							<key>match</key> <string>(?&gt;\\\s*\n)</string>
 							<key>name</key> <string>punctuation.separator.continuation.c</string>
 						</dict>
-						<dict> <key>include</key> <string>#strict_block_innards</string> </dict>
+						<dict> <key>include</key> <string>#block_innards_no_span</string> </dict>
 					</array>
 				</dict>
 			</array>
