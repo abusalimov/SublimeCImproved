@@ -356,7 +356,7 @@
 
 				<dict> <key>include</key> <string>#lex</string> </dict>
 				<dict> <key>include</key> <string>#initialization</string> </dict>
-				<dict> <key>include</key> <string>#function_call</string> </dict>
+				<dict> <key>include</key> <string>#call</string> </dict>
 				<dict> <key>include</key> <string>#support</string> </dict>
 
 				<dict> <key>include</key> <string>#block</string> </dict>
@@ -425,7 +425,7 @@
 				<key>1</key> <dict> <key>name</key> <string>variable.other.c</string> </dict>
 			</dict>
 		</dict>
-		<key>function_call</key>
+		<key>call</key>
 		<dict>
 			<key>name</key> <string>meta.function-call.c</string>
 			<key>begin</key>
@@ -438,11 +438,11 @@
 			<key>end</key> <string>(?&lt;=\))</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#function_call_no_span</string> </dict>
+				<dict> <key>include</key> <string>#call_no_span</string> </dict>
 				<dict> <key>include</key> <string>#parens</string> </dict>
 			</array>
 		</dict>
-		<key>function_call_no_span</key>
+		<key>call_no_span</key>
 		<dict>
 			<key>begin</key>
 			<string>(?x)
@@ -557,7 +557,7 @@
 						</dict>
 						<dict> <key>include</key> <string>#lex</string> </dict>
 						<dict> <key>include</key> <string>#initialization</string> </dict>
-						<dict> <key>include</key> <string>#function_call_no_span</string> </dict>
+						<dict> <key>include</key> <string>#call_no_span</string> </dict>
 						<dict> <key>include</key> <string>#support</string> </dict>
 					</array>
 				</dict>
