@@ -359,12 +359,12 @@
 				<dict> <key>include</key> <string>#call</string> </dict>
 				<dict> <key>include</key> <string>#support</string> </dict>
 
-				<dict> <key>include</key> <string>#block</string> </dict>
-
 				<dict> <key>include</key> <string>#typedef</string> </dict>
 				<dict> <key>include</key> <string>#compound</string> </dict>
 				<dict> <key>include</key> <string>#function</string> </dict>
-				<dict> <key>include</key> <string>#support</string> </dict>
+
+				<dict> <key>include</key> <string>#parens</string> </dict>
+				<dict> <key>include</key> <string>#block</string> </dict>
 			</array>
 		</dict>
 		<key>function</key>
@@ -520,7 +520,14 @@
 			<key>name</key> <string>meta.parens.c</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>$base</string> </dict>
+				<dict> <key>include</key> <string>#lex</string> </dict>
+				<dict> <key>include</key> <string>#call</string> </dict>
+				<dict> <key>include</key> <string>#support</string> </dict>
+
+				<dict> <key>include</key> <string>#compound</string> </dict>
+
+				<dict> <key>include</key> <string>#block</string> </dict>
+				<dict> <key>include</key> <string>#parens</string> </dict>
 			</array>
 		</dict>
 		<key>preprocessor</key>
