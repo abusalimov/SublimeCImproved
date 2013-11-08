@@ -353,22 +353,17 @@
 				<dict> <key>include</key> <string>#preprocessor-rule-disabled-block</string> </dict>
 				<dict> <key>include</key> <string>#preprocessor-rule-other-block</string> </dict>
 				<dict> <key>include</key> <string>#preprocessor-orphaned-block-end</string> </dict>
-				<dict> <key>include</key> <string>#block_innards_no_span</string> </dict>
+
+				<dict> <key>include</key> <string>#lex</string> </dict>
+				<dict> <key>include</key> <string>#initialization</string> </dict>
+				<dict> <key>include</key> <string>#function_call</string> </dict>
+				<dict> <key>include</key> <string>#support</string> </dict>
+
 				<dict> <key>include</key> <string>#block</string> </dict>
 
 				<dict> <key>include</key> <string>#typedef</string> </dict>
 				<dict> <key>include</key> <string>#compound</string> </dict>
 				<dict> <key>include</key> <string>#function</string> </dict>
-				<dict> <key>include</key> <string>#support</string> </dict>
-			</array>
-		</dict>
-		<key>block_innards_no_span</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict> <key>include</key> <string>#lex</string> </dict>
-				<dict> <key>include</key> <string>#initialization</string> </dict>
-				<dict> <key>include</key> <string>#function_call_no_span</string> </dict>
 				<dict> <key>include</key> <string>#support</string> </dict>
 			</array>
 		</dict>
@@ -560,7 +555,10 @@
 							<key>match</key> <string>(?&gt;\\\s*\n)</string>
 							<key>name</key> <string>punctuation.separator.continuation.c</string>
 						</dict>
-						<dict> <key>include</key> <string>#block_innards_no_span</string> </dict>
+						<dict> <key>include</key> <string>#lex</string> </dict>
+						<dict> <key>include</key> <string>#initialization</string> </dict>
+						<dict> <key>include</key> <string>#function_call_no_span</string> </dict>
+						<dict> <key>include</key> <string>#support</string> </dict>
 					</array>
 				</dict>
 			</array>
