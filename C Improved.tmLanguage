@@ -549,7 +549,7 @@
 		<key>preprocessor-macro</key>
 		<dict>
 			<key>begin</key> <string>(?x) (?= ^ \s* \# \s* define \s+ [a-zA-Z_]\w*+ )</string>
-			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*\n)</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.preprocessor.macro.c</string>
 			<key>patterns</key>
 			<array>
