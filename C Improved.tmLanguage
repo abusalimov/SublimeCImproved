@@ -689,7 +689,7 @@
 		</dict>
 		<key>preprocessor-include</key>
 		<dict>
-			<key>begin</key> <string>^\s*#\s*(include|import)\b\s+</string>
+			<key>begin</key> <string>^\s*#\s*(include|include_next|import)\b\s+</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.include.c</string> </dict>
