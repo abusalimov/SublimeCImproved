@@ -306,7 +306,7 @@
 				        # struct foo {...} __aligned(16); - structure foo
 				        (?! \b__attribute__\b )
 				        (?: [A-Za-z_]\w*+ | ::[^:] )++
-				        (?: (?&lt;= \Woperator )  # C++ operator?
+				        (?: (?&lt;= (?&lt;!\w)operator )  # C++ operator?
 				            (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )?
 				        \s* \( ) )
 			</string>
@@ -373,16 +373,16 @@
 			<key>begin</key>
 			<string>(?x)
 				(?: ^
-				  | (?&lt;! \W new | \W else
-				        | \W (?:return|sizeof|typeof)
-				        | \W __typeof | \W __typeof__ )
+				  | (?&lt;! (?&lt;!\w)new | (?&lt;!\w)else
+				        | (?&lt;!\w)(?:return|sizeof|typeof)
+				        | (?&lt;!\w)__typeof | (?&lt;!\w)__typeof__ )
 				    (?&lt;= \w ) \s
 
 				  | #  or type modifier / closing bracket before name
 				    (?&lt;= [^&amp;]&amp; | [*&gt;)}\]] ) ) \s*
 
 				(   (?: [A-Za-z_]\w*+ | ::[^:] )++
-				    (?: (?&lt;= \Woperator )  # C++ operator?
+				    (?: (?&lt;= (?&lt;!\w)operator )  # C++ operator?
 				        (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )? )
 
 				\s* (?= \( )
@@ -408,9 +408,9 @@
 			<key>name</key> <string>meta.initialization.c</string>
 			<key>match</key>
 			<string>(?x)
-				(?: (?&lt;! \W new | \W else
-				        | \W (?:return|sizeof|typeof)
-				        | \W __typeof | \W __typeof__ )
+				(?: (?&lt;! (?&lt;!\w)new | (?&lt;!\w)else
+				        | (?&lt;!\w)(?:return|sizeof|typeof)
+				        | (?&lt;!\w)__typeof | (?&lt;!\w)__typeof__ )
 				    (?&lt;= \w ) \s
 
 				  | #  or type modifier / closing bracket / comma before name
