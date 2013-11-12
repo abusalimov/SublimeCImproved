@@ -547,6 +547,17 @@
 				<dict> <key>include</key> <string>#preprocessor-directive</string> </dict>
 			</array>
 		</dict>
+		<key>preprocessor-lex</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#comments</string> </dict>
+				<dict>
+					<key>match</key> <string>(?&gt;\\\s*\n)</string>
+					<key>name</key> <string>punctuation.separator.continuation.c</string>
+				</dict>
+			</array>
+		</dict>
 		<key>preprocessor-macro</key>
 		<dict>
 			<key>begin</key> <string>(?x) (?= ^ \s* \# \s* define \s+ [a-zA-Z_]\w*+ )</string>
@@ -559,10 +570,7 @@
 					<array>
 						<dict> <key>include</key> <string>#preprocessor-macro-func</string> </dict>
 						<dict> <key>include</key> <string>#preprocessor-macro-obj</string> </dict>
-						<dict>
-							<key>match</key> <string>(?&gt;\\\s*\n)</string>
-							<key>name</key> <string>punctuation.separator.continuation.c</string>
-						</dict>
+						<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
 						<dict> <key>include</key> <string>#lex</string> </dict>
 						<dict> <key>include</key> <string>#initialization</string> </dict>
 						<dict> <key>include</key> <string>#call_no_span</string> </dict>
@@ -584,7 +592,7 @@
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
 				<key>2</key> <dict> <key>name</key> <string>entity.name.function.preprocessor.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?x) (?&lt;=^|[^\\]) \s*(\n) | \)</string>
+			<key>end</key> <string>\)|(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>endCaptures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-end-of-line.c</string> </dict>
@@ -593,7 +601,7 @@
 			<string>meta.preprocessor.macro.parameters.c</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#comments</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
 				<dict>
 					<key>match</key>
 					<string>(?x)
@@ -639,10 +647,6 @@
 					</dict>
 				</dict>
 				<dict>
-					<key>match</key> <string>(?&gt;\\\s*\n)</string>
-					<key>name</key> <string>punctuation.separator.continuation.c</string>
-				</dict>
-				<dict>
 					<key>begin</key> <string>\(</string>
 					<key>end</key> <string>\)</string>
 					<key>name</key> <string>invalid.illegal.unexpected-parens.c</string>
@@ -678,31 +682,25 @@
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.error.c</string> </dict>
 			</dict>
-			<key>end</key> <string>$</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.preprocessor.diagnostic.c</string>
 			<key>patterns</key>
 			<array>
-				<dict>
-					<key>match</key> <string>(?&gt;\\\s*\n)</string>
-					<key>name</key> <string>punctuation.separator.continuation.c</string>
-				</dict>
+				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
 			</array>
 		</dict>
 		<key>preprocessor-include</key>
 		<dict>
-			<key>begin</key> <string>^\s*#\s*(include|include_next|import)\b\s+</string>
+			<key>begin</key> <string>^\s*#\s*(include|include_next|import)\b</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.include.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?=\s*(?://|/\*))|\s*$</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.preprocessor.c.include</string>
 			<key>patterns</key>
 			<array>
-				<dict>
-					<key>match</key> <string>(?&gt;\\\s*\n)</string>
-					<key>name</key> <string>punctuation.separator.continuation.c</string>
-				</dict>
+				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
 				<dict>
 					<key>begin</key> <string>"</string>
 					<key>beginCaptures</key>
