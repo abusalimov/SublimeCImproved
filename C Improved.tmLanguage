@@ -39,6 +39,7 @@
 		<dict> <key>include</key> <string>#block</string> </dict>
 		<dict> <key>include</key> <string>#typedef</string> </dict>
 		<dict> <key>include</key> <string>#compound</string> </dict>
+		<dict> <key>include</key> <string>#support-macro</string> </dict>
 		<dict> <key>include</key> <string>#function</string> </dict>
 		<dict> <key>include</key> <string>#support</string> </dict>
 	</array>
