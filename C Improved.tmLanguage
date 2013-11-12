@@ -684,6 +684,9 @@
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
+				<dict> <key>include</key> <string>#lex-string</string> </dict>
+				<dict> <key>include</key> <string>#lex-constant</string> </dict>
+				<dict> <key>include</key> <string>#lex-number</string> </dict>
 			</array>
 		</dict>
 		<key>preprocessor-include</key>
