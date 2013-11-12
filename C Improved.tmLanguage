@@ -564,7 +564,7 @@
 		</dict>
 		<key>preprocessor-macro</key>
 		<dict>
-			<key>begin</key> <string>(?=^\s*\#\s*define\s+[a-zA-Z_]\w*+)</string>
+			<key>begin</key> <string>(?=^\s*#\s*(define)\s+[a-zA-Z_]\w*+)</string>
 			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.preprocessor.macro.c</string>
 			<key>patterns</key>
@@ -574,7 +574,6 @@
 					<array>
 						<dict> <key>include</key> <string>#preprocessor-macro_func_like</string> </dict>
 						<dict> <key>include</key> <string>#preprocessor-macro_obj_like</string> </dict>
-						<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
 						<dict> <key>include</key> <string>#lex</string> </dict>
 						<dict> <key>include</key> <string>#initialization</string> </dict>
 						<dict> <key>include</key> <string>#call_no_span</string> </dict>
@@ -586,7 +585,7 @@
 		<key>preprocessor-macro_func_like</key>
 		<dict>
 			<key>begin</key>
-			<string>^\s*\#\s*(define)\s+([a-zA-Z_]\w*+)\(</string>
+			<string>^\s*#\s*(define)\s+([a-zA-Z_]\w*+)\(</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
@@ -665,7 +664,7 @@
 		<key>preprocessor-macro_obj_like</key>
 		<dict>
 			<key>match</key>
-			<string>^\s*\#\s*(define)\s+([a-zA-Z_]\w*+)(?!\()</string>
+			<string>^\s*#\s*(define)\s+([a-zA-Z_]\w*+)(?!\()</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
