@@ -560,7 +560,7 @@
 		</dict>
 		<key>preprocessor-macro</key>
 		<dict>
-			<key>begin</key> <string>(?x) (?= ^ \s* \# \s* define \s+ [a-zA-Z_]\w*+ )</string>
+			<key>begin</key> <string>(?=^\s*\#\s*define\s+[a-zA-Z_]\w*+)</string>
 			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.preprocessor.macro.c</string>
 			<key>patterns</key>
@@ -568,8 +568,8 @@
 				<dict>
 					<key>patterns</key>
 					<array>
-						<dict> <key>include</key> <string>#preprocessor-macro-func</string> </dict>
-						<dict> <key>include</key> <string>#preprocessor-macro-obj</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-macro_func_like</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-macro_obj_like</string> </dict>
 						<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
 						<dict> <key>include</key> <string>#lex</string> </dict>
 						<dict> <key>include</key> <string>#initialization</string> </dict>
@@ -579,14 +579,10 @@
 				</dict>
 			</array>
 		</dict>
-		<key>preprocessor-macro-func</key>
+		<key>preprocessor-macro_func_like</key>
 		<dict>
 			<key>begin</key>
-			<string>(?x)
-				^ \s* \# \s* (define) \s+  # define
-				( [a-zA-Z_]\w*+ )          # macro name
-				\(
-			</string>
+			<string>^\s*\#\s*(define)\s+([a-zA-Z_]\w*+)\(</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
@@ -661,14 +657,10 @@
 				</dict>
 			</array>
 		</dict>
-		<key>preprocessor-macro-obj</key>
+		<key>preprocessor-macro_obj_like</key>
 		<dict>
 			<key>match</key>
-			<string>(?x)
-				^ \s* \# \s* (define) \s+  # define
-				( [a-zA-Z_]\w*+ )          # macro name
-				(?! \( )
-			</string>
+			<string>^\s*\#\s*(define)\s+([a-zA-Z_]\w*+)(?!\()</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
