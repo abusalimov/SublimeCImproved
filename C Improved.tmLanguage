@@ -689,7 +689,7 @@
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.include.c</string> </dict>
 			</dict>
 			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
-			<key>name</key> <string>meta.preprocessor.c.include</string>
+			<key>name</key> <string>meta.preprocessor.include.c</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
