@@ -588,7 +588,7 @@
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
 				<key>2</key> <dict> <key>name</key> <string>entity.name.function.preprocessor.c</string> </dict>
 			</dict>
-			<key>end</key> <string>\)|(?&lt;=^|[^\\])\s*(?=\n)</string>
+			<key>end</key> <string>\)|(?&lt;=^|[^\\])\s*(\n)</string>
 			<key>endCaptures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-end-of-line.c</string> </dict>
@@ -601,10 +601,11 @@
 				<dict>
 					<key>match</key>
 					<string>(?x)
-						( [a-zA-Z_]\w*+ )
 						\s*
-						( .*? ) (?= \s*
-						    (?: [(),\n] | \.\.\. | (?&gt;\\\s*\n) | /[/*] ) )
+						( [a-zA-Z_]\w*+ )
+						(?: \s*
+						    ( (?: (?! \s* (?: [(),\n] | \.\.\. | (?&gt;\\\s*\n) | /[/*] ) )
+						          . )+ ) )?
 					</string>
 					<key>captures</key>
 					<dict>
@@ -615,7 +616,7 @@
 				<dict>
 					<key>match</key>
 					<string>(?x)
-						(?: (?&lt;! ^ | \w ) \s* (,)
+						(?: (?&lt;! ^ | \w | \*/ ) \s* (,)
 						  | \s* (,) \s* (?= \) ) )
 					</string>
 					<key>captures</key>
@@ -625,31 +626,31 @@
 					</dict>
 				</dict>
 				<dict>
-					<key>match</key> <string>\s*,</string>
-					<key>name</key> <string>punctuation.separator.parameter.c</string>
+					<key>match</key> <string>\s*(,)</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>punctuation.separator.parameter.c</string> </dict>
+					</dict>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>(?x)
-						( \.\.\. )
 						\s*
-						( .*? ) (?= \s*
-						    (?: [()\n] | (?&gt;\\\s*\n) | /[/*] ) )
+						( \.\.\. )
+						(?: \s*
+						    ( (?: (?! \s* (?: [()\n] | (?&gt;\\\s*\n) | /[/*] ) )
+						          . )+ ) )?
 					</string>
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>punctuation.definition.ellipsis.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.closing-paren-expected.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.expected-closing-paren.c</string> </dict>
 					</dict>
 				</dict>
 				<dict>
 					<key>begin</key> <string>\(</string>
 					<key>end</key> <string>\)</string>
 					<key>name</key> <string>invalid.illegal.unexpected-parens.c</string>
-				</dict>
-				<dict>
-					<key>match</key> <string>\n</string>
-					<key>name</key> <string>invalid.illegal.unexpected-newline.c</string>
 				</dict>
 				<dict>
 					<key>match</key> <string>[^()\s]</string>
