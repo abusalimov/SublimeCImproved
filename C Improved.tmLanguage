@@ -133,14 +133,16 @@
 					<dict>
 						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.begin.c</string> </dict>
 					</dict>
-					<key>end</key> <string>"</string>
+					<key>end</key> <string>(")|(?&lt;=^|[^\\])\s*(\n)</string>
 					<key>endCaptures</key>
 					<dict>
-						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.end.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>punctuation.definition.string.end.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-end-of-line.c</string> </dict>
 					</dict>
 					<key>name</key> <string>string.quoted.double.c</string>
 					<key>patterns</key>
 					<array>
+						<dict> <key>include</key> <string>#lex-continuation</string> </dict>
 						<dict> <key>include</key> <string>#string_escaped_char</string> </dict>
 						<dict> <key>include</key> <string>#string_placeholder</string> </dict>
 					</array>
@@ -151,14 +153,16 @@
 					<dict>
 						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.begin.c</string> </dict>
 					</dict>
-					<key>end</key> <string>'</string>
+					<key>end</key> <string>(')|(?&lt;=^|[^\\])\s*(\n)</string>
 					<key>endCaptures</key>
 					<dict>
-						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.end.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>punctuation.definition.string.end.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-end-of-line.c</string> </dict>
 					</dict>
 					<key>name</key> <string>string.quoted.single.c</string>
 					<key>patterns</key>
 					<array>
+						<dict> <key>include</key> <string>#lex-continuation</string> </dict>
 						<dict> <key>include</key> <string>#string_escaped_char</string> </dict>
 					</array>
 				</dict>
