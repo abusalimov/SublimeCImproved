@@ -51,11 +51,17 @@
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#comments</string> </dict>
+				<dict> <key>include</key> <string>#lex-continuation</string> </dict>
 				<dict> <key>include</key> <string>#lex-keyword</string> </dict>
 				<dict> <key>include</key> <string>#lex-constant</string> </dict>
 				<dict> <key>include</key> <string>#lex-number</string> </dict>
 				<dict> <key>include</key> <string>#lex-string</string> </dict>
 			</array>
+		</dict>
+		<key>lex-continuation</key>
+		<dict>
+			<key>match</key> <string>(?&gt;\\\s*\n)</string>
+			<key>name</key> <string>punctuation.separator.continuation.c</string>
 		</dict>
 		<key>lex-keyword</key>
 		<dict>
@@ -549,10 +555,7 @@
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#comments</string> </dict>
-				<dict>
-					<key>match</key> <string>(?&gt;\\\s*\n)</string>
-					<key>name</key> <string>punctuation.separator.continuation.c</string>
-				</dict>
+				<dict> <key>include</key> <string>#lex-continuation</string> </dict>
 			</array>
 		</dict>
 		<key>preprocessor-macro</key>
