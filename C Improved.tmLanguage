@@ -217,7 +217,7 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>match</key> <string>\s*\b(__builtin_\w+)\b</string>
+					<key>match</key> <string>\s*\b(__builtin_\w++)\b</string>
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>support.function.intrinsic.c</string> </dict>
@@ -227,11 +227,11 @@
 					<key>match</key>
 					<string>(?x)
 						\s*\b
-						(?:__)?
-						(   (?:DECL(?:ARE)?|DEF(?:INE)?)_[A-Z0-9_]+
-						  | [A-Z_][A-Z0-9_]*_(?:DECL(?:ARE)?|DEF(?:INE)?)
-						  | EXPORT_SYMBOL(?:_GPL)?
-						  | LIST_HEAD )
+						(   (?:__)?
+						    (?: (?:DECL(?:ARE)?|DEF(?:INE)?)_[A-Z0-9_]+
+						      | [A-Z_][A-Z0-9_]*_(?:DECL(?:ARE)?|DEF(?:INE)?)
+						      | EXPORT_SYMBOL(?:_GPL)?
+						      | LIST_HEAD ) )
 						\b
 					</string>
 					<key>captures</key>
@@ -241,10 +241,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>(?x)
-						\s*\b
-						( CONFIG_[A-Z0-9_]+ )
-						\b
+					<string>\s*\b(CONFIG_[A-Z0-9_]++)\b
 					</string>
 					<key>captures</key>
 					<dict>
