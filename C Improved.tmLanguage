@@ -761,13 +761,19 @@
 		</dict>
 		<key>preprocessor-pragma-mark</key>
 		<dict>
-			<key>match</key> <string>^\s*#\s*(pragma\s+mark)\s+(.*)</string>
-			<key>captures</key>
+			<key>begin</key> <string>^\s*(#)\s*(pragma\s+mark)\b(?:(?!\n)\s)*</string>
+			<key>beginCaptures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.pragma.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>meta.toc-list.pragma-mark.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.pragma.c</string> </dict>
 			</dict>
+			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.section</string>
+			<key>contentName</key> <string>meta.toc-list.pragma-mark.c</string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
+			</array>
 		</dict>
 		<key>preprocessor-rule-disabled</key>
 		<dict>
