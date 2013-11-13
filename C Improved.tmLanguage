@@ -565,6 +565,10 @@
 		<key>preprocessor-macro</key>
 		<dict>
 			<key>begin</key> <string>^\s*(#)(?=\s*(define)\s+[a-zA-Z_]\w*+)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+			</dict>
 			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.preprocessor.macro.c</string>
 			<key>patterns</key>
@@ -690,10 +694,11 @@
 		</dict>
 		<key>preprocessor-diagnostic</key>
 		<dict>
-			<key>begin</key> <string>^\s*#\s*(error|warning)\b</string>
-			<key>captures</key>
+			<key>begin</key> <string>^\s*(#)\s*(error|warning)\b</string>
+			<key>beginCaptures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.error.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.error.c</string> </dict>
 			</dict>
 			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.preprocessor.diagnostic.c</string>
@@ -707,10 +712,11 @@
 		</dict>
 		<key>preprocessor-include</key>
 		<dict>
-			<key>begin</key> <string>^\s*#\s*(include|include_next|import)\b</string>
-			<key>captures</key>
+			<key>begin</key> <string>^\s*(#)\s*(include|include_next|import)\b</string>
+			<key>beginCaptures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.include.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.include.c</string> </dict>
 			</dict>
 			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.preprocessor.include.c</string>
@@ -747,10 +753,11 @@
 		</dict>
 		<key>preprocessor-directive</key>
 		<dict>
-			<key>begin</key> <string>^\s*#\s*([a-z_]++)\b</string>
-			<key>captures</key>
+			<key>begin</key> <string>^\s*(#)\s*([a-z_]++)\b</string>
+			<key>beginCaptures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
 			</dict>
 			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.preprocessor.c</string>
@@ -777,13 +784,14 @@
 		</dict>
 		<key>preprocessor-rule-disabled</key>
 		<dict>
-			<key>begin</key> <string>^\s*#\s*(if)\s+(0)\b</string>
+			<key>begin</key> <string>^\s*(#)\s*(if)\s+(0)\b</string>
 			<key>captures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.if.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>constant.numeric.preprocessor.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.if.c</string> </dict>
+				<key>3</key> <dict> <key>name</key> <string>constant.numeric.preprocessor.c</string> </dict>
 			</dict>
-			<key>end</key> <string>^\s*#\s*(endif)\b</string>
+			<key>end</key> <string>^\s*(#)\s*(endif)\b</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -812,22 +820,24 @@
 		</dict>
 		<key>preprocessor-rule-disabled-block</key>
 		<dict>
-			<key>begin</key> <string>^\s*#\s*(if)\s+(0)\b</string>
+			<key>begin</key> <string>^\s*(#)\s*(if)\s+(0)\b</string>
 			<key>captures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.if.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>constant.numeric.preprocessor.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.if.c</string> </dict>
+				<key>3</key> <dict> <key>name</key> <string>constant.numeric.preprocessor.c</string> </dict>
 			</dict>
-			<key>end</key> <string>^\s*#\s*(endif)\b</string>
+			<key>end</key> <string>^\s*(#)\s*(endif)\b</string>
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>begin</key> <string>^\s*#\s*(else)\b</string>
+					<key>begin</key> <string>^\s*(#)\s*(else)\b</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>keyword.control.import.else.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>keyword.control.import.else.c</string> </dict>
 					</dict>
-					<key>end</key> <string>(?=^\s*#\s*(endif)\b)</string>
+					<key>end</key> <string>(?=^\s*(#)\s*(endif)\b)</string>
 					<key>patterns</key>
 					<array>
 						<dict> <key>include</key> <string>#block_innards</string> </dict>
@@ -835,7 +845,7 @@
 				</dict>
 				<dict>
 					<key>begin</key> <string></string>
-					<key>end</key> <string>(?=^\s*#\s*(else|endif)\b)</string>
+					<key>end</key> <string>(?=^\s*(#)\s*(else|endif)\b)</string>
 					<key>name</key> <string>comment.block.preprocessor.if-branch.in-block</string>
 					<key>patterns</key>
 					<array>
@@ -847,24 +857,26 @@
 		</dict>
 		<key>preprocessor-rule-enabled</key>
 		<dict>
-			<key>begin</key> <string>^\s*#\s*(if)\s+(0*1)\b</string>
+			<key>begin</key> <string>^\s*(#)\s*(if)\s+(0*1)\b</string>
 			<key>captures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.if.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>constant.numeric.preprocessor.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.if.c</string> </dict>
+				<key>3</key> <dict> <key>name</key> <string>constant.numeric.preprocessor.c</string> </dict>
 			</dict>
-			<key>end</key> <string>^\s*#\s*(endif)\b</string>
+			<key>end</key> <string>^\s*(#)\s*(endif)\b</string>
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>begin</key> <string>^\s*#\s*(else)\b</string>
+					<key>begin</key> <string>^\s*(#)\s*(else)\b</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>keyword.control.import.else.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>keyword.control.import.else.c</string> </dict>
 					</dict>
 					<key>contentName</key>
 					<string>comment.block.preprocessor.else-branch</string>
-					<key>end</key> <string>(?=^\s*#\s*(endif)\b)</string>
+					<key>end</key> <string>(?=^\s*(#)\s*(endif)\b)</string>
 					<key>patterns</key>
 					<array>
 						<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
@@ -883,24 +895,26 @@
 		</dict>
 		<key>preprocessor-rule-enabled-block</key>
 		<dict>
-			<key>begin</key> <string>^\s*#\s*(if)\s+(0*1)\b</string>
+			<key>begin</key> <string>^\s*(#)\s*(if)\s+(0*1)\b</string>
 			<key>captures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.if.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>constant.numeric.preprocessor.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.if.c</string> </dict>
+				<key>3</key> <dict> <key>name</key> <string>constant.numeric.preprocessor.c</string> </dict>
 			</dict>
-			<key>end</key> <string>^\s*#\s*(endif)\b</string>
+			<key>end</key> <string>^\s*(#)\s*(endif)\b</string>
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>begin</key> <string>^\s*#\s*(else)\b</string>
+					<key>begin</key> <string>^\s*(#)\s*(else)\b</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>keyword.control.import.else.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>keyword.control.import.else.c</string> </dict>
 					</dict>
 					<key>contentName</key>
 					<string>comment.block.preprocessor.else-branch.in-block</string>
-					<key>end</key> <string>(?=^\s*#\s*(endif)\b)</string>
+					<key>end</key> <string>(?=^\s*(#)\s*(endif)\b)</string>
 					<key>patterns</key>
 					<array>
 						<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
@@ -909,7 +923,7 @@
 				</dict>
 				<dict>
 					<key>begin</key> <string></string>
-					<key>end</key> <string>(?=^\s*#\s*(else|endif)\b)</string>
+					<key>end</key> <string>(?=^\s*(#)\s*(else|endif)\b)</string>
 					<key>patterns</key>
 					<array>
 						<dict> <key>include</key> <string>#block_innards</string> </dict>
@@ -919,12 +933,13 @@
 		</dict>
 		<key>preprocessor-rule-other</key>
 		<dict>
-			<key>begin</key> <string>^\s*#\s*(if(n?def)?)\b</string>
+			<key>begin</key> <string>^\s*(#)\s*(if(n?def)?)\b</string>
 			<key>captures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
 			</dict>
-			<key>end</key> <string>^\s*#\s*(endif)\b</string>
+			<key>end</key> <string>^\s*(#)\s*(endif)\b</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>$base</string> </dict>
@@ -932,12 +947,13 @@
 		</dict>
 		<key>preprocessor-rule-other-block</key>
 		<dict>
-			<key>begin</key> <string>^\s*#\s*(if(n?def)?)\b</string>
+			<key>begin</key> <string>^\s*(#)\s*(if(n?def)?)\b</string>
 			<key>captures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
 			</dict>
-			<key>end</key> <string>^\s*#\s*(endif)\b</string>
+			<key>end</key> <string>^\s*(#)\s*(endif)\b</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#block_innards</string> </dict>
@@ -945,8 +961,8 @@
 		</dict>
 		<key>preprocessor-disabled</key>
 		<dict>
-			<key>begin</key> <string>^\s*#\s*if(n?def)?\b.*$</string>
-			<key>end</key> <string>^\s*#\s*(endif)\b</string>
+			<key>begin</key> <string>^\s*(#)\s*if(n?def)?\b.*$</string>
+			<key>end</key> <string>^\s*(#)\s*(endif)\b</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
@@ -957,10 +973,11 @@
 		</dict>
 		<key>preprocessor-orphaned-block-end</key>
 		<dict>
-			<key>match</key> <string>^\s*#\s*(endif)\b</string>
+			<key>match</key> <string>^\s*(#)\s*(endif)\b</string>
 			<key>captures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
 			</dict>
 		</dict>
 		<key>string_escaped_char</key>
