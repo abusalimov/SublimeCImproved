@@ -564,7 +564,7 @@
 		</dict>
 		<key>preprocessor-macro</key>
 		<dict>
-			<key>begin</key> <string>(?=^\s*#\s*(define)\s+[a-zA-Z_]\w*+)</string>
+			<key>begin</key> <string>^\s*(#)(?=\s*(define)\s+[a-zA-Z_]\w*+)</string>
 			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.preprocessor.macro.c</string>
 			<key>patterns</key>
@@ -572,6 +572,23 @@
 				<dict>
 					<key>patterns</key>
 					<array>
+						<dict>
+							<key>match</key>
+							<string>\s*(##)</string>
+							<key>captures</key>
+							<dict>
+								<key>1</key> <dict> <key>name</key> <string>punctuation.preprocessor.concatenation.c</string> </dict>
+							</dict>
+						</dict>
+						<dict>
+							<key>match</key>
+							<string>\s*(#)\s*([a-zA-Z_]\w*+)</string>
+							<key>captures</key>
+							<dict>
+								<key>1</key> <dict> <key>name</key> <string>punctuation.preprocessor.stringification.c</string> </dict>
+								<key>2</key> <dict> <key>name</key> <string>variable.parameter.c</string> </dict>
+							</dict>
+						</dict>
 						<dict> <key>include</key> <string>#preprocessor-macro_func_like</string> </dict>
 						<dict> <key>include</key> <string>#preprocessor-macro_obj_like</string> </dict>
 						<dict> <key>include</key> <string>#lex</string> </dict>
@@ -585,7 +602,7 @@
 		<key>preprocessor-macro_func_like</key>
 		<dict>
 			<key>begin</key>
-			<string>^\s*#\s*(define)\s+([a-zA-Z_]\w*+)\(</string>
+			<string>(?&lt;=#)\s*(define)\s+([a-zA-Z_]\w*+)\(</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
@@ -664,7 +681,7 @@
 		<key>preprocessor-macro_obj_like</key>
 		<dict>
 			<key>match</key>
-			<string>^\s*#\s*(define)\s+([a-zA-Z_]\w*+)(?!\()</string>
+			<string>(?&lt;=#)\s*(define)\s+([a-zA-Z_]\w*+)(?!\()</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
