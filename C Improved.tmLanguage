@@ -305,7 +305,7 @@
 			</dict>
 			<key>end</key>
 			<string>(?x)
-				(?: (?![A-Za-z_(){}\s]|/[/*]|$)
+				(?: (?!\s*(?:[A-Za-z_({]|/[/*]|$))
 				  | (?&lt;!\})(?= \s*
 				        # Generally, prefer function definition over an
 				        # attribute defined through a macro, unless a block
@@ -323,7 +323,7 @@
 			<array>
 				<dict>
 					<key>begin</key> <string>(?&lt;=\})</string>
-					<key>end</key> <string>(?![A-Za-z_(){}\s]|/[/*]|$)</string>
+					<key>end</key> <string>(?!\s*(?:[A-Za-z_({]|/[/*]|$))</string>
 					<key>patterns</key>
 					<array>
 						<dict> <key>include</key> <string>#lex</string> </dict>
