@@ -361,6 +361,8 @@
 				<dict> <key>include</key> <string>#preprocessor-rule-disabled-block</string> </dict>
 				<dict> <key>include</key> <string>#preprocessor-rule-other-block</string> </dict>
 				<dict> <key>include</key> <string>#preprocessor-orphaned-block-end</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-macro</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-diagnostic</string> </dict>
 
 				<dict> <key>include</key> <string>#lex</string> </dict>
 				<dict> <key>include</key> <string>#initialization</string> </dict>
