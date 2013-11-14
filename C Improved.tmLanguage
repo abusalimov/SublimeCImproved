@@ -40,7 +40,8 @@
 		<dict> <key>include</key> <string>#typedef</string> </dict>
 		<dict> <key>include</key> <string>#compound</string> </dict>
 		<dict> <key>include</key> <string>#support-macro</string> </dict>
-		<dict> <key>include</key> <string>#function</string> </dict>
+		<dict> <key>include</key> <string>#function-decl</string> </dict>
+		<dict> <key>include</key> <string>#function-def</string> </dict>
 		<dict> <key>include</key> <string>#support</string> </dict>
 	</array>
 
@@ -371,13 +372,47 @@
 
 				<dict> <key>include</key> <string>#typedef</string> </dict>
 				<dict> <key>include</key> <string>#compound</string> </dict>
-				<dict> <key>include</key> <string>#function</string> </dict>
+				<dict> <key>include</key> <string>#function-decl</string> </dict>
+				<dict> <key>include</key> <string>#function-def</string> </dict>
 
 				<dict> <key>include</key> <string>#parens</string> </dict>
 				<dict> <key>include</key> <string>#block</string> </dict>
 			</array>
 		</dict>
-		<key>function</key>
+		<key>function-decl</key>
+		<dict>
+			<key>name</key> <string>meta.function.c</string>
+			<key>begin</key>
+			<string>(?x)
+				(?: ^
+				  | (?&lt;! (?&lt;!\w) new | (?&lt;!\w) else
+				        | (?&lt;!\w) (?:return|sizeof|typeof)
+				        | (?&lt;!\w) __typeof | (?&lt;!\w) __typeof__ )
+				    (?&lt;= \w ) \s
+
+				  | #  or type modifier / closing bracket before name
+				    (?&lt;= [^&amp;]&amp; | [*&gt;)}\]] ) ) \s*
+
+				(   (?: [A-Za-z_]\w*+ | ::[^:] )++
+				    (?: (?&lt;= ^ operator | \W operator )  # C++ operator?
+				        (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )? )
+
+				\s* (?= (?'parens' \(
+				            (?&gt; \g'parens' | /\*.*?\*/ | (?! /[/*] | [()] ) . )*
+				        \) ) \s* ; )
+			</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>entity.name.function.declaration.c</string> </dict>
+			</dict>
+			<key>end</key> <string>;</string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#lex</string> </dict>
+				<dict> <key>include</key> <string>#parens</string> </dict>
+			</array>
+		</dict>
+		<key>function-def</key>
 		<dict>
 			<key>name</key> <string>meta.function.c</string>
 			<key>begin</key>
