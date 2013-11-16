@@ -35,7 +35,7 @@
 	<key>patterns</key>
 	<array>
 		<dict> <key>include</key> <string>#lex</string> </dict>
-		<dict> <key>include</key> <string>#preprocessor</string> </dict>
+		<dict> <key>include</key> <string>#preprocessor-base</string> </dict>
 		<dict> <key>include</key> <string>#block</string> </dict>
 		<dict> <key>include</key> <string>#typedef</string> </dict>
 		<dict> <key>include</key> <string>#type</string> </dict>
@@ -387,12 +387,7 @@
 		<dict>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#preprocessor-rule-enabled-block</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-rule-disabled-block</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-rule-other-block</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-orphaned-block-end</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-macro</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-diagnostic</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-block</string> </dict>
 
 				<dict> <key>include</key> <string>#lex</string> </dict>
 				<dict> <key>include</key> <string>#initialization</string> </dict>
@@ -613,20 +608,35 @@
 				<dict> <key>include</key> <string>#parens</string> </dict>
 			</array>
 		</dict>
-		<key>preprocessor</key>
+		<key>preprocessor-base</key>
 		<dict>
 			<key>begin</key> <string>(?=^\s*#\s*[a-z_]++\b)</string>
 			<key>end</key> <string></string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#preprocessor-rule-enabled</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-rule-disabled</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-rule-other</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-base-rule-enabled</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-base-rule-disabled</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-base-rule-other</string> </dict>
 				<dict> <key>include</key> <string>#preprocessor-macro</string> </dict>
 				<dict> <key>include</key> <string>#preprocessor-diagnostic</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-include</string> </dict>
 				<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-include</string> </dict>
 				<dict> <key>include</key> <string>#preprocessor-directive</string> </dict>
+			</array>
+		</dict>
+		<key>preprocessor-block</key>
+		<dict>
+			<key>begin</key> <string>(?=^\s*#\s*[a-z_]++\b)</string>
+			<key>end</key> <string></string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#preprocessor-block-rule-enabled</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-block-rule-disabled</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-block-rule-other</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-block-orphaned-end</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-macro</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-diagnostic</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
 			</array>
 		</dict>
 		<key>preprocessor-lex</key>
@@ -668,8 +678,8 @@
 								<key>2</key> <dict> <key>name</key> <string>variable.parameter.c</string> </dict>
 							</dict>
 						</dict>
-						<dict> <key>include</key> <string>#preprocessor-macro_func_like</string> </dict>
-						<dict> <key>include</key> <string>#preprocessor-macro_obj_like</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-macro-function</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-macro-object</string> </dict>
 						<dict> <key>include</key> <string>#lex</string> </dict>
 						<dict> <key>include</key> <string>#initialization</string> </dict>
 						<dict> <key>include</key> <string>#call_no_span</string> </dict>
@@ -678,7 +688,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>preprocessor-macro_func_like</key>
+		<key>preprocessor-macro-function</key>
 		<dict>
 			<key>begin</key>
 			<string>(?&lt;=#)\s*(define)\s+([a-zA-Z_]\w*+)\(</string>
@@ -757,7 +767,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>preprocessor-macro_obj_like</key>
+		<key>preprocessor-macro-object</key>
 		<dict>
 			<key>match</key>
 			<string>(?&lt;=#)\s*(define)\s+([a-zA-Z_]\w*+)(?!\()</string>
@@ -857,7 +867,7 @@
 				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
 			</array>
 		</dict>
-		<key>preprocessor-rule-disabled</key>
+		<key>preprocessor-base-rule-disabled</key>
 		<dict>
 			<key>begin</key> <string>^\s*(#)\s*(if)\s+(0)\b</string>
 			<key>captures</key>
@@ -893,7 +903,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>preprocessor-rule-disabled-block</key>
+		<key>preprocessor-block-rule-disabled</key>
 		<dict>
 			<key>begin</key> <string>^\s*(#)\s*(if)\s+(0)\b</string>
 			<key>captures</key>
@@ -930,7 +940,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>preprocessor-rule-enabled</key>
+		<key>preprocessor-base-rule-enabled</key>
 		<dict>
 			<key>begin</key> <string>^\s*(#)\s*(if)\s+(0*1)\b</string>
 			<key>captures</key>
@@ -968,7 +978,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>preprocessor-rule-enabled-block</key>
+		<key>preprocessor-block-rule-enabled</key>
 		<dict>
 			<key>begin</key> <string>^\s*(#)\s*(if)\s+(0*1)\b</string>
 			<key>captures</key>
@@ -1006,7 +1016,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>preprocessor-rule-other</key>
+		<key>preprocessor-base-rule-other</key>
 		<dict>
 			<key>begin</key> <string>^\s*(#)\s*(if(n?def)?)\b</string>
 			<key>captures</key>
@@ -1020,7 +1030,7 @@
 				<dict> <key>include</key> <string>$base</string> </dict>
 			</array>
 		</dict>
-		<key>preprocessor-rule-other-block</key>
+		<key>preprocessor-block-rule-other</key>
 		<dict>
 			<key>begin</key> <string>^\s*(#)\s*(if(n?def)?)\b</string>
 			<key>captures</key>
@@ -1046,7 +1056,7 @@
 			<key>comment</key>
 			<string>eat nested preprocessor if(def)s</string>
 		</dict>
-		<key>preprocessor-orphaned-block-end</key>
+		<key>preprocessor-block-orphaned-end</key>
 		<dict>
 			<key>match</key> <string>^\s*(#)\s*(endif)\b</string>
 			<key>captures</key>
