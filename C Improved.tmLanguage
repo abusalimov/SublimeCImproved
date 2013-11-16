@@ -38,10 +38,9 @@
 		<dict> <key>include</key> <string>#preprocessor</string> </dict>
 		<dict> <key>include</key> <string>#block</string> </dict>
 		<dict> <key>include</key> <string>#typedef</string> </dict>
-		<dict> <key>include</key> <string>#compound</string> </dict>
+		<dict> <key>include</key> <string>#type</string> </dict>
 		<dict> <key>include</key> <string>#support-macro</string> </dict>
-		<dict> <key>include</key> <string>#function-decl</string> </dict>
-		<dict> <key>include</key> <string>#function-def</string> </dict>
+		<dict> <key>include</key> <string>#function</string> </dict>
 		<dict> <key>include</key> <string>#support</string> </dict>
 	</array>
 
@@ -292,12 +291,42 @@
 					<key>match</key> <string>\s*\b([A-Za-z_]\w*+)(?=\s*[\[;])</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>entity.name.type.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>entity.name.type.typedef.c</string> </dict>
 					</dict>
 				</dict>
 			</array>
 		</dict>
-		<key>compound</key>
+		<key>type</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#type-declaration</string> </dict>
+				<dict> <key>include</key> <string>#type-definition</string> </dict>
+			</array>
+		</dict>
+		<key>type-declaration</key>
+		<dict>
+			<key>begin</key> <string>\s*\b(struct|union|enum)\b(?=(?:\s|/\*.*?\*/)*([A-Za-z_]\w*+)(?:\s|/\*.*?\*/)*;)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
+			</dict>
+			<key>end</key>
+			<string>(?&lt;=;)</string>
+			<key>name</key> <string>meta.compound.c</string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#lex</string> </dict>
+				<dict>
+					<key>match</key> <string>\b([A-Za-z_]\w*+)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>entity.name.type.declaration.c</string> </dict>
+					</dict>
+				</dict>
+			</array>
+		</dict>
+		<key>type-definition</key>
 		<dict>
 			<key>begin</key> <string>\s*\b(struct|union|enum)\b</string>
 			<key>beginCaptures</key>
@@ -311,13 +340,13 @@
 				        # Generally, prefer function definition over an
 				        # attribute defined through a macro, unless a block
 				        # has been seen.
-				        # struct __aligned(16) foo {...}; - function __aligned
-				        # struct foo {...} __aligned(16); - structure foo
+				        # struct __packed __aligned(16) foo {...}; - function __aligned
+				        # struct foo {...} __packed __aligned(16); - structure foo
 				        (?! \b__attribute__\b )
 				        (?: [A-Za-z_]\w*+ | ::[^:] )++
 				        (?: (?&lt;= ^ operator | \W operator )  # C++ operator?
 				            (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )?
-				        \s* \( ) )
+				        (?:\s|/\*.*?\*/)* \( ) )
 			</string>
 			<key>name</key> <string>meta.compound.c</string>
 			<key>patterns</key>
@@ -332,16 +361,16 @@
 						<dict> <key>include</key> <string>#parens</string> </dict>
 					</array>
 				</dict>
-				<dict>
-					<key>match</key> <string>\s*\b([A-Za-z_]\w*+)(?=\s*\{)</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key> <dict> <key>name</key> <string>entity.name.class.c</string> </dict>
-					</dict>
-				</dict>
 				<dict> <key>include</key> <string>#lex</string> </dict>
 				<dict> <key>include</key> <string>#block</string> </dict>
 				<dict> <key>include</key> <string>#parens</string> </dict>
+				<dict>
+					<key>match</key> <string>\b([A-Za-z_]\w*+)(?=(?:\s|/\*.*?\*/)*\{)</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>entity.name.type.class.c</string> </dict>
+					</dict>
+				</dict>
 			</array>
 		</dict>
 		<key>block</key>
@@ -371,22 +400,30 @@
 				<dict> <key>include</key> <string>#support</string> </dict>
 
 				<dict> <key>include</key> <string>#typedef</string> </dict>
-				<dict> <key>include</key> <string>#compound</string> </dict>
-				<dict> <key>include</key> <string>#function-decl</string> </dict>
-				<dict> <key>include</key> <string>#function-def</string> </dict>
+				<dict> <key>include</key> <string>#type</string> </dict>
+				<dict> <key>include</key> <string>#function</string> </dict>
 
 				<dict> <key>include</key> <string>#parens</string> </dict>
 				<dict> <key>include</key> <string>#block</string> </dict>
 			</array>
 		</dict>
-		<key>function-decl</key>
+		<key>function</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#function-declaration</string> </dict>
+				<dict> <key>include</key> <string>#function-definition</string> </dict>
+			</array>
+		</dict>
+		<key>function-declaration</key>
 		<dict>
 			<key>name</key> <string>meta.function.c</string>
 			<key>begin</key>
 			<string>(?x)
 				(?: ^
-				  | (?&lt;! (?&lt;!\w) new | (?&lt;!\w) else
-				        | (?&lt;!\w) (?:return|sizeof|typeof)
+				  | (?&lt;! (?&lt;!\w) new
+				        | (?&lt;!\w) (?:else|enum) | (?&lt;!\w) union
+				        | (?&lt;!\w) (?:struct|return|sizeof|typeof)
 				        | (?&lt;!\w) __typeof | (?&lt;!\w) __typeof__ )
 				    (?&lt;= \w ) \s
 
@@ -397,7 +434,7 @@
 				    (?: (?&lt;= ^ operator | \W operator )  # C++ operator?
 				        (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )? )
 
-				\s* (?= (?'parens' \(
+				(?= (?:\s|/\*.*?\*/)* (?'parens' \(
 				            (?&gt; \g'parens' | /\*.*?\*/ | (?! /[/*] | [()] ) . )*
 				        \) ) \s* ; )
 			</string>
@@ -412,14 +449,15 @@
 				<dict> <key>include</key> <string>#parens</string> </dict>
 			</array>
 		</dict>
-		<key>function-def</key>
+		<key>function-definition</key>
 		<dict>
 			<key>name</key> <string>meta.function.c</string>
 			<key>begin</key>
 			<string>(?x)
 				(?: ^
-				  | (?&lt;! (?&lt;!\w) new | (?&lt;!\w) else
-				        | (?&lt;!\w) (?:return|sizeof|typeof)
+				  | (?&lt;! (?&lt;!\w) new
+				        | (?&lt;!\w) (?:else|enum) | (?&lt;!\w) union
+				        | (?&lt;!\w) (?:struct|return|sizeof|typeof)
 				        | (?&lt;!\w) __typeof | (?&lt;!\w) __typeof__ )
 				    (?&lt;= \w ) \s
 
@@ -430,11 +468,11 @@
 				    (?: (?&lt;= ^ operator | \W operator )  # C++ operator?
 				        (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )? )
 
-				\s* (?= \( )
+				(?= (?:\s|/\*.*?\*/)* \( )
 			</string>
 			<key>beginCaptures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>entity.name.function.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>entity.name.function.definition.c</string> </dict>
 			</dict>
 			<key>end</key> <string>(?&lt;=\})|;</string>
 			<key>patterns</key>
@@ -442,7 +480,7 @@
 				<dict> <key>include</key> <string>#lex</string> </dict>
 				<dict> <key>include</key> <string>#parens</string> </dict>
 				<dict>
-					<key>match</key> <string>\b(const|override)\b</string>
+					<key>match</key> <string>\s*\b(const|override)\b</string>
 					<key>name</key> <string>storage.modifier.c</string>
 				</dict>
 				<dict> <key>include</key> <string>#block</string> </dict>
@@ -569,7 +607,7 @@
 				<dict> <key>include</key> <string>#call</string> </dict>
 				<dict> <key>include</key> <string>#support</string> </dict>
 
-				<dict> <key>include</key> <string>#compound</string> </dict>
+				<dict> <key>include</key> <string>#type</string> </dict>
 
 				<dict> <key>include</key> <string>#block</string> </dict>
 				<dict> <key>include</key> <string>#parens</string> </dict>
@@ -647,7 +685,7 @@
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>entity.name.function.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>entity.name.function.macro.c</string> </dict>
 			</dict>
 			<key>end</key> <string>\)|(?&lt;=^|[^\\])\s*(\n)</string>
 			<key>endCaptures</key>
@@ -726,7 +764,7 @@
 			<key>captures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>entity.name.function.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>entity.name.variable.macro.c</string> </dict>
 			</dict>
 		</dict>
 		<key>preprocessor-diagnostic</key>
