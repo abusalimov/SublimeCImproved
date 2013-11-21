@@ -610,33 +610,30 @@
 		</dict>
 		<key>preprocessor-base</key>
 		<dict>
-			<key>begin</key> <string>(?=^\s*#\s*[a-z_]++\b)</string>
-			<key>end</key> <string></string>
+			<key>begin</key> <string>(?=^\s*(?:#)\s*([a-z_]++)\b)</string>
+			<key>end</key> <string>(?!^\s*(?:#))</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#preprocessor-base-rule-enabled</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-base-rule-disabled</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-base-rule-other</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-macro</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-diagnostic</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-include</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-directive</string> </dict>
+				<dict> <key>include</key> <string>#pp-base-rule</string> </dict>
+				<dict> <key>include</key> <string>#ppline-macro</string> </dict>
+				<dict> <key>include</key> <string>#ppline-diagnostic</string> </dict>
+				<dict> <key>include</key> <string>#ppline-pragma-mark</string> </dict>
+				<dict> <key>include</key> <string>#ppline-include</string> </dict>
+				<dict> <key>include</key> <string>#ppline-directive</string> </dict>
 			</array>
 		</dict>
 		<key>preprocessor-block</key>
 		<dict>
-			<key>begin</key> <string>(?=^\s*#\s*[a-z_]++\b)</string>
-			<key>end</key> <string></string>
+			<key>begin</key> <string>(?=^\s*(?:#)\s*([a-z_]++)\b)</string>
+			<key>end</key> <string>(?!^\s*(?:#))</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#preprocessor-block-rule-enabled</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-block-rule-disabled</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-block-rule-other</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-block-orphaned-end</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-macro</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-diagnostic</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
+				<dict> <key>include</key> <string>#pp-block-rule</string> </dict>
+				<dict> <key>include</key> <string>#pp-block-orphaned-end</string> </dict>
+				<dict> <key>include</key> <string>#ppline-macro</string> </dict>
+				<dict> <key>include</key> <string>#ppline-diagnostic</string> </dict>
+				<dict> <key>include</key> <string>#ppline-pragma-mark</string> </dict>
+				<dict> <key>include</key> <string>#ppline-directive</string> </dict>
 			</array>
 		</dict>
 		<key>preprocessor-lex</key>
@@ -647,13 +644,9 @@
 				<dict> <key>include</key> <string>#lex-continuation</string> </dict>
 			</array>
 		</dict>
-		<key>preprocessor-macro</key>
+		<key>ppline-macro</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)(?=\s*(define)\s+[a-zA-Z_]\w*+)</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
-			</dict>
+			<key>begin</key> <string>^\s*(?:#)(?=\s*(define)\s+[a-zA-Z_]\w*+)</string>
 			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.preprocessor.macro.c</string>
 			<key>patterns</key>
@@ -666,7 +659,7 @@
 							<string>\s*(##)</string>
 							<key>captures</key>
 							<dict>
-								<key>1</key> <dict> <key>name</key> <string>punctuation.preprocessor.concatenation.c</string> </dict>
+								<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.concatenation.c</string> </dict>
 							</dict>
 						</dict>
 						<dict>
@@ -674,12 +667,12 @@
 							<string>\s*(#)\s*([a-zA-Z_]\w*+)</string>
 							<key>captures</key>
 							<dict>
-								<key>1</key> <dict> <key>name</key> <string>punctuation.preprocessor.stringification.c</string> </dict>
+								<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.stringification.c</string> </dict>
 								<key>2</key> <dict> <key>name</key> <string>variable.parameter.c</string> </dict>
 							</dict>
 						</dict>
-						<dict> <key>include</key> <string>#preprocessor-macro-function</string> </dict>
-						<dict> <key>include</key> <string>#preprocessor-macro-object</string> </dict>
+						<dict> <key>include</key> <string>#ppline-macro-head-function</string> </dict>
+						<dict> <key>include</key> <string>#ppline-macro-head-object</string> </dict>
 						<dict> <key>include</key> <string>#lex</string> </dict>
 						<dict> <key>include</key> <string>#initialization</string> </dict>
 						<dict> <key>include</key> <string>#call_no_span</string> </dict>
@@ -688,22 +681,29 @@
 				</dict>
 			</array>
 		</dict>
-		<key>preprocessor-macro-function</key>
+		<key>ppline-macro-head-object</key>
 		<dict>
-			<key>begin</key>
-			<string>(?&lt;=#)\s*(define)\s+([a-zA-Z_]\w*+)\(</string>
+			<key>match</key> <string>(?&lt;=#)\s*(define)\s+([a-zA-Z_]\w*+)(?!\()[\s&amp;&amp;[^\n]]*</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>entity.name.variable.macro.c</string> </dict>
+			</dict>
+		</dict>
+		<key>ppline-macro-head-function</key>
+		<dict>
+			<key>begin</key> <string>(?&lt;=#)\s*(define)\s+([a-zA-Z_]\w*+)\(</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
 				<key>2</key> <dict> <key>name</key> <string>entity.name.function.macro.c</string> </dict>
 			</dict>
-			<key>end</key> <string>\)|(?&lt;=^|[^\\])\s*(\n)</string>
+			<key>end</key> <string>\)[\s&amp;&amp;[^\n]]*|(?&lt;=^|[^\\])\s*(\n)</string>
 			<key>endCaptures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-end-of-line.c</string> </dict>
 			</dict>
-			<key>contentName</key>
-			<string>meta.preprocessor.macro.parameters.c</string>
+			<key>contentName</key> <string>meta.preprocessor.macro.parameters.c</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
@@ -767,23 +767,13 @@
 				</dict>
 			</array>
 		</dict>
-		<key>preprocessor-macro-object</key>
+
+		<key>ppline-diagnostic</key>
 		<dict>
-			<key>match</key>
-			<string>(?&lt;=#)\s*(define)\s+([a-zA-Z_]\w*+)(?!\()</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.define.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>entity.name.variable.macro.c</string> </dict>
-			</dict>
-		</dict>
-		<key>preprocessor-diagnostic</key>
-		<dict>
-			<key>begin</key> <string>^\s*(#)\s*(error|warning)\b</string>
+			<key>begin</key> <string>^\s*(?:#)\s*(error|warning)\b</string>
 			<key>beginCaptures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.error.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.error.c</string> </dict>
 			</dict>
 			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.preprocessor.diagnostic.c</string>
@@ -795,13 +785,12 @@
 				<dict> <key>include</key> <string>#lex-number</string> </dict>
 			</array>
 		</dict>
-		<key>preprocessor-include</key>
+		<key>ppline-include</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)\s*(include|include_next|import)\b</string>
+			<key>begin</key> <string>^\s*(?:#)\s*(include|include_next|import)\b</string>
 			<key>beginCaptures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.include.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.include.c</string> </dict>
 			</dict>
 			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.preprocessor.include.c</string>
@@ -836,233 +825,305 @@
 				</dict>
 			</array>
 		</dict>
-		<key>preprocessor-directive</key>
+		<key>ppline-directive</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)\s*([a-z_]++)\b</string>
+			<key>begin</key> <string>^\s*(?:#)\s*([a-z_]++)\b</string>
 			<key>beginCaptures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
 			</dict>
 			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.preprocessor.c</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
+				<dict> <key>include</key> <string>#lex-string</string> </dict>
+				<dict> <key>include</key> <string>#lex-constant</string> </dict>
+				<dict> <key>include</key> <string>#lex-number</string> </dict>
 			</array>
 		</dict>
-		<key>preprocessor-pragma-mark</key>
+		<key>ppline-pragma-mark</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)\s*(pragma\s+mark)\b(?:(?!\n)\s)*</string>
+			<key>begin</key> <string>^\s*(?:#)\s*(pragma\s+mark)\b(?:(?!\n)\s)*</string>
 			<key>beginCaptures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.pragma.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.pragma.c</string> </dict>
 			</dict>
 			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
-			<key>name</key> <string>meta.section</string>
+			<key>name</key> <string>meta.section.pragma-mark.c</string>
 			<key>contentName</key> <string>meta.toc-list.pragma-mark.c</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
 			</array>
 		</dict>
-		<key>preprocessor-base-rule-disabled</key>
+
+		<key>preprocessor-disabled</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)\s*(if)\s+(0)\b</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.if.c</string> </dict>
-				<key>3</key> <dict> <key>name</key> <string>constant.numeric.preprocessor.c</string> </dict>
-			</dict>
-			<key>end</key> <string>^\s*(#)\s*(endif)\b</string>
+			<key>begin</key> <string>^\s*(?:#)(?=\s*if(n?def)?\b)</string>
+			<key>end</key> <string>^\s*(?:#)(?=\s*(endif)\b)</string>
 			<key>patterns</key>
 			<array>
-				<dict>
-					<key>begin</key> <string>^\s*#\s*(else)\b</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key> <dict> <key>name</key> <string>keyword.control.import.else.c</string> </dict>
-					</dict>
-					<key>end</key> <string>(?=^\s*#\s*(endif)\b)</string>
-					<key>patterns</key>
-					<array>
-						<dict> <key>include</key> <string>$base</string> </dict>
-					</array>
-				</dict>
-				<dict>
-					<key>begin</key> <string></string>
-					<key>end</key> <string>(?=^\s*#\s*(else|endif)\b)</string>
-					<key>name</key> <string>comment.block.preprocessor.if-branch</string>
-					<key>patterns</key>
-					<array>
-						<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
-						<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
-					</array>
-				</dict>
+				<dict> <key>include</key> <string>#ppline-disabled</string> </dict>
+				<dict> <key>include</key> <string>#ppline-pragma-mark</string> </dict>
 			</array>
 		</dict>
-		<key>preprocessor-block-rule-disabled</key>
+		<key>ppline-disabled</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)\s*(if)\s+(0)\b</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.if.c</string> </dict>
-				<key>3</key> <dict> <key>name</key> <string>constant.numeric.preprocessor.c</string> </dict>
-			</dict>
-			<key>end</key> <string>^\s*(#)\s*(endif)\b</string>
+			<key>begin</key> <string>(?&lt;=#)\s*if(n?def)?\b.*$</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
+			<key>name</key> <string>meta.preprocessor.line.c</string>
 			<key>patterns</key>
 			<array>
-				<dict>
-					<key>begin</key> <string>^\s*(#)\s*(else)\b</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>keyword.control.import.else.c</string> </dict>
-					</dict>
-					<key>end</key> <string>(?=^\s*(#)\s*(endif)\b)</string>
-					<key>patterns</key>
-					<array>
-						<dict> <key>include</key> <string>#block_innards</string> </dict>
-					</array>
-				</dict>
-				<dict>
-					<key>begin</key> <string></string>
-					<key>end</key> <string>(?=^\s*(#)\s*(else|endif)\b)</string>
-					<key>name</key> <string>comment.block.preprocessor.if-branch.in-block</string>
-					<key>patterns</key>
-					<array>
-						<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
-						<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
-					</array>
-				</dict>
+				<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
 			</array>
+			<key>comment</key>
+			<string>eat nested preprocessor if(def)s</string>
 		</dict>
-		<key>preprocessor-base-rule-enabled</key>
+
+		<key>ppline-nohash</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)\s*(if)\s+(0*1)\b</string>
-			<key>captures</key>
+			<key>begin</key> <string>(?&lt;=#)\s*([a-z_]++)\b</string>
+			<key>beginCaptures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.if.c</string> </dict>
-				<key>3</key> <dict> <key>name</key> <string>constant.numeric.preprocessor.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
 			</dict>
-			<key>end</key> <string>^\s*(#)\s*(endif)\b</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
+			<key>name</key> <string>meta.preprocessor.c</string>
 			<key>patterns</key>
 			<array>
-				<dict>
-					<key>begin</key> <string>^\s*(#)\s*(else)\b</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>keyword.control.import.else.c</string> </dict>
-					</dict>
-					<key>contentName</key>
-					<string>comment.block.preprocessor.else-branch</string>
-					<key>end</key> <string>(?=^\s*(#)\s*(endif)\b)</string>
-					<key>patterns</key>
-					<array>
-						<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
-						<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
-					</array>
-				</dict>
-				<dict>
-					<key>begin</key> <string></string>
-					<key>end</key> <string>(?=^\s*#\s*(else|endif)\b)</string>
-					<key>patterns</key>
-					<array>
-						<dict> <key>include</key> <string>$base</string> </dict>
-					</array>
-				</dict>
+				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
+				<dict> <key>include</key> <string>#lex-string</string> </dict>
+				<dict> <key>include</key> <string>#lex-constant</string> </dict>
+				<dict> <key>include</key> <string>#lex-number</string> </dict>
 			</array>
 		</dict>
-		<key>preprocessor-block-rule-enabled</key>
+		<key>ppline-endif</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)\s*(if)\s+(0*1)\b</string>
-			<key>captures</key>
+			<key>begin</key> <string>^\s*(?:#)\s*(endif)\b</string>
+			<key>beginCaptures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.if.c</string> </dict>
-				<key>3</key> <dict> <key>name</key> <string>constant.numeric.preprocessor.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.control.preprocessor.conditional.c</string> </dict>
 			</dict>
-			<key>end</key> <string>^\s*(#)\s*(endif)\b</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
+			<key>name</key> <string>meta.preprocessor.c</string>
 			<key>patterns</key>
 			<array>
-				<dict>
-					<key>begin</key> <string>^\s*(#)\s*(else)\b</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>keyword.control.import.else.c</string> </dict>
-					</dict>
-					<key>contentName</key>
-					<string>comment.block.preprocessor.else-branch.in-block</string>
-					<key>end</key> <string>(?=^\s*(#)\s*(endif)\b)</string>
-					<key>patterns</key>
-					<array>
-						<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
-						<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
-					</array>
-				</dict>
-				<dict>
-					<key>begin</key> <string></string>
-					<key>end</key> <string>(?=^\s*(#)\s*(else|endif)\b)</string>
-					<key>patterns</key>
-					<array>
-						<dict> <key>include</key> <string>#block_innards</string> </dict>
-					</array>
-				</dict>
+				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
+				<dict> <key>include</key> <string>#lex-string</string> </dict>
+				<dict> <key>include</key> <string>#lex-constant</string> </dict>
+				<dict> <key>include</key> <string>#lex-number</string> </dict>
 			</array>
 		</dict>
-		<key>preprocessor-base-rule-other</key>
+		<key>ppline-stray-else</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)\s*(if(n?def)?)\b</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
-			</dict>
-			<key>end</key> <string>^\s*(#)\s*(endif)\b</string>
+			<key>begin</key> <string>^\s*(?:#)\s*(else)\b</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
+			<key>name</key> <string>invalid.illegal.stray-else</string>
+		</dict>
+		<key>ppline-stray-elif</key>
+		<dict>
+			<key>begin</key> <string>^\s*(?:#)\s*(elif)\b</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
+			<key>name</key> <string>invalid.illegal.stray-elif</string>
+		</dict>
+		<key>pp-cond-base</key>
+		<dict>
+			<key>begin</key> <string>(?!\n)</string>
+			<key>end</key> <string>(?=^\s*(?:#)\s*(else|elif|endif)\b)</string>
+			<key>contentName</key> <string>meta.preprocessor.if.c</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>$base</string> </dict>
 			</array>
 		</dict>
-		<key>preprocessor-block-rule-other</key>
+		<key>pp-cond-block</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)\s*(if(n?def)?)\b</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
-			</dict>
-			<key>end</key> <string>^\s*(#)\s*(endif)\b</string>
+			<key>begin</key> <string>(?!\n)</string>
+			<key>end</key> <string>(?=^\s*(?:#)\s*(else|elif|endif)\b)</string>
+			<key>contentName</key> <string>meta.preprocessor.if.c</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#block_innards</string> </dict>
 			</array>
 		</dict>
-		<key>preprocessor-disabled</key>
+		<key>pp-cond-disabled</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)\s*if(n?def)?\b.*$</string>
-			<key>end</key> <string>^\s*(#)\s*(endif)\b</string>
+			<key>begin</key> <string>(?!\n)</string>
+			<key>end</key> <string>(?=^\s*(?:#)\s*(else|elif|endif)\b)</string>
+			<key>contentName</key> <string>comment.block.preprocessor.c</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
-				<dict> <key>include</key> <string>#preprocessor-pragma-mark</string> </dict>
 			</array>
-			<key>comment</key>
-			<string>eat nested preprocessor if(def)s</string>
 		</dict>
-		<key>preprocessor-block-orphaned-end</key>
+		<key>pp-elseif-base</key>
 		<dict>
-			<key>match</key> <string>^\s*(#)\s*(endif)\b</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key> <string>^\s*(?:#)(?=\s*(elif)\b)</string>
+					<key>end</key> <string>(?=^\s*(?:#)\s*(elif|else|endif)\b)</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#ppline-nohash</string> </dict>
+						<dict> <key>include</key> <string>#ppline-stray-else</string> </dict>
+						<dict> <key>include</key> <string>#pp-cond-base</string> </dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key> <string>^\s*(?:#)(?=\s*(else)\b)</string>
+					<key>end</key> <string>(?=^\s*(?:#)\s*(endif)\b)</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#ppline-nohash</string> </dict>
+						<dict> <key>include</key> <string>#ppline-stray-elif</string> </dict>
+						<dict> <key>include</key> <string>#ppline-stray-else</string> </dict>
+						<dict> <key>include</key> <string>#pp-cond-base</string> </dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<key>pp-elseif-block</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key> <string>^\s*(?:#)(?=\s*(elif)\b)</string>
+					<key>end</key> <string>(?=^\s*(?:#)\s*(elif|else|endif)\b)</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#ppline-nohash</string> </dict>
+						<dict> <key>include</key> <string>#ppline-stray-else</string> </dict>
+						<dict> <key>include</key> <string>#pp-cond-block</string> </dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key> <string>^\s*(?:#)(?=\s*(else)\b)</string>
+					<key>end</key> <string>(?=^\s*(?:#)\s*(endif)\b)</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#ppline-nohash</string> </dict>
+						<dict> <key>include</key> <string>#ppline-stray-elif</string> </dict>
+						<dict> <key>include</key> <string>#ppline-stray-else</string> </dict>
+						<dict> <key>include</key> <string>#pp-cond-block</string> </dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<key>pp-elseif-disabled</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key> <string>^\s*(?:#)(?=\s*(elif)\b)</string>
+					<key>end</key> <string>(?=^\s*(?:#)\s*(elif|else|endif)\b)</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#ppline-nohash</string> </dict>
+						<dict> <key>include</key> <string>#ppline-stray-else</string> </dict>
+						<dict> <key>include</key> <string>#pp-cond-disabled</string> </dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key> <string>^\s*(?:#)(?=\s*(else)\b)</string>
+					<key>end</key> <string>(?=^\s*(?:#)\s*(endif)\b)</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#ppline-nohash</string> </dict>
+						<dict> <key>include</key> <string>#ppline-stray-elif</string> </dict>
+						<dict> <key>include</key> <string>#ppline-stray-else</string> </dict>
+						<dict> <key>include</key> <string>#pp-cond-disabled</string> </dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<key>pp-base-rule</key>
+		<dict>
+			<key>begin</key> <string>(?=^\s*(?:#)\s*(if)\b)</string>
+			<key>end</key> <string>(?!^\s*(?:#))</string>
+			<key>name</key> <string>meta.preprocessor.conditional.c</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key> <string>^\s*(?:#)(?=\s*(if)\s+(0)\b)</string>
+					<key>end</key> <string>(?=^\s*(?:#)\s*(endif)\b)</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#pp-elseif-base</string> </dict>
+						<dict> <key>include</key> <string>#ppline-nohash</string> </dict>
+						<dict> <key>include</key> <string>#pp-cond-disabled</string> </dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key> <string>^\s*(?:#)(?=\s*(if)\s+(0*1)\b)</string>
+					<key>end</key> <string>(?=^\s*(?:#)\s*(endif)\b)</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#pp-elseif-disabled</string> </dict>
+						<dict> <key>include</key> <string>#ppline-nohash</string> </dict>
+						<dict> <key>include</key> <string>#pp-cond-base</string> </dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key> <string>^\s*(?:#)(?=\s*(if(n?def)?)\b)</string>
+					<key>end</key> <string>(?=^\s*(?:#)\s*(endif)\b)</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#pp-elseif-base</string> </dict>
+						<dict> <key>include</key> <string>#ppline-nohash</string> </dict>
+						<dict> <key>include</key> <string>#pp-cond-base</string> </dict>
+					</array>
+				</dict>
+				<dict> <key>include</key> <string>#ppline-endif</string> </dict>
+			</array>
+		</dict>
+		<key>pp-block-rule</key>
+		<dict>
+			<key>begin</key> <string>(?=^\s*(?:#)\s*(if)\b)</string>
+			<key>end</key> <string>(?!^\s*(?:#))</string>
+			<key>name</key> <string>meta.preprocessor.conditional.c</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key> <string>^\s*(?:#)(?=\s*(if)\s+(0)\b)</string>
+					<key>end</key> <string>(?=^\s*(?:#)\s*(endif)\b)</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#pp-elseif-block</string> </dict>
+						<dict> <key>include</key> <string>#ppline-nohash</string> </dict>
+						<dict> <key>include</key> <string>#pp-cond-disabled</string> </dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key> <string>^\s*(?:#)(?=\s*(if)\s+(0*1)\b)</string>
+					<key>end</key> <string>(?=^\s*(?:#)\s*(endif)\b)</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#pp-elseif-disabled</string> </dict>
+						<dict> <key>include</key> <string>#ppline-nohash</string> </dict>
+						<dict> <key>include</key> <string>#pp-cond-block</string> </dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key> <string>^\s*(?:#)(?=\s*(if(n?def)?)\b)</string>
+					<key>end</key> <string>(?=^\s*(?:#)\s*(endif)\b)</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#pp-elseif-block</string> </dict>
+						<dict> <key>include</key> <string>#ppline-nohash</string> </dict>
+						<dict> <key>include</key> <string>#pp-cond-block</string> </dict>
+					</array>
+				</dict>
+				<dict> <key>include</key> <string>#ppline-endif</string> </dict>
+			</array>
+		</dict>
+		<key>pp-block-orphaned-end</key>
+		<dict>
+			<key>match</key> <string>(?&lt;=#)\s*(endif)\b</string>
 			<key>captures</key>
 			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.control.import.c</string> </dict>
 			</dict>
 		</dict>
 		<key>string_escaped_char</key>
