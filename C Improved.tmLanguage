@@ -347,6 +347,16 @@
 				        #   struct __packed __aligned(16) foo {...}; - function __aligned
 				        #   struct foo {...} __packed __aligned(16); - structure foo
 				        (?! \b__attribute__\b )
+
+				        (?: (?&lt;! (?&lt;!\w) new
+				                | (?&lt;!\w) (?:else|enum) | (?&lt;!\w) (?:class|union)
+				                | (?&lt;!\w) (?:struct|return|sizeof|typeof)
+				                | (?&lt;!\w) __typeof | (?&lt;!\w) __typeof__ )
+				            (?&lt;= \w ) \s
+
+        				  | #  or type modifier / closing bracket before name
+				            (?&lt;= [^&amp;]&amp; | [*&gt;)}\]] ) ) \s*
+
 				        (?: [A-Za-z_]\w*+ | ::[^:] )++
 				        (?: (?&lt;= ^ operator | \W operator )  # C++ operator?
 				            (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )?
