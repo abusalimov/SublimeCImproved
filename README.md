@@ -31,7 +31,7 @@ they usually extend `source.c` under the hood, which is now provided by *C Impro
 Issues addressed
 ---
 
-### Function call inside macro recognized as a symbol definition
+### Function calls inside macros
 In the following example ST recognizes `check_range(...)` inside a macro as a function definition though it is actually a function call.
 This leads to incorrect highlighting (green instead of blue) and also adds a bogus symbol into a symbol list.
 Moreover a function declaration which follows the macro (`int irq_attach(...)`) is not recognized at all.
