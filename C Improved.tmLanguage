@@ -4,7 +4,7 @@
 <dict>
 	<key>comment</key>
 	<string>
-	        https://github.com/abusalimov/SublimeImprovedC
+	        https://github.com/abusalimov/SublimeCImproved
 
 	        Derived from C.tmLanguage - the original TextMate and Sublime Text
 	        syntax definition.
