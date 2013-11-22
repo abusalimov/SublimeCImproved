@@ -59,16 +59,16 @@ Standard C | C Improved
 ### Customizable indexing of types/functions/macros
 You can adjust which symbols are available for navigation and visible in a symbol index or in an outline.
 
-The following scopes are available:
+The following scopes and default preferences are provided:
 
-Scope name | Description
----------- | -----------
-`entity.name.type` | type definition (e.g. `class`, `struct` or `union`)
-`entity.name.type.declaration` | forward declaration of a type
-`entity.name.type.typedef` | type alias defined through a `typedef`
-`entity.name.function` | function definition
-`entity.name.function.declaration` | function declaration
-`entity.name.function.macro` | function-like macro
-`entity.name.variable.macro` | object-like macro
+Scope name | Description | Outline<br/><kbd>ctrl</kbd>+<kbd>R</kbd> | Index (ST3 only)<br/><kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>R</kbd>, <kbd>F12</kbd>
+---------- | ----------- | ---------------------------------------- | -----
+`entity.name.type`                 | type definition (e.g. `struct`)         | visible | visible
+`entity.name.type.declaration`     | forward declaration of a type           | visible | **hidden**
+`entity.name.type.typedef`         | type alias (`typedef`)                  | visible | visible
+`entity.name.function`             | function definition                     | visible | visible
+`entity.name.function.declaration` | function declaration                    | visible | **hidden**
+`entity.name.function.macro`       | function-like macro                     | visible | visible
+`entity.name.variable.macro`       | object-like macro                       | visible | visible
 
-
+These settings can be changed through `.tmPreferences` files, see `Packages/C Improved/Symbol Index (*).tmPreferences`.
