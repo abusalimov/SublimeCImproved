@@ -78,6 +78,8 @@ Dropped features
 ----------------
 
 ### `#if 0` conditionals
-The standard syntax highlights `#if 0` blocks as comments. This is a really nice feature, however it is rather fragile and have many issues, e.g. with unterminated blocks (opening/closing brace inside a preprocessor conditional).
-So it was decided to remove it at all for sake of simplicity. You may however checkout a [preprocessor-cond-scopes](https://github.com/abusalimov/SublimeCImproved/tree/preprocessor-cond-scopes) branch which has this feature implemented.
+The standard syntax highlights `#if 0` blocks as comments. This is a really nice feature, however it is rather fragile and has many issues, e.g. with unterminated blocks (opening/closing brace inside a preprocessor conditional).
+So for sake of simplicity it was decided to remove it at all.
+
+You may however checkout a [preprocessor-cond-scopes](https://github.com/abusalimov/SublimeCImproved/tree/preprocessor-cond-scopes) branch which has this feature implemented.
 
