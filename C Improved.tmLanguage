@@ -171,7 +171,7 @@
 		</dict>
 		<key>lex-keyword-type</key>
 		<dict>
-			<key>match</key> <string>\s*\b(struct|union|enum|typedef)\b</string>
+			<key>match</key> <string>\s*\b(class|struct|union|enum|typedef)\b</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
@@ -311,7 +311,7 @@
 		</dict>
 		<key>type-declaration</key>
 		<dict>
-			<key>begin</key> <string>\s*\b(struct|union|enum)\b(?=(?:\s|/\*.*?\*/)*([A-Za-z_]\w*+)(?:\s|/\*.*?\*/)*;)</string>
+			<key>begin</key> <string>\s*\b(class|struct|union|enum)\b(?=(?:\s|/\*.*?\*/)*([A-Za-z_]\w*+)(?:\s|/\*.*?\*/)*;)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
@@ -333,7 +333,7 @@
 		</dict>
 		<key>type-definition</key>
 		<dict>
-			<key>begin</key> <string>\s*\b(struct|union|enum)\b</string>
+			<key>begin</key> <string>\s*\b(class|struct|union|enum)\b</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
@@ -372,7 +372,7 @@
 					<key>match</key> <string>\b([A-Za-z_]\w*+)(?=(?:\s|/\*.*?\*/)*\{)</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>entity.name.class.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>entity.name.type.c</string> </dict>
 					</dict>
 				</dict>
 			</array>
@@ -423,7 +423,7 @@
 			<string>(?x)
 				(?: ^
 				  | (?&lt;! (?&lt;!\w) new
-				        | (?&lt;!\w) (?:else|enum) | (?&lt;!\w) union
+				        | (?&lt;!\w) (?:else|enum) | (?&lt;!\w) (?:class|union)
 				        | (?&lt;!\w) (?:struct|return|sizeof|typeof)
 				        | (?&lt;!\w) __typeof | (?&lt;!\w) __typeof__ )
 				    (?&lt;= \w ) \s
@@ -457,7 +457,7 @@
 			<string>(?x)
 				(?: ^
 				  | (?&lt;! (?&lt;!\w) new
-				        | (?&lt;!\w) (?:else|enum) | (?&lt;!\w) union
+				        | (?&lt;!\w) (?:else|enum) | (?&lt;!\w) (?:class|union)
 				        | (?&lt;!\w) (?:struct|return|sizeof|typeof)
 				        | (?&lt;!\w) __typeof | (?&lt;!\w) __typeof__ )
 				    (?&lt;= \w ) \s
@@ -492,8 +492,9 @@
 			<key>name</key> <string>meta.initialization.c</string>
 			<key>match</key>
 			<string>(?x)
-				(?: (?&lt;! (?&lt;!\w) new | (?&lt;!\w) else
-				        | (?&lt;!\w) (?:return|sizeof|typeof)
+				(?: (?&lt;! (?&lt;!\w) new
+				        | (?&lt;!\w) (?:else|enum) | (?&lt;!\w) (?:class|union)
+				        | (?&lt;!\w) (?:struct|return|sizeof|typeof)
 				        | (?&lt;!\w) __typeof | (?&lt;!\w) __typeof__ )
 				    (?&lt;= \w ) \s
 
