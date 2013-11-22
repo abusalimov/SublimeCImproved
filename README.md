@@ -2,7 +2,8 @@ Sublime C Improved
 ================
 
 This package provides better support of C/C++/Objective-C languages in Sublime Text.
-It is **not** a self-sustained package, but only an addition to the *C++* package supplied with Sublime Text.
+
+It is **not** a self-sustained package, but only an addition to the standard *C++* package supplied with Sublime Text.
 
 Installation
 ---
@@ -72,3 +73,11 @@ Scope name | Description | Outline<br/><kbd>ctrl</kbd>+<kbd>R</kbd> | Index (ST3
 `entity.name.variable.macro`       | object-like macro                       | visible | visible
 
 These settings can be changed through `.tmPreferences` files, see `Packages/C Improved/Symbol Index (*).tmPreferences`.
+
+Dropped features
+----------------
+
+### `#if 0` conditionals
+The standard syntax highlights `#if 0` blocks as comments. This is a really nice feature, however it is rather fragile and have many issues, e.g. with unterminated blocks (opening/closing brace inside a preprocessor conditional).
+So it was decided to remove it at all for sake of simplicity. You may however checkout a [preprocessor-cond-scopes](https://github.com/abusalimov/SublimeCImproved/tree/preprocessor-cond-scopes) branch which has this feature implemented.
+
