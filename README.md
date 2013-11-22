@@ -71,4 +71,4 @@ Scope name | Description | Outline<br/><kbd>ctrl</kbd>+<kbd>R</kbd> | Index (ST3
 `entity.name.function.macro`       | function-like macro                     | visible | visible
 `entity.name.variable.macro`       | object-like macro                       | visible | visible
 
-
+These settings can be changed through `.tmPreferences` files, see `Packages/C Improved/Symbol Index (*).tmPreferences`.
