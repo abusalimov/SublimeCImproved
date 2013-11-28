@@ -31,7 +31,7 @@ they usually extend `source.c` under the hood, which is now provided by *C Impro
 Issues addressed
 ---
 
-### Function call inside macro recognized as a symbol definition
+### Function calls inside macros
 In the following example ST recognizes `check_range(...)` inside a macro as a function definition though it is actually a function call.
 This leads to incorrect highlighting (green instead of blue) and also adds a bogus symbol into a symbol list.
 Moreover a function declaration which follows the macro (`int irq_attach(...)`) is not recognized at all.
@@ -77,9 +77,9 @@ These settings can be changed through `.tmPreferences` files, see `Packages/C Im
 Dropped features
 ----------------
 
-### `#if 0` conditionals
-The standard syntax highlights `#if 0` blocks as comments. This is a really nice feature, however it is rather fragile and has many issues, e.g. with unterminated blocks (opening/closing brace inside a preprocessor conditional).
-So for sake of simplicity it was decided to remove it at all.
+### `#if 1 ... #else` conditionals
+The standard syntax highlights recognizes `#else` part after `#if 1` conditional as a comment. This is a really nice feature, however it is rather fragile and has many issues, e.g. with unterminated blocks (opening/closing brace inside a preprocessor conditional).
+So for sake of simplicity it was decided to remove it at all, leaving only a plain `#if 0` handling, which is more or less stable and has pretty straightforward implementation.
 
-You may however checkout a [preprocessor-cond-scopes](https://github.com/abusalimov/SublimeCImproved/tree/preprocessor-cond-scopes) branch which has this feature implemented.
+You may however checkout a [preprocessor-cond-scopes](https://github.com/abusalimov/SublimeCImproved/tree/preprocessor-cond-scopes) branch which doesn't have this limitation.
 
