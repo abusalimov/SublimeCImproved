@@ -655,6 +655,7 @@
 			<key>end</key> <string>(?!^\s*(#))</string>
 			<key>patterns</key>
 			<array>
+				<dict> <key>include</key> <string>#preprocessor-disabled</string> </dict>
 				<dict> <key>include</key> <string>#ppline-directive-invalid-usage</string> </dict>
 				<dict> <key>include</key> <string>#ppline-macro</string> </dict>
 				<dict> <key>include</key> <string>#ppline-undef</string> </dict>
@@ -672,6 +673,56 @@
 			<array>
 				<dict> <key>include</key> <string>#comments</string> </dict>
 				<dict> <key>include</key> <string>#lex-continuation</string> </dict>
+			</array>
+		</dict>
+		<key>preprocessor-disabled</key>
+		<dict>
+			<key>begin</key> <string>^\s*(#)(?=\s*(if)\s+(0[xX])?0++\b)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>0</key> <dict> <key>name</key> <string>meta.preprocessor.macro.c keyword.other.preprocessor.c</string> </dict>
+			</dict>
+			<key>end</key> <string>(?=^\s*(#)\s*(endif|else|elif))</string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#preprocessor-disabled-conditional</string> </dict>
+				<dict>
+					<key>begin</key> <string>^\s*(#)</string>
+					<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
+					<key>name</key> <string>comment.other.preprocessor-disabled.c</string>
+				</dict>
+				<dict>
+					<key>begin</key> <string>(?&lt;!##)(?&lt;=#)(\s*if)\s+(?=(0[xX])?0++\b)</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.define.c</string> </dict>
+					</dict>
+					<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
+					<key>name</key> <string>meta.preprocessor.directive.c</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#lex-core</string> </dict>
+					</array>
+				</dict>
+				<dict>
+					<key>match</key> <string>.</string>
+					<key>name</key> <string>comment.other.preprocessor-disabled.c</string>
+				</dict>
+			</array>
+		</dict>
+		<key>preprocessor-disabled-conditional</key>
+		<dict>
+			<key>begin</key> <string>^\s*(#)\s*if(n?def)?\b</string>
+			<key>end</key> <string>^\s*(#)\s*endif\b.*$</string>
+			<key>name</key> <string>comment.other.preprocessor-disabled.c</string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#preprocessor-disabled-conditional</string> </dict>
+				<dict>
+					<key>begin</key> <string>^\s*(#)</string>
+					<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
+					<key>name</key> <string>comment.other.preprocessor-disabled.c</string>
+				</dict>
 			</array>
 		</dict>
 		<key>ppline-macro</key>
