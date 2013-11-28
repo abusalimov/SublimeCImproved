@@ -185,10 +185,6 @@
 						<dict> <key>include</key> <string>#string_escaped_char</string> </dict>
 					</array>
 				</dict>
-				<dict>
-					<key>match</key> <string>(\.|-&gt;)[a-zA-Z_]\w*\b(?!\s*\()</string>
-					<key>name</key> <string>variable.other.dot-access.c</string>
-				</dict>
 			</array>
 		</dict>
 		<key>lex-keyword-type</key>
