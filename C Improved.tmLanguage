@@ -32,7 +32,6 @@
 	<key>patterns</key>
 	<array>
 		<dict> <key>include</key> <string>#lex</string> </dict>
-		<dict> <key>include</key> <string>#preprocessor</string> </dict>
 		<dict> <key>include</key> <string>#block</string> </dict>
 		<dict> <key>include</key> <string>#typedef</string> </dict>
 		<dict> <key>include</key> <string>#type</string> </dict>
@@ -47,10 +46,33 @@
 		<dict>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#comments</string> </dict>
-				<dict> <key>include</key> <string>#lex-continuation</string> </dict>
+				<dict> <key>include</key> <string>#lex-common</string> </dict>
+				<dict> <key>include</key> <string>#preprocessor</string> </dict>
+			</array>
+		</dict>
+		<key>lex-in-preprocessor</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#lex-common</string> </dict>
+				<dict> <key>include</key> <string>#lex-keyword-type</string> </dict>
+			</array>
+		</dict>
+		<key>lex-common</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#lex-core</string> </dict>
 				<dict> <key>include</key> <string>#lex-keyword</string> </dict>
 				<dict> <key>include</key> <string>#lex-constant</string> </dict>
+			</array>
+		</dict>
+		<key>lex-core</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#comments</string> </dict>
+				<dict> <key>include</key> <string>#lex-continuation</string> </dict>
 				<dict> <key>include</key> <string>#lex-number</string> </dict>
 				<dict> <key>include</key> <string>#lex-string</string> </dict>
 			</array>
@@ -401,8 +423,6 @@
 		<dict>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#preprocessor</string> </dict>
-
 				<dict> <key>include</key> <string>#lex</string> </dict>
 
 				<dict> <key>include</key> <string>#typedef</string> </dict>
@@ -533,11 +553,11 @@
 			<key>end</key> <string>(?&lt;=\))</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#call_no_span</string> </dict>
+				<dict> <key>include</key> <string>#call-in-preprocessor</string> </dict>
 				<dict> <key>include</key> <string>#parens</string> </dict>
 			</array>
 		</dict>
-		<key>call_no_span</key>
+		<key>call-in-preprocessor</key>
 		<dict>
 			<key>begin</key>
 			<string>(?x)
@@ -549,8 +569,7 @@
 			<key>end</key> <string>(?=\()</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#lex</string> </dict>
-				<dict> <key>include</key> <string>#lex-keyword-type</string> </dict>
+				<dict> <key>include</key> <string>#lex-in-preprocessor</string> </dict>
 				<dict> <key>include</key> <string>#support</string> </dict>
 				<dict>
 					<key>match</key> <string>(?:[A-Za-z_]\w*+|::[^:])++</string>
@@ -675,11 +694,10 @@
 						</dict>
 						<dict> <key>include</key> <string>#ppline-macro-head-function</string> </dict>
 						<dict> <key>include</key> <string>#ppline-macro-head-object</string> </dict>
-						<dict> <key>include</key> <string>#lex</string> </dict>
-						<dict> <key>include</key> <string>#lex-keyword-type</string> </dict>
+						<dict> <key>include</key> <string>#lex-in-preprocessor</string> </dict>
 
 						<dict> <key>include</key> <string>#initialization</string> </dict>
-						<dict> <key>include</key> <string>#call_no_span</string> </dict>
+						<dict> <key>include</key> <string>#call-in-preprocessor</string> </dict>
 						<dict> <key>include</key> <string>#support</string> </dict>
 					</array>
 				</dict>
@@ -842,9 +860,7 @@
 			<key>name</key> <string>meta.preprocessor.directive.c</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
-				<dict> <key>include</key> <string>#lex-string</string> </dict>
-				<dict> <key>include</key> <string>#lex-number</string> </dict>
+				<dict> <key>include</key> <string>#lex-core</string> </dict>
 			</array>
 		</dict>
 
@@ -855,9 +871,7 @@
 			<key>name</key> <string>meta.preprocessor.directive.c invalid.deprecated.preprocessor.c</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
-				<dict> <key>include</key> <string>#lex-string</string> </dict>
-				<dict> <key>include</key> <string>#lex-number</string> </dict>
+				<dict> <key>include</key> <string>#lex-core</string> </dict>
 			</array>
 		</dict>
 
@@ -868,9 +882,7 @@
 			<key>name</key> <string>meta.preprocessor.directive.c invalid.illegal.preprocessor.c</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
-				<dict> <key>include</key> <string>#lex-string</string> </dict>
-				<dict> <key>include</key> <string>#lex-number</string> </dict>
+				<dict> <key>include</key> <string>#lex-core</string> </dict>
 			</array>
 		</dict>
 
@@ -885,9 +897,7 @@
 			<key>name</key> <string>meta.preprocessor.directive.null-directive.c</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
-				<dict> <key>include</key> <string>#lex-string</string> </dict>
-				<dict> <key>include</key> <string>#lex-number</string> </dict>
+				<dict> <key>include</key> <string>#lex-core</string> </dict>
 			</array>
 		</dict>
 
@@ -936,3 +946,4 @@
 	<string>24242A3A-CC4A-414D-B1FA-18D2BABB6754</string>
 </dict>
 </plist>
+f
