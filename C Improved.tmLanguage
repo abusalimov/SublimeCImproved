@@ -652,13 +652,15 @@
 			<key>end</key> <string>(?!^\s*(#))</string>
 			<key>patterns</key>
 			<array>
+				<dict> <key>include</key> <string>#ppline-directive-invalid-usage</string> </dict>
 				<dict> <key>include</key> <string>#ppline-macro</string> </dict>
+				<dict> <key>include</key> <string>#ppline-undef</string> </dict>
 				<dict> <key>include</key> <string>#ppline-pragma-mark</string> </dict>
 				<dict> <key>include</key> <string>#ppline-include</string> </dict>
 				<dict> <key>include</key> <string>#ppline-directive</string> </dict>
 				<dict> <key>include</key> <string>#ppline-directive-obsolete</string> </dict>
-				<dict> <key>include</key> <string>#ppline-directive-invalid</string> </dict>
-				<dict> <key>include</key> <string>#ppline-directive-any</string> </dict>
+				<dict> <key>include</key> <string>#ppline-invalid</string> </dict>
+				<dict> <key>include</key> <string>#ppline-any</string> </dict>
 			</array>
 		</dict>
 		<key>preprocessor-lex</key>
@@ -790,6 +792,20 @@
 				</dict>
 			</array>
 		</dict>
+		<key>ppline-undef</key>
+		<dict>
+			<key>begin</key> <string>(^\s*(#)\s*(undef))\s+([a-zA-Z_]\w*+)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>4</key> <dict> <key>name</key> <string>variable.macro.undef.c</string> </dict>
+			</dict>
+			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
+			<key>name</key> <string>meta.preprocessor.undef.c</string>
+			<key>patterns</key>
+			<array>
+			</array>
+		</dict>
 
 		<key>ppline-include</key>
 		<dict>
@@ -852,7 +868,7 @@
 		</dict>
 		<key>ppline-directive</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)\s*(if|ifdef|ifndef|elif|else|endif|pragma|line|undef|error|warning)\b</string>
+			<key>begin</key> <string>^\s*(#)\s*(if|ifdef|ifndef|elif|else|endif|pragma|line|define|undef|error|warning)\b</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>0</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
@@ -863,6 +879,17 @@
 			<array>
 				<dict> <key>include</key> <string>#lex-core</string> </dict>
 			</array>
+		</dict>
+
+		<key>ppline-directive-invalid-usage</key>
+		<dict>
+			<key>match</key> <string>(^\s*(#)\s*(if|ifdef|ifndef|elif|pragma|define|undef|include|include_next|import)\b)\s*?(\n|$)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>4</key> <dict> <key>name</key> <string>invalid.illegal.invalid-usage-of-preprocessor-directive.c</string> </dict>
+			</dict>
+			<key>name</key> <string>meta.preprocessor.directive.cadas</string>
 		</dict>
 
 		<key>ppline-directive-obsolete</key>
@@ -876,18 +903,14 @@
 			</array>
 		</dict>
 
-		<key>ppline-directive-invalid</key>
+		<key>ppline-invalid</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)\s*([a-zA-Z_]\w*+)\b</string>
+			<key>begin</key> <string>^\s*(#)(?!\s*(?=/[/*]|(?&gt;\\\s*\n)|\n|$))</string>
 			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 			<key>name</key> <string>meta.preprocessor.directive.c invalid.illegal.preprocessor.c</string>
-			<key>patterns</key>
-			<array>
-				<dict> <key>include</key> <string>#lex-core</string> </dict>
-			</array>
 		</dict>
 
-		<key>ppline-directive-any</key>
+		<key>ppline-any</key>
 		<dict>
 			<key>begin</key> <string>^\s*(#)</string>
 			<key>beginCaptures</key>
