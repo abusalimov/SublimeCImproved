@@ -312,7 +312,7 @@
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#lex</string> </dict>
-				<dict> <key>include</key> <string>#compound</string> </dict>
+				<dict> <key>include</key> <string>#type-definition</string> </dict>
 				<dict> <key>include</key> <string>#block</string> </dict>
 				<dict>
 					<key>match</key> <string>\s*\b([A-Za-z_]\w*+)(?=\s*[\[;])</string>
@@ -345,7 +345,7 @@
 			<array>
 				<dict> <key>include</key> <string>#lex</string> </dict>
 				<dict>
-					<key>match</key> <string>\b([A-Za-z_]\w*+)\b</string>
+					<key>match</key> <string>\s*\b([A-Za-z_]\w*+)\b</string>
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>entity.name.type.declaration.c</string> </dict>
@@ -382,7 +382,8 @@
 				        (?: [A-Za-z_]\w*+ | ::[^:] )++
 				        (?: (?&lt;= ^ operator | \W operator )  # C++ operator?
 				            (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )?
-				        (?:\s|/\*.*?\*/)* \( ) )
+				        (?:\s|/\*.*?\*/)* \( )
+				  | (?= \s*\b(?: [A-Za-z_]\w*+ ) (?= \s* [\[;] ) ) )
 			</string>
 			<key>name</key> <string>meta.compound.c</string>
 			<key>patterns</key>
@@ -946,4 +947,3 @@
 	<string>24242A3A-CC4A-414D-B1FA-18D2BABB6754</string>
 </dict>
 </plist>
-f
