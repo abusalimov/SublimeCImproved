@@ -814,18 +814,31 @@
 			<dict>
 				<key>0</key> <dict> <key>name</key> <string>keyword.other.preprocessor.include.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
+			<key>end</key> <string>(?:("[^"]*?)|(&lt;[^&gt;]*?))(\n)|(?&lt;=^|[^\\])\s*(?=\n)</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>string.quoted.double.include.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>string.quoted.other.lt-gt.include.c</string> </dict>
+				<key>3</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-end-of-line.c</string> </dict>
+			</dict>
 			<key>name</key> <string>meta.preprocessor.include.c</string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#ppline-include-innards</string> </dict>
+			</array>
+		</dict>
+		<key>ppline-include-innards</key>
+		<dict>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
 				<dict>
-					<key>begin</key> <string>"</string>
+					<key>begin</key> <string>"|(?=.*?")</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.begin.c</string> </dict>
 					</dict>
-					<key>end</key> <string>"</string>
+					<key>end</key> <string>"|(?&lt;=^|[^\\])(?=\s*\n)</string>
 					<key>endCaptures</key>
 					<dict>
 						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.end.c</string> </dict>
@@ -833,17 +846,26 @@
 					<key>name</key> <string>string.quoted.double.include.c</string>
 				</dict>
 				<dict>
-					<key>begin</key> <string>&lt;</string>
+					<key>begin</key> <string>&lt;(?=.*?&gt;)</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.begin.c</string> </dict>
 					</dict>
-					<key>end</key> <string>&gt;</string>
+					<key>end</key> <string>&gt;|(?&lt;=^|[^\\])(?=\s*\n)</string>
 					<key>endCaptures</key>
 					<dict>
 						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.string.end.c</string> </dict>
 					</dict>
 					<key>name</key> <string>string.quoted.other.lt-gt.include.c</string>
+				</dict>
+				<dict>
+					<key>begin</key> <string>\(</string>
+					<key>end</key> <string>\)|(?&lt;=^|[^\\])(?=\s*\n)</string>
+					<key>name</key> <string>meta.parens.c</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#ppline-include-innards</string> </dict>
+					</array>
 				</dict>
 			</array>
 		</dict>
