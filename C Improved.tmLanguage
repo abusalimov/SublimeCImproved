@@ -734,27 +734,22 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>match</key> <string>\s*(?:##)</string>
-						</dict>
-						<dict>
-							<key>match</key> <string>\s*(?:#)\s*([a-zA-Z_]\w*+)</string>
-							<key>captures</key>
-							<dict>
-								<key>1</key> <dict> <key>name</key> <string>variable.parameter.c</string> </dict>
-							</dict>
-						</dict>
-						<dict> <key>include</key> <string>#ppline-macro-head-function</string> </dict>
-						<dict> <key>include</key> <string>#ppline-macro-head-object</string> </dict>
-						<dict> <key>include</key> <string>#lex-in-preprocessor</string> </dict>
-
-						<dict> <key>include</key> <string>#initialization</string> </dict>
-						<dict> <key>include</key> <string>#call-in-preprocessor</string> </dict>
-						<dict> <key>include</key> <string>#support</string> </dict>
-					</array>
+					<key>match</key> <string>\s*(?:##)</string>
 				</dict>
+				<dict>
+					<key>match</key> <string>\s*(?:#)\s*([a-zA-Z_]\w*+)</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>variable.parameter.c</string> </dict>
+					</dict>
+				</dict>
+				<dict> <key>include</key> <string>#ppline-macro-head-function</string> </dict>
+				<dict> <key>include</key> <string>#ppline-macro-head-object</string> </dict>
+				<dict> <key>include</key> <string>#lex-in-preprocessor</string> </dict>
+
+				<dict> <key>include</key> <string>#initialization</string> </dict>
+				<dict> <key>include</key> <string>#call-in-preprocessor</string> </dict>
+				<dict> <key>include</key> <string>#support</string> </dict>
 			</array>
 		</dict>
 		<key>ppline-macro-head-object</key>
