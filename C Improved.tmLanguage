@@ -620,14 +620,11 @@
 					<dict>
 						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.comment.c</string> </dict>
 					</dict>
-					<key>end</key> <string>$\n?</string>
+					<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)</string>
 					<key>name</key> <string>comment.line.double-slash.c++</string>
 					<key>patterns</key>
 					<array>
-						<dict>
-							<key>match</key> <string>(?&gt;\\\s*\n)</string>
-							<key>name</key> <string>punctuation.separator.continuation.c++</string>
-						</dict>
+						<dict> <key>include</key> <string>#lex-continuation</string> </dict>
 					</array>
 				</dict>
 			</array>
