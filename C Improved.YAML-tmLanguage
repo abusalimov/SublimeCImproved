@@ -1,11 +1,27 @@
 # [PackageDev] target_format: plist, ext: tmLanguage
-comment: "\n\t        https://github.com/abusalimov/SublimeCImproved\n\n\t       \
-  \ Derived from C.tmLanguage - the original TextMate and Sublime Text\n\t       \
-  \ syntax definition.\n\n\t"
+
+comment: >
+  https://github.com/abusalimov/SublimeCImproved
+  Derived from C.tmLanguage - the original TextMate and Sublime Text
+  syntax definition.
+
 name: C Improved
 scopeName: source.c
 fileTypes: [c, h]
 uuid: 24242A3A-CC4A-414D-B1FA-18D2BABB6754
+
+firstLineMatch: -[*]-( Mode:)? C -[*]-
+foldingStartMarker: >
+  (?x)
+    /\*\*(?!\*) |
+    ^
+    (?!
+      [^{]*?// |
+      [^{]*?/\*(?!.*?\*/.*?\{)
+    ).*?\{\s*($|//|/\*(?!.*?\*/.*\S))
+foldingStopMarker: (?<!\*)\*\*/|^\s*\}
+keyEquivalent: ^~C
+
 patterns:
 - include: '#lex'
 - include: '#block'
@@ -14,6 +30,7 @@ patterns:
 - include: '#support-macro'
 - include: '#function'
 - include: '#support'
+
 repository:
   block:
     name: meta.block.c
@@ -21,6 +38,7 @@ repository:
     end: \}
     patterns:
     - include: '#block_innards'
+
   block_innards:
     patterns:
     - include: '#lex'
@@ -32,23 +50,38 @@ repository:
     - include: '#function'
     - include: '#parens'
     - include: '#block'
+
   call:
     name: meta.function-call.c
-    begin: "(?x)\n\t\t\t\t\\s*\n\t\t\t\t(?= # don't consume to recognize support functions\n\
-      \t\t\t\t    (?: [A-Za-z_]\\w*+ | ::[^:] )++\n\t\t\t\t    \\s*\\( )\n\t\t\t"
+    begin: >
+      (?x)
+        \s*
+        # don't consume to recognize support functions
+        (?=
+          (?: [A-Za-z_]\w*+ | ::[^:] )++
+          \s*\(
+        )
     end: (?<=\))
     patterns:
     - include: '#call-in-preprocessor'
     - include: '#parens'
+
   call-in-preprocessor:
-    begin: "(?x)\n\t\t\t\t\\s*\n\t\t\t\t(?= # don't consume to recognize support functions\n\
-      \t\t\t\t    (?: [A-Za-z_]\\w*+ | ::[^:] )++\n\t\t\t\t    \\s*\\( )\n\t\t\t"
+    begin: >
+      (?x)
+        \s*
+        # don't consume to recognize support functions
+        (?=
+          (?: [A-Za-z_]\w*+ | ::[^:] )++
+          \s*\(
+        )
     end: (?=\()
     patterns:
     - include: '#lex-in-preprocessor'
     - include: '#support'
     - name: support.function.any-method.c
       match: (?:[A-Za-z_]\w*+|::[^:])++
+
   comments:
     patterns:
     - name: comment.block.c
@@ -73,38 +106,89 @@ repository:
       end: (?<=^|[^\\])\s*(?=\n)
       patterns:
       - include: '#lex-continuation'
+
   function:
     patterns:
     - include: '#function-declaration'
     - include: '#function-definition'
+
   function-declaration:
     name: meta.function.c
-    begin: "(?x)\n\t\t\t\t(?: ^\n\t\t\t\t  | (?<! (?<!\\w) new\n\t\t\t\t        |\
-      \ (?<!\\w) (?:else|enum) | (?<!\\w) (?:class|union)\n\t\t\t\t        | (?<!\\\
-      w) (?:struct|return|sizeof|typeof)\n\t\t\t\t        | (?<!\\w) __typeof | (?<!\\\
-      w) __typeof__ )\n\t\t\t\t    (?<= \\w ) \\s\n\n\t\t\t\t  | #  or type modifier\
-      \ / closing bracket before name\n\t\t\t\t    (?<= [^&]& | [*>)}\\]] ) ) \\s*\n\
-      \n\t\t\t\t(   (?: [A-Za-z_]\\w*+ | ::[^:] )++\n\t\t\t\t    (?: (?<= ^ operator\
-      \ | \\W operator )  # C++ operator?\n\t\t\t\t        (?: [-*&<>=+!]+ | \\(\\\
-      ) | \\[\\] ) )? )\n\n\t\t\t\t(?= (?:\\s|/\\*.*?\\*/)* (?'parens' \\(\n\t\t\t\
-      \t            (?> \\g'parens' | /\\*.*?\\*/ | (?! /[/*] | [()] ) . )*\n\t\t\t\
-      \t        \\) ) \\s* ; )\n\t\t\t"
+    begin: >
+      (?x)
+        (?:
+          ^ |
+          (?<!
+            (?<!\w) new |
+            (?<!\w) (?:else|enum) |
+            (?<!\w) (?:class|union) |
+            (?<!\w) (?:struct|return|sizeof|typeof) |
+            (?<!\w) __typeof |
+            (?<!\w) __typeof__
+          )(?<= \w ) \s |
+          # or type modifier / closing bracket before name
+          (?<=
+            [^&]& |
+            [*>)}\]]
+          )
+        ) \s*
+        (
+          (?: [A-Za-z_]\w*+ | ::[^:] )++
+          (?:
+            # C++ operator
+            (?<= ^ operator | \W operator)
+            (?: [-*&<>=+!]+ | \(\) | \[\] )
+          )?
+        )
+        (?=
+          (?: \s | /\*.*?\*/ )*
+          (?'parens'\(
+            (?>
+              \g'parens' |
+              /\*.*?\*/ |
+              (?! /[/*] | [()] ).
+            )*\)
+          ) \s* ;
+        )
     beginCaptures:
       '1': {name: entity.name.function.declaration.c}
     end: ;
     patterns:
     - include: '#lex'
     - include: '#parens'
+
   function-definition:
     name: meta.function.c
-    begin: "(?x)\n\t\t\t\t(?: ^\n\t\t\t\t  | (?<! (?<!\\w) new\n\t\t\t\t        |\
-      \ (?<!\\w) (?:else|enum) | (?<!\\w) (?:class|union)\n\t\t\t\t        | (?<!\\\
-      w) (?:struct|return|sizeof|typeof)\n\t\t\t\t        | (?<!\\w) __typeof | (?<!\\\
-      w) __typeof__ )\n\t\t\t\t    (?<= \\w ) \\s\n\n\t\t\t\t  | #  or type modifier\
-      \ / closing bracket before name\n\t\t\t\t    (?<= [^&]& | [*>)}\\]] ) ) \\s*\n\
-      \n\t\t\t\t(   (?: [A-Za-z_]\\w*+ | ::[^:] )++\n\t\t\t\t    (?: (?<= ^ operator\
-      \ | \\W operator )  # C++ operator?\n\t\t\t\t        (?: [-*&<>=+!]+ | \\(\\\
-      ) | \\[\\] ) )? )\n\n\t\t\t\t(?= (?:\\s|/\\*.*?\\*/)* \\( )\n\t\t\t"
+    begin: >
+      (?x)
+        (?:
+          ^ |
+          (?<!
+            (?<!\w) new |
+            (?<!\w) (?:else|enum) |
+            (?<!\w) (?:class|union) |
+            (?<!\w) (?:struct|return|sizeof|typeof) |
+            (?<!\w) __typeof |
+            (?<!\w) __typeof__
+          ) (?<= \w ) \s
+          |
+          #  or type modifier / closing bracket before name
+          (?<=
+            [^&]& |
+            [*>)}\]]
+          )
+        ) \s*
+        (
+          (?: [A-Za-z_]\w*+ | ::[^:] )++
+          (?:
+            # C++ operator
+            (?<= ^ operator | \W operator )
+            (?: [-*&<>=+!]+ | \(\) | \[\] )
+          )?
+        )
+        (?=
+          (?:\s|/\*.*?\*/)* \(
+        )
     beginCaptures:
       '1': {name: entity.name.function.definition.c}
     end: (?<=\})|;
@@ -114,43 +198,69 @@ repository:
     - name: storage.modifier.c
       match: \s*\b(const|override)\b
     - include: '#block'
+
   initialization:
     name: meta.initialization.c
-    match: "(?x)\n\t\t\t\t(?: (?<! (?<!\\w) new\n\t\t\t\t        | (?<!\\w) (?:else|enum)\
-      \ | (?<!\\w) (?:class|union)\n\t\t\t\t        | (?<!\\w) (?:struct|return|sizeof|typeof)\n\
-      \t\t\t\t        | (?<!\\w) __typeof | (?<!\\w) __typeof__ )\n\t\t\t\t    (?<=\
-      \ \\w ) \\s\n\n\t\t\t\t  | #  or type modifier / closing bracket / comma before\
-      \ name\n\t\t\t\t    (?<= [^&]& | [,*)}] ) ) \\s*\n\n\t\t\t\t( (?: [A-Za-z_]\\\
-      w*+ | ::[^:] )++ )\n\n\t\t\t\t(?= \\s* (?: [(\\[=;] | $ ) )\n\t\t\t"
+    match: >
+      (?x)
+        (?:
+          (?<!
+            (?<!\w) new |
+            (?<!\w) (?:else|enum) |
+            (?<!\w) (?:class|union) |
+            (?<!\w) (?:struct|return|sizeof|typeof) |
+            (?<!\w) __typeof |
+            (?<!\w) __typeof__
+          ) (?<= \w ) \s
+          |
+          #  or type modifier / closing bracket / comma before name
+          (?<=
+            [^&]& |
+            [,*)}]
+          )
+        ) \s*
+        (
+          (?: [A-Za-z_]\w*+ | ::[^:] )++
+        )
+        (?=
+          \s* (?: [(\[=;] | $ )
+        )
     captures:
       '1': {name: variable.other.c}
+
   lex:
     patterns:
     - include: '#lex-common'
     - include: '#preprocessor'
+
   lex-common:
     patterns:
     - include: '#lex-core'
     - include: '#lex-keyword'
     - include: '#lex-constant'
+
   lex-constant:
     patterns:
     - match: \s*\b(NULL|true|false|TRUE|FALSE)\b
       captures:
         '1': {name: constant.language.c}
+
   lex-continuation:
     name: punctuation.separator.continuation.c
     match: (?>\\\s*\n)
+
   lex-core:
     patterns:
     - include: '#comments'
     - include: '#lex-continuation'
     - include: '#lex-number'
     - include: '#lex-string'
+
   lex-in-preprocessor:
     patterns:
     - include: '#lex-common'
     - include: '#lex-keyword-type'
+
   lex-keyword:
     patterns:
     - match: \s*\b(sizeof|(?:__|(?!\w+__))typeof(?:__)?)\b
@@ -165,10 +275,12 @@ repository:
     - match: \s*\b(extern|static|register|__attribute__|(?:__|(?!\w+__))(?:const|restrict|volatile|inline)(?:__)?)\b
       captures:
         '1': {name: storage.modifier.c}
+
   lex-keyword-type:
     match: \s*\b(class|struct|union|enum|typedef)\b
     captures:
       '1': {name: storage.type.c}
+
   lex-number:
     patterns:
     - match: \s*(\b(0[xX][0-9a-fA-F]*|0[0-7]*|[1-9][0-9]*)[uU]?(ll?|LL?)?\b)
@@ -177,6 +289,7 @@ repository:
     - match: \s*(\b(([0-9]+\.[0-9]*)|(\.[0-9]+))([eE][+\-]?[0-9]+)?[fF]?\b)
       captures:
         '1': {name: constant.numeric.float.c}
+
   lex-string:
     patterns:
     - name: string.quoted.double.c
@@ -202,6 +315,7 @@ repository:
       patterns:
       - include: '#lex-continuation'
       - include: '#string_escaped_char'
+
   parens:
     name: meta.parens.c
     begin: \(
@@ -213,6 +327,7 @@ repository:
     - include: '#type'
     - include: '#block'
     - include: '#parens'
+
   ppline-any:
     name: meta.preprocessor.directive.null-directive.c
     begin: ^\s*(#)
@@ -221,6 +336,7 @@ repository:
     end: (?<=^|[^\\])\s*(?=\n)
     patterns:
     - include: '#lex-core'
+
   ppline-directive:
     name: meta.preprocessor.directive.c
     begin: ^\s*(#)\s*(if|ifdef|ifndef|elif|else|endif|pragma|line|define|undef|error|warning)\b
@@ -229,18 +345,21 @@ repository:
     end: (?<=^|[^\\])\s*(?=\n)
     patterns:
     - include: '#lex-core'
+
   ppline-directive-invalid-usage:
     name: meta.preprocessor.directive.cadas
     match: (^\s*(#)\s*(if|ifdef|ifndef|elif|pragma|define|undef|include|include_next|import)\b)\s*?(\n|$)
     captures:
       '1': {name: keyword.other.preprocessor.c}
       '4': {name: invalid.illegal.invalid-usage-of-preprocessor-directive.c}
+
   ppline-directive-obsolete:
     name: meta.preprocessor.directive.c invalid.deprecated.preprocessor.c
     begin: ^\s*(#)\s*(assert|unassert|ident|sccs)\b
     end: (?<=^|[^\\])\s*(?=\n)
     patterns:
     - include: '#lex-core'
+
   ppline-include:
     name: meta.preprocessor.include.c
     begin: ^\s*(#)\s*(include|include_next|import)\b
@@ -253,6 +372,7 @@ repository:
       '3': {name: invalid.illegal.unexpected-end-of-line.c}
     patterns:
     - include: '#ppline-include-innards'
+
   ppline-include-innards:
     patterns:
     - include: '#preprocessor-lex'
@@ -275,10 +395,12 @@ repository:
       end: \)|(?<=^|[^\\])(?=\s*\n)
       patterns:
       - include: '#ppline-include-innards'
+
   ppline-invalid:
     name: meta.preprocessor.directive.c invalid.illegal.preprocessor.c
     begin: ^\s*(#)(?!\s*(?=/[/*]|(?>\\\s*\n)|\n|$))
     end: (?<=^|[^\\])\s*(?=\n)
+
   ppline-macro:
     name: meta.preprocessor.macro.c
     begin: ^\s*(#)(?=\s*(define)\s+[a-zA-Z_]\w*+)
@@ -296,6 +418,7 @@ repository:
     - include: '#initialization'
     - include: '#call-in-preprocessor'
     - include: '#support'
+
   ppline-macro-head-function:
     contentName: meta.preprocessor.macro.parameters.c
     begin: (?<!##)(?<=#)(\s*define)\s+([a-zA-Z_]\w*+)\(
@@ -307,36 +430,84 @@ repository:
       '1': {name: invalid.illegal.unexpected-end-of-line.c}
     patterns:
     - include: '#preprocessor-lex'
-    - match: "(?x)\n\t\t\t\t\t\t\\s*\n\t\t\t\t\t\t( [a-zA-Z_]\\w*+ )\n\t\t\t\t\t\t\
-        (?: \\s*\n\t\t\t\t\t\t    ( (?: (?! \\s* (?: [(),\\n] | \\.\\.\\. | (?>\\\\\
-        \\s*\\n) | /[/*] ) )\n\t\t\t\t\t\t          . )+ ) )?\n\t\t\t\t\t"
+
+    - match: >
+        (?x)
+          \s*
+          ( [a-zA-Z_]\w*+ )
+          (?:
+            \s*
+            (
+              (?:
+                (?!
+                  \s*
+                  (?:
+                    [(),\n] |
+                    \.\.\. |
+                    (?>\\\s*\n) |
+                    /[/*]
+                  )
+                ).
+              )+
+            )
+          )?
+
       captures:
         '1': {name: variable.parameter.c}
         '2': {name: invalid.illegal.missing-separator.c}
-    - match: "(?x)\n\t\t\t\t\t\t(?: (?<! ^ | \\w | \\*/ ) \\s* (,)\n\t\t\t\t\t\t \
-        \ | \\s* (,) \\s* (?= \\) ) )\n\t\t\t\t\t"
+
+    - match: >
+        (?x)
+          (?:
+            (?<! ^ | \w | \*/ ) \s* (,) |
+            \s* (,) \s* (?= \) )
+          )
+
       captures:
         '1': {name: invalid.illegal.unexpected-separator.c}
         '2': {name: invalid.illegal.unexpected-separator.c}
+
     - match: \s*(,)
       captures:
         '1': {name: punctuation.separator.parameter.c}
-    - match: "(?x)\n\t\t\t\t\t\t\\s*\n\t\t\t\t\t\t( \\.\\.\\. )\n\t\t\t\t\t\t(?: \\\
-        s*\n\t\t\t\t\t\t    ( (?: (?! \\s* (?: [()\\n] | (?>\\\\\\s*\\n) | /[/*] )\
-        \ )\n\t\t\t\t\t\t          . )+ ) )?\n\t\t\t\t\t"
+
+    - match: >
+        (?x)
+          \s*
+          ( \.\.\. )
+          (?:
+            \s*
+            (
+              (?:
+                (?!
+                  \s*
+                  (?:
+                    [()\n] |
+                    (?>\\\s*\n) |
+                    /[/*]
+                  )
+                ).
+              )+
+            )
+          )?
+
       captures:
         '1': {name: punctuation.definition.ellipsis.c}
         '2': {name: invalid.illegal.expected-closing-paren.c}
+
     - name: invalid.illegal.unexpected-parens.c
       begin: \(
       end: \)
+
     - name: invalid.illegal.unexpected-character.c
       match: '[^()\s]'
+
   ppline-macro-head-object:
     match: (?<!##)(?<=#)(\s*define)\s+([a-zA-Z_]\w*+)(?!\()[\s&&[^\n]]*
     captures:
       '1': {name: keyword.other.preprocessor.define.c}
       '2': {name: entity.name.variable.macro.c}
+
   ppline-pragma-mark:
     name: meta.preprocessor.directive.pragma-mark.c
     contentName: meta.toc-list.pragma-mark.c
@@ -348,6 +519,7 @@ repository:
     - include: '#preprocessor-lex'
     - name: string.other.pragma-mark.c
       match: .
+
   ppline-undef:
     name: meta.preprocessor.undef.c
     begin: (^\s*(#)\s*(undef))\s+([a-zA-Z_]\w*+)
@@ -356,6 +528,7 @@ repository:
       '4': {name: variable.macro.undef.c}
     end: (?<=^|[^\\])\s*(?=\n)
     patterns: []
+
   preprocessor:
     begin: (?=^\s*(#))
     end: (?!^\s*(#))
@@ -370,6 +543,7 @@ repository:
     - include: '#ppline-directive-obsolete'
     - include: '#ppline-invalid'
     - include: '#ppline-any'
+
   preprocessor-disabled:
     begin: ^\s*(#)(?=\s*(if)\s+(0[xX])?0++\b)
     beginCaptures:
@@ -389,6 +563,7 @@ repository:
       - include: '#lex-core'
     - name: comment.other.preprocessor-disabled.c
       match: .
+
   preprocessor-disabled-conditional:
     name: comment.other.preprocessor-disabled.c
     begin: ^\s*(#)\s*if(n?def)?\b
@@ -398,73 +573,156 @@ repository:
     - name: comment.other.preprocessor-disabled.c
       begin: ^\s*(#)
       end: (?<=^|[^\\])\s*(?=\n)
+
   preprocessor-lex:
     patterns:
     - include: '#comments'
     - include: '#lex-continuation'
+
   string_escaped_char:
     patterns:
     - name: constant.character.escape.c
       match: \\(\\|[abefnprtv'"?]|[0-3]\d{,2}|[4-7]\d?|x[a-fA-F0-9]{,2}|u[a-fA-F0-9]{,4}|U[a-fA-F0-9]{,8})
     - name: invalid.illegal.unknown-escape.c
       match: \\.
+
   string_placeholder:
     patterns:
     - name: constant.other.placeholder.c
-      match: "(?x)%\n\t\t\t\t\t\t(\\d+\\$)?                             # field (argument\
-        \ #)\n\t\t\t\t\t\t[#0\\- +']*                           # flags\n\t\t\t\t\t\
-        \t[,;:_]?                              # separator character (AltiVec)\n\t\
-        \t\t\t\t\t((-?\\d+)|\\*(-?\\d+\\$)?)?              # minimum field width\n\
-        \t\t\t\t\t\t(\\.((-?\\d+)|\\*(-?\\d+\\$)?)?)?         # precision\n\t\t\t\t\
-        \t\t(hh|h|ll|l|j|t|z|q|L|vh|vl|v|hv|hl)? # length modifier\n\t\t\t\t\t\t[diouxXDOUeEfFgGaACcSspn%]\
-        \           # conversion type\n\t\t\t\t\t"
+      match: >
+        (?x)%
+          (\d+\$)?                             # field (argument #)
+          [#0\- +']*                           # flags
+          [,;:_]?                              # separator character (AltiVec)
+          ((-?\d+)|\*(-?\d+\$)?)?              # minimum field width
+          (\.((-?\d+)|\*(-?\d+\$)?)?)?         # precision
+          (hh|h|ll|l|j|t|z|q|L|vh|vl|v|hv|hl)? # length modifier
+          [diouxXDOUeEfFgGaACcSspn%]           # conversion type
     - name: invalid.illegal.placeholder.c
       match: '%'
+
   support:
     patterns:
     - include: '#support-type'
     - include: '#support-macro'
     - include: '#support-function'
+
   support-function:
     patterns:
-    - match: \s*\b(hypot(f|l)?|s(scanf|ystem|nprintf|ca(nf|lb(n(f|l)?|ln(f|l)?))|i(n(h(f|l)?|f|l)?|gn(al|bit))|tr(s(tr|pn)|nc(py|at|mp)|c(spn|hr|oll|py|at|mp)|to(imax|d|u(l(l)?|max)|k|f|l(d|l)?)|error|pbrk|ftime|len|rchr|xfrm)|printf|et(jmp|vbuf|locale|buf)|qrt(f|l)?|w(scanf|printf)|rand)|n(e(arbyint(f|l)?|xt(toward(f|l)?|after(f|l)?))|an(f|l)?)|c(s(in(h(f|l)?|f|l)?|qrt(f|l)?)|cos(h(f)?|f|l)?|imag(f|l)?|t(ime|an(h(f|l)?|f|l)?)|o(s(h(f|l)?|f|l)?|nj(f|l)?|pysign(f|l)?)|p(ow(f|l)?|roj(f|l)?)|e(il(f|l)?|xp(f|l)?)|l(o(ck|g(f|l)?)|earerr)|a(sin(h(f|l)?|f|l)?|cos(h(f|l)?|f|l)?|tan(h(f|l)?|f|l)?|lloc|rg(f|l)?|bs(f|l)?)|real(f|l)?|brt(f|l)?)|t(ime|o(upper|lower)|an(h(f|l)?|f|l)?|runc(f|l)?|gamma(f|l)?|mp(nam|file))|i(s(space|n(ormal|an)|cntrl|inf|digit|u(nordered|pper)|p(unct|rint)|finite|w(space|c(ntrl|type)|digit|upper|p(unct|rint)|lower|al(num|pha)|graph|xdigit|blank)|l(ower|ess(equal|greater)?)|al(num|pha)|gr(eater(equal)?|aph)|xdigit|blank)|logb(f|l)?|max(div|abs))|di(v|fftime)|_Exit|unget(c|wc)|p(ow(f|l)?|ut(s|c(har)?|wc(har)?)|error|rintf)|e(rf(c(f|l)?|f|l)?|x(it|p(2(f|l)?|f|l|m1(f|l)?)?))|v(s(scanf|nprintf|canf|printf|w(scanf|printf))|printf|f(scanf|printf|w(scanf|printf))|w(scanf|printf)|a_(start|copy|end|arg))|qsort|f(s(canf|e(tpos|ek))|close|tell|open|dim(f|l)?|p(classify|ut(s|c|w(s|c))|rintf)|e(holdexcept|set(e(nv|xceptflag)|round)|clearexcept|testexcept|of|updateenv|r(aiseexcept|ror)|get(e(nv|xceptflag)|round))|flush|w(scanf|ide|printf|rite)|loor(f|l)?|abs(f|l)?|get(s|c|pos|w(s|c))|re(open|e|ad|xp(f|l)?)|m(in(f|l)?|od(f|l)?|a(f|l|x(f|l)?)?))|l(d(iv|exp(f|l)?)|o(ngjmp|cal(time|econv)|g(1(p(f|l)?|0(f|l)?)|2(f|l)?|f|l|b(f|l)?)?)|abs|l(div|abs|r(int(f|l)?|ound(f|l)?))|r(int(f|l)?|ound(f|l)?)|gamma(f|l)?)|w(scanf|c(s(s(tr|pn)|nc(py|at|mp)|c(spn|hr|oll|py|at|mp)|to(imax|d|u(l(l)?|max)|k|f|l(d|l)?|mbs)|pbrk|ftime|len|r(chr|tombs)|xfrm)|to(b|mb)|rtomb)|printf|mem(set|c(hr|py|mp)|move))|a(s(sert|ctime|in(h(f|l)?|f|l)?)|cos(h(f|l)?|f|l)?|t(o(i|f|l(l)?)|exit|an(h(f|l)?|2(f|l)?|f|l)?)|b(s|ort))|g(et(s|c(har)?|env|wc(har)?)|mtime)|r(int(f|l)?|ound(f|l)?|e(name|alloc|wind|m(ove|quo(f|l)?|ainder(f|l)?))|a(nd|ise))|b(search|towc)|m(odf(f|l)?|em(set|c(hr|py|mp)|move)|ktime|alloc|b(s(init|towcs|rtowcs)|towc|len|r(towc|len))))\b
+    - match: >
+        (?x)
+        \s*\b(
+          _Exit|abort|abs|acos|acosf|acosh|acoshf|acoshl|acosl|asctime|asin|asinf|asinh|asinhf|asinhl|asinl|assert|atan|atan2|
+          atan2f|atan2l|atanf|atanh|atanhf|atanhl|atanl|atexit|atof|atoi|atol|atoll|bsearch|btowc|cabs|cabsf|cabsl|cacos|cacosf|
+          cacosh|cacoshf|cacoshl|cacosl|calloc|carg|cargf|cargl|casin|casinf|casinh|casinhf|casinhl|casinl|catan|catanf|catanh|
+          catanhf|catanhl|catanl|cbrt|cbrtf|cbrtl|ccos|ccosf|ccosh|ccoshf|ccosl|ceil|ceilf|ceill|cexp|cexpf|cexpl|cimag|cimagf|
+          cimagl|clearerr|clock|clog|clogf|clogl|conj|conjf|conjl|copysign|copysignf|copysignl|cos|cosf|cosh|coshf|coshl|cosl|
+          cpow|cpowf|cpowl|cproj|cprojf|cprojl|creal|crealf|creall|csin|csinf|csinh|csinhf|csinhl|csinl|csqrt|csqrtf|csqrtl|ctan|
+          ctanf|ctanh|ctanhf|ctanhl|ctanl|ctime|difftime|div|erf|erfc|erfcf|erfcl|erff|erfl|exit|exp|exp2|exp2f|exp2l|expf|expl|
+          expm1|expm1f|expm1l|fabs|fabsf|fabsl|fclose|fdim|fdimf|fdiml|feclearexcept|fegetenv|fegetexceptflag|fegetround|
+          feholdexcept|feof|feraiseexcept|ferror|fesetenv|fesetexceptflag|fesetround|fetestexcept|feupdateenv|fflush|fgetc|
+          fgetpos|fgets|fgetwc|fgetws|floor|floorf|floorl|fma|fmaf|fmal|fmax|fmaxf|fmaxl|fmin|fminf|fminl|fmod|fmodf|fmodl|
+          fopen|fpclassify|fprintf|fputc|fputs|fputwc|fputws|fread|free|freopen|frexp|frexpf|frexpl|fscanf|fseek|fsetpos|
+          ftell|fwide|fwprintf|fwrite|fwscanf|getc|getchar|getenv|gets|getwc|getwchar|gmtime|hypot|hypotf|hypotl|ilogb|
+          ilogbf|ilogbl|imaxabs|imaxdiv|isalnum|isalpha|isblank|iscntrl|isdigit|isfinite|isgraph|isgreater|isgreaterequal|
+          isinf|isless|islessequal|islessgreater|islower|isnan|isnormal|isprint|ispunct|isspace|isunordered|isupper|iswalnum|
+          iswalpha|iswblank|iswcntrl|iswctype|iswdigit|iswgraph|iswlower|iswprint|iswpunct|iswspace|iswupper|iswxdigit|isxdigit|
+          labs|ldexp|ldexpf|ldexpl|ldiv|lgamma|lgammaf|lgammal|llabs|lldiv|llrint|llrintf|llrintl|llround|llroundf|llroundl|
+          localeconv|localtime|log|log10|log10f|log10l|log1p|log1pf|log1pl|log2|log2f|log2l|logb|logbf|logbl|logf|logl|longjmp|
+          lrint|lrintf|lrintl|lround|lroundf|lroundl|malloc|mblen|mbrlen|mbrtowc|mbsinit|mbsrtowcs|mbstowcs|mbtowc|memchr|
+          memcmp|memcpy|memmove|memset|mktime|modf|modff|modfl|nan|nanf|nanl|nearbyint|nearbyintf|nearbyintl|nextafter|
+          nextafterf|nextafterl|nexttoward|nexttowardf|nexttowardl|perror|pow|powf|powl|printf|putc|putchar|puts|putwc|
+          putwchar|qsort|raise|rand|realloc|remainder|remainderf|remainderl|remove|remquo|remquof|remquol|rename|rewind|
+          rint|rintf|rintl|round|roundf|roundl|scalbln|scalblnf|scalblnl|scalbn|scalbnf|scalbnl|scanf|setbuf|setjmp|setlocale|
+          setvbuf|signal|signbit|sin|sinf|sinh|sinhf|sinhl|sinl|snprintf|sprintf|sqrt|sqrtf|sqrtl|srand|sscanf|strcat|strchr|
+          strcmp|strcoll|strcpy|strcspn|strerror|strftime|strlen|strncat|strncmp|strncpy|strpbrk|strrchr|strspn|strstr|strtod|
+          strtof|strtoimax|strtok|strtol|strtold|strtoll|strtoul|strtoull|strtoumax|strxfrm|swprintf|swscanf|system|tan|tanf|
+          tanh|tanhf|tanhl|tanl|tgamma|tgammaf|tgammal|time|tmpfile|tmpnam|tolower|toupper|trunc|truncf|truncl|ungetc|ungetwc|
+          va_arg|va_copy|va_end|va_start|vfprintf|vfscanf|vfwprintf|vfwscanf|vprintf|vscanf|vsnprintf|vsprintf|vsscanf|vswprintf|
+          vswscanf|vwprintf|vwscanf|wcrtomb|wcscat|wcschr|wcscmp|wcscoll|wcscpy|wcscspn|wcsftime|wcslen|wcsncat|wcsncmp|wcsncpy|
+          wcspbrk|wcsrchr|wcsrtombs|wcsspn|wcsstr|wcstod|wcstof|wcstoimax|wcstok|wcstol|wcstold|wcstoll|wcstombs|wcstoul|wcstoull|
+          wcstoumax|wcsxfrm|wctob|wctomb|wmemchr|wmemcmp|wmemcpy|wmemmove|wmemset|wprintf|wscanf
+        )\b
+
       captures:
         '1': {name: support.function.C99.c}
+
   support-macro:
     patterns:
     - match: \s*\b(__builtin_\w++)\b
       captures:
         '1': {name: support.function.intrinsic.c}
-    - match: "(?x)\n\t\t\t\t\t\t\\s*\\b\n\t\t\t\t\t\t(   (?:__)?\n\t\t\t\t\t\t   \
-        \ (?: (?:DECL(?:ARE)?|DEF(?:INE)?)_[A-Z0-9_]+\n\t\t\t\t\t\t      | [A-Z_][A-Z0-9_]*_(?:DECL(?:ARE)?|DEF(?:INE)?)\n\
-        \t\t\t\t\t\t      | EXPORT_SYMBOL(?:_GPL)?\n\t\t\t\t\t\t      | LIST_HEAD\
-        \ ) )\n\t\t\t\t\t\t\\b\n\t\t\t\t\t"
+
+    - match: >
+        (?x)
+          \s*\b
+          (
+            (?:__)?
+            (?:
+              (?:DECL(?:ARE)?|DEF(?:INE)?)_[A-Z0-9_]+ |
+              [A-Z_][A-Z0-9_]*_(?:DECL(?:ARE)?|DEF(?:INE)?) |
+              EXPORT_SYMBOL(?:_GPL)? |
+              LIST_HEAD
+            )
+          ) \b
+
       captures:
         '1': {name: support.function.macro.linux-kernel.c}
-    - match: "\\s*\\b(CONFIG_[A-Z0-9_]++)\\b\n\t\t\t\t\t"
+
+    - match: >-
+        (?x)
+          \s*\b(CONFIG_[A-Z0-9_]++)\b
+
       captures:
         '1': {name: support.variable.config.c}
+
   support-type:
     patterns:
-    - match: \s*\b(u_char|u_short|u_int|u_long|ushort|uint|(?:u_quad|quad|qaddr|caddr|daddr|dev|fixpt|blkcnt|blksize|gid|in_addr|in_port|ino|key|mode|nlink|id|pid|off|segsz|swblk|uid|id|clock|size|ssize|time|useconds|suseconds)_t)\b
+    - match: >
+        (?x)
+          \s*\b(
+            u_char|u_short|u_int|u_long|ushort|uint|
+            (?:
+              u_quad|quad|qaddr|caddr|daddr|dev|fixpt|blkcnt|blksize|gid|in_addr|in_port|ino|key|mode|nlink|
+              id|pid|off|segsz|swblk|uid|id|clock|size|ssize|time|useconds|suseconds
+            )_t
+          )\b
+
       captures:
         '1': {name: support.type.sys-types.c}
+
     - match: \s*\b(pthread_(?:t|attr_t|once_t|key_t|(?:cond|mutex|rwlock)(?:attr)?_t))\b
       captures:
         '1': {name: support.type.pthread.c}
+
     - match: \s*\b(u?int(?:(?:_least|_fast)?(?:8|16|32|64)_t|ptr_t|max_t))\b
       captures:
         '1': {name: support.type.stdint.c}
+
     - match: \s*\b(noErr|kNilOptions|kInvalidID|kVariableLengthArray)\b
       captures:
         '1': {name: support.constant.mac-classic.c}
-    - match: \s*\b(AbsoluteTime|Boolean|Byte|ByteCount|ByteOffset|BytePtr|CompTimeValue|ConstLogicalAddress|ConstStrFileNameParam|ConstStringPtr|Duration|Fixed|FixedPtr|Float32|Float32Point|Float64|Float80|Float96|FourCharCode|Fract|FractPtr|Handle|ItemCount|LogicalAddress|OptionBits|OSErr|OSStatus|OSType|OSTypePtr|PhysicalAddress|ProcessSerialNumber|ProcessSerialNumberPtr|ProcHandle|Ptr|ResType|ResTypePtr|ShortFixed|ShortFixedPtr|SignedByte|SInt16|SInt32|SInt64|SInt8|Size|StrFileName|StringHandle|StringPtr|TimeBase|TimeRecord|TimeScale|TimeValue|TimeValue64|UInt16|UInt32|UInt64|UInt8|UniChar|UniCharCount|UniCharCountPtr|UniCharPtr|UnicodeScalarValue|UniversalProcHandle|UniversalProcPtr|UnsignedFixed|UnsignedFixedPtr|UnsignedWide|UTF16Char|UTF32Char|UTF8Char)\b
+
+    - match: >
+        (?x)
+          \s*\b(
+            AbsoluteTime|Boolean|Byte|ByteCount|ByteOffset|BytePtr|CompTimeValue|ConstLogicalAddress|ConstStrFileNameParam|
+            ConstStringPtr|Duration|Fixed|FixedPtr|Float32|Float32Point|Float64|Float80|Float96|FourCharCode|Fract|FractPtr|
+            Handle|ItemCount|LogicalAddress|OptionBits|OSErr|OSStatus|OSType|OSTypePtr|PhysicalAddress|ProcessSerialNumber|
+            ProcessSerialNumberPtr|ProcHandle|Ptr|ResType|ResTypePtr|ShortFixed|ShortFixedPtr|SignedByte|SInt16|SInt32|SInt64|
+            SInt8|Size|StrFileName|StringHandle|StringPtr|TimeBase|TimeRecord|TimeScale|TimeValue|TimeValue64|UInt16|UInt32|
+            UInt64|UInt8|UniChar|UniCharCount|UniCharCountPtr|UniCharPtr|UnicodeScalarValue|UniversalProcHandle|UniversalProcPtr|
+            UnsignedFixed|UnsignedFixedPtr|UnsignedWide|UTF16Char|UTF32Char|UTF8Char
+          )\b
+
       captures:
         '1': {name: support.type.mac-classic.c}
+
   type:
     patterns:
     - include: '#type-declaration'
     - include: '#type-definition'
+
   type-declaration:
     name: meta.compound.c
     begin: \s*\b(class|struct|union|enum)\b(?=(?:\s|/\*.*?\*/)*([A-Za-z_]\w*+)(?:\s|/\*.*?\*/)*;)
@@ -476,26 +734,52 @@ repository:
     - match: \s*\b([A-Za-z_]\w*+)\b
       captures:
         '1': {name: entity.name.type.declaration.c}
+
   type-definition:
     name: meta.compound.c
     begin: \s*\b(class|struct|union|enum)\b
     beginCaptures:
       '1': {name: storage.type.c}
-    end: "(?x)\n\t\t\t\t(?: (?!\\s*(?:[A-Za-z_({]|/[/*]|$))\n\t\t\t\t  | (?<!\\})(?=\
-      \ \\s*\n\t\t\t\t        # Prefer function definition over an attribute defined\n\
-      \t\t\t\t        # through a macro, unless a block has been seen. That is:\n\t\
-      \t\t\t        #   struct __packed __aligned(16) foo {...}; - function __aligned\n\
-      \t\t\t\t        #   struct foo {...} __packed __aligned(16); - structure foo\n\
-      \t\t\t\t        (?! \\b__attribute__\\b )\n\n\t\t\t\t        (?: (?<! (?<!\\\
-      w) new\n\t\t\t\t                | (?<!\\w) (?:else|enum) | (?<!\\w) (?:class|union)\n\
-      \t\t\t\t                | (?<!\\w) (?:struct|return|sizeof|typeof)\n\t\t\t\t\
-      \                | (?<!\\w) __typeof | (?<!\\w) __typeof__ )\n\t\t\t\t     \
-      \       (?<= \\w ) \\s\n\n        \t\t\t\t  | #  or type modifier / closing\
-      \ bracket before name\n\t\t\t\t            (?<= [^&]& | [*>)}\\]] ) ) \\s*\n\
-      \n\t\t\t\t        (?: [A-Za-z_]\\w*+ | ::[^:] )++\n\t\t\t\t        (?: (?<=\
-      \ ^ operator | \\W operator )  # C++ operator?\n\t\t\t\t            (?: [-*&<>=+!]+\
-      \ | \\(\\) | \\[\\] ) )?\n\t\t\t\t        (?:\\s|/\\*.*?\\*/)* \\( )\n\t\t\t\
-      \t  | (?= \\s*\\b(?: [A-Za-z_]\\w*+ ) (?= \\s* [\\[;] ) ) )\n\t\t\t"
+    end: >
+      (?x)
+        (?:
+          (?!
+            \s*(?:[A-Za-z_({]|/[/*]|$)
+          ) |
+          (?<!\})
+          (?= \s*
+            # Prefer function definition over an attribute defined
+            # through a macro, unless a block has been seen. That is:
+            #   struct __packed __aligned(16) foo {...}; - function __aligned
+            #   struct foo {...} __packed __aligned(16); - structure foo
+            (?! \b__attribute__\b )
+            (?:
+              (?<!
+                (?<!\w) new |
+                (?<!\w) (?:else|enum) |
+                (?<!\w) (?:class|union) |
+                (?<!\w) (?:struct|return|sizeof|typeof) |
+                (?<!\w) __typeof |
+                (?<!\w) __typeof__ )
+                (?<= \w ) \s |
+              #  or type modifier / closing bracket before name
+              (?<=
+                [^&]& |
+                [*>)}\]]
+              )
+            ) \s*
+            (?: [A-Za-z_]\w*+ | ::[^:] )++
+            (?:
+              # C++ operator
+              (?<= ^ operator | \W operator )
+              (?: [-*&<>=+!]+ | \(\) | \[\] ) )?
+              (?:\s|/\*.*?\*/)* \(
+            ) |
+          (?= \s*\b
+            (?: [A-Za-z_]\w*+ )
+            (?= \s* [\[;] )
+          )
+        )
     patterns:
     - begin: (?<=\})
       end: (?!\s*(?:[A-Za-z_({]|/[/*]|$))
@@ -509,6 +793,7 @@ repository:
     - match: \b([A-Za-z_]\w*+)(?=(?:\s|/\*.*?\*/)*\{)
       captures:
         '1': {name: entity.name.type.c}
+
   typedef:
     name: meta.typedef.c
     begin: \s*\b(typedef)\b
@@ -522,8 +807,3 @@ repository:
     - match: \s*\b([A-Za-z_]\w*+)(?=\s*[\[;])
       captures:
         '1': {name: entity.name.type.typedef.c}
-firstLineMatch: -[*]-( Mode:)? C -[*]-
-foldingStartMarker: "(?x)\n\t\t /\\*\\*(?!\\*)\n\t\t|^(?![^{]*?//|[^{]*?/\\*(?!.*?\\\
-  */.*?\\{)).*?\\{\\s*($|//|/\\*(?!.*?\\*/.*\\S))\n\t"
-foldingStopMarker: (?<!\*)\*\*/|^\s*\}
-keyEquivalent: ^~C
