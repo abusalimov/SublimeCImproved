@@ -103,7 +103,7 @@ repository:
       begin: \s*//
       beginCaptures:
         '0': {name: punctuation.definition.comment.c}
-      end: (?<=^|[^\\])\s*(?=\n)
+      end: (?<=^|[^\\])\s*$\n?
       patterns:
       - include: '#lex-continuation'
 
