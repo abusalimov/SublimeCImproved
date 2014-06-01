@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>scope</key>
-    <string>entity.name.type.typedef</string>
+    <string>source.c entity.name.type.typedef</string>
     <key>settings</key>
     <dict>
 		<key>showInIndexedSymbolList</key>
