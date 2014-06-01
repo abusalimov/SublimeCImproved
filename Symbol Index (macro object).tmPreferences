@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>scope</key>
-    <string>entity.name.variable.macro</string>
+    <string>source.c entity.name.variable.macro</string>
     <key>settings</key>
     <dict>
 		<key>showInIndexedSymbolList</key>
