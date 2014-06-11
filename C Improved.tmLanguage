@@ -267,9 +267,8 @@
 					<key>match</key>
 					<string>(?x)
 						\s*\b
-						(   (?:__)?
-						    (?: (?:DECL(?:ARE)?|DEF(?:INE)?)_[A-Z0-9_]+
-						      | [A-Z_][A-Z0-9_]*_(?:DECL(?:ARE)?|DEF(?:INE)?)
+						(   (?: (?:__)?(?:DECL(?:ARE)?|DEF(?:INE)?)_[A-Z0-9_]+
+						      | (?:__)?[A-Z_][A-Z0-9_]*_(?:DECL(?:ARE)?|DEF(?:INE)?)
 						      | EXPORT(?:_UNUSED)?(?:_PER_CPU)?_SYMBOL(?:_GPL(?:_FUTURE)?)?
 						      | MODULE_(?:INFO|ALIAS|LICENSE|AUTHOR|DESCRIPTION|DEVICE_TABLE|VERSION|FIRMWARE)
 						      | (?:__)?MODULE_PARM_(?:TYPE|DESC)
