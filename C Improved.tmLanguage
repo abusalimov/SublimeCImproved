@@ -682,7 +682,7 @@
 			<key>begin</key> <string>^\s*(#)(?=\s*(if)\s+(0[xX])?0++\b)</string>
 			<key>beginCaptures</key>
 			<dict>
-				<key>0</key> <dict> <key>name</key> <string>meta.preprocessor.macro.c keyword.other.preprocessor.c</string> </dict>
+				<key>0</key> <dict> <key>name</key> <string>meta.preprocessor.directive.c keyword.other.preprocessor.c</string> </dict>
 			</dict>
 			<key>end</key> <string>(?=^\s*(#)\s*(endif|else|elif))</string>
 			<key>patterns</key>
