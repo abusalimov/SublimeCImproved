@@ -962,7 +962,7 @@
 				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
 				<key>4</key> <dict> <key>name</key> <string>invalid.illegal.invalid-usage-of-preprocessor-directive.c</string> </dict>
 			</dict>
-			<key>name</key> <string>meta.preprocessor.directive.cadas</string>
+			<key>name</key> <string>meta.preprocessor.directive.c</string>
 		</dict>
 
 		<key>ppline-directive-obsolete</key>
