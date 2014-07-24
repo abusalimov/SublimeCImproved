@@ -82,12 +82,12 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>match</key> <string>(?&gt;\\\n)</string>
+					<key>match</key> <string>(?&gt;\\(\s*)\n)</string>
 					<key>name</key> <string>punctuation.separator.continuation.c</string>
-				</dict>
-				<dict>
-					<key>match</key> <string>(?&gt;\\\s+\n)</string>
-					<key>name</key> <string>invalid.illegal.space-after-continuation.c</string>
+					<key>captures</key>
+				        <dict>
+				            <key>1</key> <dict> <key>name</key> <string>invalid.illegal.space-after-continuation.c</string> </dict>
+				        </dict>
 				</dict>
 			</array>
 		</dict>
