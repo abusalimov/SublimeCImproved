@@ -55,7 +55,13 @@
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#lex-common</string> </dict>
-				<dict> <key>include</key> <string>#lex-keyword-type</string> </dict>
+				<dict>
+					<key>match</key> <string>\s*\b(class|struct|union|enum|typedef)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
+					</dict>
+				</dict>
 			</array>
 		</dict>
 		<key>lex-common</key>
@@ -193,14 +199,6 @@
 					</array>
 				</dict>
 			</array>
-		</dict>
-		<key>lex-keyword-type</key>
-		<dict>
-			<key>match</key> <string>\s*\b(class|struct|union|enum|typedef)\b</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
-			</dict>
 		</dict>
 		<key>support</key>
 		<dict>
