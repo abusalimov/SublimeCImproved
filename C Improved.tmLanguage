@@ -439,13 +439,6 @@
 			<key>name</key> <string>meta.block.c</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#block_innards</string> </dict>
-			</array>
-		</dict>
-		<key>block_innards</key>
-		<dict>
-			<key>patterns</key>
-			<array>
 				<dict> <key>include</key> <string>#lex</string> </dict>
 
 				<dict> <key>include</key> <string>#typedef</string> </dict>
