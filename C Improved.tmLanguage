@@ -46,25 +46,11 @@
 		<dict>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#lex-common</string> </dict>
+				<dict> <key>include</key> <string>#lex-in-preprocessor</string> </dict>
 				<dict> <key>include</key> <string>#preprocessor</string> </dict>
 			</array>
 		</dict>
 		<key>lex-in-preprocessor</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict> <key>include</key> <string>#lex-common</string> </dict>
-				<dict>
-					<key>match</key> <string>\s*\b(class|struct|union|enum|typedef)\b</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
-					</dict>
-				</dict>
-			</array>
-		</dict>
-		<key>lex-common</key>
 		<dict>
 			<key>patterns</key>
 			<array>
@@ -118,6 +104,13 @@
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>storage.modifier.c</string> </dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key> <string>\s*\b(class|struct|union|enum|typedef)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
 					</dict>
 				</dict>
 			</array>
@@ -322,11 +315,7 @@
 		</dict>
 		<key>typedef</key>
 		<dict>
-			<key>begin</key> <string>\s*\b(typedef)\b</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
-			</dict>
+			<key>begin</key> <string>(?x) (?&lt;= \A typedef | \W typedef ) \b</string>
 			<key>end</key> <string>;</string>
 			<key>name</key> <string>meta.typedef.c</string>
 			<key>patterns</key>
@@ -353,11 +342,13 @@
 		</dict>
 		<key>type-declaration</key>
 		<dict>
-			<key>begin</key> <string>\s*\b(class|struct|union|enum)\b(?=(?:\s|/\*.*?\*/)*([A-Za-z_]\w*+)(?:\s|/\*.*?\*/)*;)</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
-			</dict>
+			<key>begin</key> <string>(?x)
+				(?&lt;= \A enum | \A (?:class|union) | \A struct |
+				        \W enum | \W (?:class|union) | \W struct ) \b
+				(?= (?:\s|/\*.*?\*/)*
+				    ([A-Za-z_]\w*+)
+				    (?:\s|/\*.*?\*/)*; )
+			</string>
 			<key>end</key>
 			<string>(?&lt;=;)</string>
 			<key>name</key> <string>meta.compound.c</string>
@@ -375,11 +366,10 @@
 		</dict>
 		<key>type-definition</key>
 		<dict>
-			<key>begin</key> <string>\s*\b(class|struct|union|enum)\b</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
-			</dict>
+			<key>begin</key> <string>(?x)
+				(?&lt;= \A enum | \A (?:class|union) | \A struct |
+				        \W enum | \W (?:class|union) | \W struct ) \b
+			</string>
 			<key>end</key>
 			<string>(?x)
 				(?: (?!\s*(?:[A-Za-z_({]|/[/*]|$))
