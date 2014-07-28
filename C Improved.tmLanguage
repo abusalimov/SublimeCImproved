@@ -727,6 +727,31 @@
 						<key>1</key> <dict> <key>name</key> <string>support.type.mac-classic.c</string> </dict>
 					</dict>
 				</dict>
+				<dict>
+					<key>match</key>
+					<string>(?x)
+						\s*\b
+						(   PyObject | PyVarObject | PyTypeObject )
+						\b
+					</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>support.type.cpython.c</string> </dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(?x)
+						\s*\b
+						(   PyType_Type | PyBaseObject_Type | PySuper_Type
+						  | Py_None | Py_NotImplemented )
+						\b
+					</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>support.constant.cpython.c</string> </dict>
+					</dict>
+				</dict>
 			</array>
 		</dict>
 		<key>support-macro</key>
@@ -795,17 +820,16 @@
 					<string>\s*\b(_Py_IDENTIFIER)\b\s*\(\s*([A-Za-z_]\w*+)\s*\)</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>support.constant.cpython.identifier.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>support.function.cpython.macro.c</string> </dict>
 						<key>2</key> <dict> <key>name</key> <string>string.support.cpython.identifier.c</string> </dict>
 					</dict>
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\s*\b(PyId_)([A-Za-z_]\w*+)\b</string>
+					<string>\s*\bPyId_([A-Za-z_]\w*+)\b</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>support.constant.cpython.identifier.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>string.support.cpython.identifier.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>string.support.cpython.identifier.c</string> </dict>
 					</dict>
 				</dict>
 				<dict>
@@ -828,6 +852,20 @@
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>support.function.C99.c</string> </dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(?x)
+						\s*\b
+						(   Py_REFCNT | Py_TYPE | Py_SIZE
+						  | Py_X?(?:INC|DEC)REF | Py_CLEAR
+						  | Py(?:Object|Type)_\w++ )
+						\b
+					</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>support.function.cpython.c</string> </dict>
 					</dict>
 				</dict>
 			</array>
