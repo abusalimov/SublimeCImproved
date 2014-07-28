@@ -326,10 +326,6 @@
 			<array>
 				<dict> <key>include</key> <string>#lex</string> </dict>
 				<dict> <key>include</key> <string>#support</string> </dict>
-				<dict>
-					<key>match</key> <string>(?:[A-Za-z_]\w*+|::[^:])++</string>
-					<key>name</key> <string>support.function.any-method.c</string>
-				</dict>
 				<dict> <key>include</key> <string>#parens</string> </dict>
 			</array>
 		</dict>
