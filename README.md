@@ -81,10 +81,10 @@ Dropped features
 The standard syntax highlights recognizes `#else` part after `#if 1` conditional as a comment. This is a really nice feature, however it is rather fragile and has many issues, e.g. with unterminated blocks (opening/closing brace inside a preprocessor conditional).
 So for sake of simplicity it was decided to remove it at all, leaving only a plain `#if 0` handling, which is more or less stable and has pretty straightforward implementation.
 
-You may however checkout a [preprocessor-cond-scopes](/abusalimov/SublimeCImproved/tree/preprocessor-cond-scopes) branch which doesn't have this limitation.
+You may however checkout a [preprocessor-cond-scopes](//github.com/abusalimov/SublimeCImproved/tree/preprocessor-cond-scopes) branch which doesn't have this limitation.
 
 ### Local variable declaration/initialization
 C can be quite complicated to parse in some parts, for example related to pointer declarations (what is `t * v`? Is it a simple multiplication, or a declaration of a pointer to type `t` called `v`?). Needless to say, it is just impossible to parse C using regular expressions. Therefore, C Improved doesn't try to recognize variable declarations and to provide a distinct scope/highlighting for them.
 
-Some discussion on this can be found in a related [issue](/abusalimov/SublimeCImproved/issues/8).
+Some discussion on this can be found in a related [issue](//github.com/abusalimov/SublimeCImproved/issues/8).
 
