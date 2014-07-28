@@ -732,7 +732,8 @@
 					<key>match</key>
 					<string>(?x)
 						\s*\b
-						(   PyObject | PyVarObject | PyTypeObject )
+						(   Py(?:Var|Type|Dict|Set|List|Tuple)?Object
+						  | PyType_(?:Spec|Slot) )
 						\b
 					</string>
 					<key>captures</key>
@@ -744,8 +745,12 @@
 					<key>match</key>
 					<string>(?x)
 						\s*\b
-						(   PyType_Type | PyBaseObject_Type | PySuper_Type
-						  | Py_None | Py_NotImplemented )
+						(   Py(?:BaseObject|Type|Super|Bool|Dict
+						        |DictIter(?:Key|Value|Item)
+						        |Dict(?:Key|Value|Item)s
+						        |(?:Set|List|Tuple)(?:Iter)?
+						        |FrozenSet|ListRevIter)_Type
+						  | Py_(?:False|True|None|NotImplemented) )
 						\b
 					</string>
 					<key>captures</key>
@@ -808,12 +813,14 @@
 						(   PyAPI_(?:FUNC|DATA)
 						  | PyMODINIT_FUNC
 						  | Py_LOCAL(?:_INLINE)?
-						  | PyDoc_(?:STR(?:VAR)?|VAR) )
+						  | PyDoc_(?:STR(?:VAR)?|VAR)
+						  | Py_(RETURN)_(?:FALSE|TRUE|NONE|NOTIMPLEMENTED|NAN|INF) )
 						\b
 					</string>
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>support.function.cpython.macro.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>keyword.control.c</string> </dict>
 					</dict>
 				</dict>
 				<dict>
@@ -861,7 +868,7 @@
 						\s*\b
 						(   Py_REFCNT | Py_TYPE | Py_SIZE
 						  | Py_X?(?:INC|DEC)REF | Py_CLEAR
-						  | Py(?:Object|Type)_\w++ )
+						  | Py(?:Object|Type|Dict|Set|List|Tuple)_\w++ )
 						\b
 					</string>
 					<key>captures</key>
