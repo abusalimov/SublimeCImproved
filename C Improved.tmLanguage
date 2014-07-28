@@ -432,7 +432,6 @@
 				<dict> <key>include</key> <string>#typedef</string> </dict>
 				<dict> <key>include</key> <string>#type</string> </dict>
 
-				<dict> <key>include</key> <string>#initialization</string> </dict>
 				<dict> <key>include</key> <string>#call</string> </dict>
 				<dict> <key>include</key> <string>#support</string> </dict>
 
@@ -522,29 +521,6 @@
 				</dict>
 				<dict> <key>include</key> <string>#block</string> </dict>
 			</array>
-		</dict>
-		<key>initialization</key>
-		<dict>
-			<key>name</key> <string>meta.initialization.c</string>
-			<key>match</key>
-			<string>(?x)
-				(?: (?&lt;! (?&lt;!\w) new
-				        | (?&lt;!\w) (?:else|enum) | (?&lt;!\w) (?:class|union)
-				        | (?&lt;!\w) (?:struct|return|sizeof|typeof)
-				        | (?&lt;!\w) __typeof | (?&lt;!\w) __typeof__ )
-				    (?&lt;= \w ) \s
-
-				  | #  or type modifier / closing bracket / comma before name
-				    (?&lt;= [^&amp;]&amp; | [,*)}] ) ) \s*
-
-				( (?: [A-Za-z_]\w*+ | ::[^:] )++ )
-
-				(?= \s* (?: [(\[=;] | $ ) )
-			</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>variable.other.c</string> </dict>
-			</dict>
 		</dict>
 		<key>call</key>
 		<dict>
