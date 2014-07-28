@@ -62,7 +62,7 @@ You can adjust which symbols are available for navigation and visible in a symbo
 
 The following scopes and default preferences are provided:
 
-Scope name | Description | Outline<br/><kbd>ctrl</kbd>+<kbd>R</kbd> | Index (ST3 only)<br/><kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>R</kbd>, <kbd>F12</kbd>
+Scope name | Description | Outline<br/><kbd>ctrl</kbd>+<kbd>R</kbd> | Index (ST3) <kbd>F12</kbd><br/><kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>R</kbd>
 ---------- | ----------- | ---------------------------------------- | -----
 `entity.name.type`                 | type definition (e.g. `struct`)         | visible | visible
 `entity.name.type.declaration`     | forward declaration of a type           | visible | **hidden**
@@ -84,7 +84,7 @@ So for sake of simplicity it was decided to remove it at all, leaving only a pla
 You may however checkout a [preprocessor-cond-scopes](//github.com/abusalimov/SublimeCImproved/tree/preprocessor-cond-scopes) branch which doesn't have this limitation.
 
 ### Local variable declaration/initialization
-C can be quite complicated to parse in some parts, for example related to pointer declarations (what is `t * v`? Is it a simple multiplication, or a declaration of a pointer to type `t` called `v`?). Needless to say, it is just impossible to parse C using regular expressions. Therefore, C Improved doesn't try to recognize variable declarations and to provide a distinct scope/highlighting for them.
+C can be quite complicated to parse in some parts, for example related to pointer declarations (what is `t * v`? Is it a simple multiplication, or a declaration of a pointer to type `t` called `v`?). Needless to say, it is just impossible to parse C using regular expressions. Therefore, C Improved doesn't try to recognize variable declarations, so there is no distinct scope/highlighting for them.
 
 Some discussion on this can be found in a related [issue](//github.com/abusalimov/SublimeCImproved/issues/8).
 
