@@ -727,7 +727,7 @@
 					<key>match</key>
 					<string>(?x)
 						\s*\b
-						(   Py(?:Var|Type|Dict|Set|List|Tuple)?Object
+						(   Py(?:Var|Type|HeapType|Dict|Set|List|Tuple)?Object
 						  | PyType_(?:Spec|Slot) )
 						\b
 					</string>
@@ -863,7 +863,7 @@
 						\s*\b
 						(   Py_REFCNT | Py_TYPE | Py_SIZE
 						  | Py_X?(?:INC|DEC)REF | Py_CLEAR
-						  | Py(?:Object|Type|Dict|Set|List|Tuple)_\w++ )
+						  | _?Py(?:Object|Type|HeapType|Dict|Set|List|Tuple)_\w++ )
 						\b
 					</string>
 					<key>captures</key>
