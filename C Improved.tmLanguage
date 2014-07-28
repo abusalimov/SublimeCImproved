@@ -31,13 +31,7 @@
 
 	<key>patterns</key>
 	<array>
-		<dict> <key>include</key> <string>#lex</string> </dict>
-		<dict> <key>include</key> <string>#block</string> </dict>
-		<dict> <key>include</key> <string>#typedef</string> </dict>
-		<dict> <key>include</key> <string>#type</string> </dict>
-		<dict> <key>include</key> <string>#support-macro</string> </dict>
-		<dict> <key>include</key> <string>#function</string> </dict>
-		<dict> <key>include</key> <string>#support</string> </dict>
+		<dict> <key>include</key> <string>#translation_unit</string> </dict>
 	</array>
 
 	<key>repository</key>
@@ -424,6 +418,50 @@
 				</dict>
 			</array>
 		</dict>
+		<key>translation_unit</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#special_block</string> </dict>
+				<dict> <key>include</key> <string>#lex</string> </dict>
+
+				<dict> <key>include</key> <string>#typedef</string> </dict>
+				<dict> <key>include</key> <string>#type</string> </dict>
+
+				<dict> <key>include</key> <string>#support-macro</string> </dict>
+				<dict> <key>include</key> <string>#function</string> </dict>
+				<dict> <key>include</key> <string>#support</string> </dict>
+
+				<dict> <key>include</key> <string>#block</string> </dict>
+			</array>
+		</dict>
+		<key>special_block</key>
+		<dict>
+			<key>begin</key> <string>(?x)
+				(?= \s*
+				    (?:
+				        (?: \b extern \b
+				            (?: "(\\.|[^"])*" | '(\\.|[^'])*' | /\*.*?\*/ | \s)* ) |
+				        (?: \b namespace \b
+				            (?: (?: /\*.*?\*/ | \s)* \b [A-Za-z_]\w*+ \b)?
+				            (?: /\*.*?\*/ | \s)* ) )
+				    \{ )
+			</string>
+			<key>end</key> <string>(?&lt;=\})</string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#lex</string> </dict>
+				<dict>
+					<key>begin</key> <string>\{</string>
+					<key>end</key> <string>\}</string>
+					<key>name</key> <string>meta.block.special.c</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#translation_unit</string> </dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
 		<key>block</key>
 		<dict>
 			<key>begin</key> <string>\{</string>
@@ -438,7 +476,6 @@
 
 				<dict> <key>include</key> <string>#call</string> </dict>
 				<dict> <key>include</key> <string>#support</string> </dict>
-
 				<dict> <key>include</key> <string>#function</string> </dict>
 
 				<dict> <key>include</key> <string>#parens</string> </dict>
