@@ -777,6 +777,39 @@
 				</dict>
 				<dict>
 					<key>match</key>
+					<string>(?x)
+						\s*\b
+						(  (?: PyAPI_(?:FUNC|DATA)
+						      | PyMODINIT_FUNC
+						      | Py_LOCAL(?:_INLINE)?
+						      | PyDoc_(?:STR(?:VAR)?|VAR) ) )
+						\b
+					</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>support.function.macro.cpython.c</string> </dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\s*\b(_Py_IDENTIFIER)\b\s*\(\s*([A-Za-z_]\w*+)\s*\)</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>support.function.macro.cpython.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>string.support.cpython-identifier.c</string> </dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\s*\b(PyId_)([A-Za-z_]\w*+)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>support.function.macro.cpython.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>string.support.cpython-identifier.c</string> </dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key>
 					<string>\s*\b(CONFIG_[A-Z0-9_]++)\b
 					</string>
 					<key>captures</key>
