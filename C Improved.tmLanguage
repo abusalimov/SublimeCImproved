@@ -431,8 +431,7 @@
 				<dict> <key>include</key> <string>#ppline-macro-head-object</string> </dict>
 				<dict> <key>include</key> <string>#lex-in-preprocessor</string> </dict>
 
-				<dict> <key>include</key> <string>#support-type</string> </dict>
-				<dict> <key>include</key> <string>#support-macro</string> </dict>
+				<dict> <key>include</key> <string>#support</string> </dict>
 			</array>
 		</dict>
 		<key>ppline-macro-head-object</key>
