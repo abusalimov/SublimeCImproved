@@ -71,8 +71,12 @@
 		</dict>
 		<key>lex-continuation</key>
 		<dict>
-			<key>match</key> <string>(?&gt;\\\s*$\n?)</string>
+			<key>match</key> <string>\\(\s*?)$\n?</string>
 			<key>name</key> <string>punctuation.separator.continuation.c</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>invalid.illegal.space-after-continuation.c</string> </dict>
+			</dict>
 		</dict>
 		<key>lex-keyword</key>
 		<dict>
