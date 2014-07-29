@@ -233,8 +233,26 @@
 		<dict>
 			<key>patterns</key>
 			<array>
+				<dict> <key>include</key> <string>#function-fixup-macro</string> </dict>
 				<dict> <key>include</key> <string>#function-declaration</string> </dict>
 				<dict> <key>include</key> <string>#function-definition</string> </dict>
+			</array>
+		</dict>
+		<key>function-fixup-macro</key>
+		<dict>
+			<key>begin</key>
+			<string>(?x)
+				^ # Begin of line, capital letters: most probably it is a macro
+				\s*\b
+				([A-Z0-9_]++)
+				\b
+				(?= (?:\s|/\*.*?\*/)* \( )
+			</string>
+			<key>end</key> <string>(?&lt;=\))</string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#lex</string> </dict>
+				<dict> <key>include</key> <string>#parens</string> </dict>
 			</array>
 		</dict>
 		<key>function-declaration</key>
@@ -319,7 +337,7 @@
 				\s*
 				(?= # don't consume to recognize support functions
 				    (?: [A-Za-z_]\w*+ | ::[^:] )++
-				    \s*\( )
+				    (?:\s|/\*.*?\*/)* \( )
 			</string>
 			<key>end</key> <string>(?&lt;=\))</string>
 			<key>patterns</key>
