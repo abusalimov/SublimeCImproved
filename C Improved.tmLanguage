@@ -837,11 +837,10 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\s*\b(CONFIG_[A-Z0-9_]++)\b
-					</string>
+					<string>\s*\b((?:CONFIG|HAVE)_[A-Z0-9_]++)\b</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>support.variable.config.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>support.constant.config.c</string> </dict>
 					</dict>
 				</dict>
 			</array>
