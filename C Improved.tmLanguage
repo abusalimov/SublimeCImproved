@@ -745,7 +745,7 @@
 					<key>match</key>
 					<string>(?x)
 						\s*\b
-						(   Py(?:Var|Type|HeapType|Dict|Set|List|Tuple)?Object
+						(   Py(?:Var|Type|HeapType|Dict|Set|List|Tuple|BaseException)?Object
 						  | PyType_(?:Spec|Slot) )
 						\b
 					</string>
@@ -763,6 +763,7 @@
 						        |Dict(?:Key|Value|Item)s
 						        |(?:Set|List|Tuple)(?:Iter)?
 						        |FrozenSet|ListRevIter)_Type
+						  | _?PyExc_\w++
 						  | Py_(?:False|True|None|NotImplemented) )
 						\b
 					</string>
@@ -827,6 +828,11 @@
 						  | PyMODINIT_FUNC
 						  | Py_LOCAL(?:_INLINE)?
 						  | PyDoc_(?:STR(?:VAR)?|VAR)
+						  | PyObject(?:_VAR)?_HEAD
+						  | _PyObject_HEAD_EXTRA
+						  | PyException_HEAD
+						  | Py(?:Var)?Object_HEAD_INIT
+						  | PyModuleDef_HEAD_INIT
 						  | Py_(RETURN)_(?:FALSE|TRUE|NONE|NOTIMPLEMENTED|NAN|INF) )
 						\b
 					</string>
@@ -880,7 +886,7 @@
 						\s*\b
 						(   Py_REFCNT | Py_TYPE | Py_SIZE
 						  | Py_X?(?:INC|DEC)REF | Py_CLEAR
-						  | _?Py(?:Object|Type|HeapType|Dict|Set|List|Tuple)_\w++ )
+						  | _?Py(?:Object|Type|HeapType|Dict|Set|List|Tuple|Long|Exception|Err)_\w++ )
 						\b
 					</string>
 					<key>captures</key>
