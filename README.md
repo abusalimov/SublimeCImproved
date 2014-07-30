@@ -48,14 +48,20 @@ Standard C | C Improved
 ---------- | ----------
 ![Standard C macro parameters](http://habrastorage.org/storage3/1f8/118/fda/1f8118fda926989ac597a36ab0466473.png) | ![C Improved macro parameters](http://habrastorage.org/storage3/f31/11a/004/f3111a004bb12c613e909eb16886f101.png)
 
-### Linux kernel support macros
+### Linux kernel support
 If you use ST for Linux kernel development, then you will probably find this fix rather useful.
 It adds a special handling of some common macros widely used across the kernel source code, like `EXPORT_SYMBOL`, `LIST_HEAD` or `DEFINE_XXX`,
 which would otherwise be recognized as functions thus polluting a symbol index and an outline.
 
 Standard C | C Improved
 ---------- | ----------
-![Standard C macro parameters](http://habrastorage.org/storage3/c7b/b01/316/c7bb01316e29e0994ec32aa212911a37.png) | ![C Improved macro parameters](http://habrastorage.org/storage3/024/daa/2ac/024daa2acbc19b9d6060faf59b23d12b.png)
+![Standard C linux support](http://habrastorage.org/storage3/c7b/b01/316/c7bb01316e29e0994ec32aa212911a37.png) | ![C Improved linux support](http://habrastorage.org/storage3/024/daa/2ac/024daa2acbc19b9d6060faf59b23d12b.png)
+
+### CPython interpreter support
+
+Standard C | C Improved
+---------- | ----------
+![Standard C CPython support](http://habrastorage.org/files/e6b/717/906/e6b71790670e4500b24de764db1bf7dd.png) | ![C Improved CPython support](http://habrastorage.org/files/1e0/1f1/f5e/1e01f1f5e7fd4e14a1fc3bc504896744.png)
 
 ### Customizable indexing of types/functions/macros
 You can adjust which symbols are available for navigation and visible in a symbol index or in an outline.
