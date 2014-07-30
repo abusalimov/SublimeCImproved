@@ -1021,6 +1021,55 @@
 						<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
 					</dict>
 				</dict>
+
+				<dict>
+					<key>match</key>
+					<string>(\-|\+|\*|\/|%|&amp;|\||\^|&lt;&lt;|&gt;&gt;)?=</string>
+					<key>name</key>
+					<string>keyword.operator.assignment.c</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(==|!=|&lt;=|&gt;=|&lt;&gt;|&lt;|&gt;)</string>
+					<key>name</key>
+					<string>keyword.operator.comparison.c</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(\-\-|\+\+)</string>
+					<key>name</key>
+					<string>keyword.operator.increment-decrement.c</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(\?|:)</string>
+					<key>name</key>
+					<string>keyword.operator.ternary.c</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(\-|\+|\*|\/|%)</string>
+					<key>name</key>
+					<string>keyword.operator.arithmetic.c</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(!|&amp;&amp;|\|\|)</string>
+					<key>name</key>
+					<string>keyword.operator.logical.c</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(~|&amp;|\||\^|&lt;&lt;|&gt;&gt;)</string>
+					<key>name</key>
+					<string>keyword.operator.bitwise.c</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(\.|-&gt;)(?=(?:\s|/\*.*?\*/)*[A-Za-z_]\w*+)</string>
+					<key>name</key>
+					<string>keyword.operator.dereference.c</string>
+				</dict>
 			</array>
 		</dict>
 		<key>lex-constant</key>
