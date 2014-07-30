@@ -567,7 +567,7 @@
 				<key>2</key> <dict> <key>name</key> <string>string.quoted.other.lt-gt.include.c</string> </dict>
 				<key>3</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-end-of-line.c</string> </dict>
 			</dict>
-			<key>name</key> <string>meta.preprocessor.include.c</string>
+			<key>name</key> <string>meta.preprocessor.include.c meta.preprocessor.c.include</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#ppline-include-innards</string> </dict>
