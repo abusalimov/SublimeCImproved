@@ -5,30 +5,7 @@ This package provides better support of C/C++/Objective-C languages in Sublime T
 
 It is **not** a self-sustained package, but only an addition to the standard *C++* package supplied with Sublime Text.
 
-Installation
----
-### Package Control
-With [Package Control](https://sublime.wbond.net/installation) installed:
- - Open Command Palette (<kbd>ctrl</kbd> + <kbd>shift</kbd> + <kbd>P</kbd> or <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>P</kbd>)
- - Select *Package Control: Install Package* (`pkginst`)
- - Search for ***C Improved*** (`cimp`) package and install it
-
-### Manual
-Locate Sublime Text `Packages` directory (*Preferences → Browse Packages...*)
-and clone this repository there:
-
-    git clone https://github.com/abusalimov/SublimeCImproved.git "C Improved"
-
-Usage
----
-
-Once installed *C Improved* will be used instead of the standard *C* syntax when opening `.c` and `.h` files, unless you have forcibly bound these extensions to something else.
-In the latter case you can rebind them to be handled by *C Improved* through *View → Syntax → Open all with current extension as… → C Improved*.
-
-Other languages derived from C (like C++ and Objective C) don't need their syntaxes to be changed to something special:
-they usually extend `source.c` under the hood, which is now provided by *C Improved* syntax.
-
-Issues addressed
+What is improved?
 ---
 
 ### Function calls inside macros
@@ -93,4 +70,28 @@ You may however checkout a [preprocessor-cond-scopes](//github.com/abusalimov/Su
 C can be quite complicated to parse in some parts, for example related to pointer declarations (what is `t * v`? Is it a simple multiplication, or a declaration of a pointer to type `t` called `v`?). Needless to say, it is just impossible to parse C using regular expressions. Therefore, C Improved doesn't try to recognize variable declarations, so there is no distinct scope/highlighting for them.
 
 Some discussion on this can be found in a related [issue](//github.com/abusalimov/SublimeCImproved/issues/8).
+
+Installation
+---
+### Package Control
+With [Package Control](https://sublime.wbond.net/installation) installed:
+ - Open Command Palette (<kbd>ctrl</kbd> + <kbd>shift</kbd> + <kbd>P</kbd> or <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>P</kbd>)
+ - Select *Package Control: Install Package* (`pkginst`)
+ - Search for ***C Improved*** (`cimp`) package and install it
+
+### Manual
+Locate Sublime Text `Packages` directory (*Preferences → Browse Packages...*)
+and clone this repository there:
+
+    git clone https://github.com/abusalimov/SublimeCImproved.git "C Improved"
+
+Usage
+---
+
+Once installed *C Improved* will be used instead of the standard *C* syntax when opening `.c` and `.h` files, unless you have forcibly bound these extensions to something else.
+In the latter case you can rebind them to be handled by *C Improved* through *View → Syntax → Open all with current extension as… → C Improved*.
+
+Other languages derived from C (like C++ and Objective C) don't need their syntaxes to be changed to something special:
+they usually extend `source.c` under the hood, which is now provided by *C Improved* syntax.
+
 
