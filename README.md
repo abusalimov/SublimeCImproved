@@ -3,38 +3,54 @@ Sublime C Improved
 
 This package provides better support of C/C++/Objective-C languages in Sublime Text.
 
-It is **not** a self-sustained package, but only an addition to the standard *C++* package supplied with Sublime Text.
+It is primarily focused on pure C overriding a standard syntax definition shipped with Sublime Text, though once installed it affects other C-family languages as well. Note that C Improved per se provides only the syntax definition among with some symbol indexing settings, nothing more. That is, it is not a self-sustained package, but only an addition (improvement) to the standard *C++* package.
 
 What is improved?
 ---
 
-### Function calls inside macros
-In the following example ST recognizes `check_range(...)` inside a macro as a function definition though it is actually a function call.
-This leads to incorrect highlighting (green instead of blue) and also adds a bogus symbol into a symbol list.
-Moreover a function declaration which follows the macro (`int irq_attach(...)`) is not recognized at all.
+### Preprocessor issues
+C preprocessor directives are relatively simple to parse (to some extent, even with regular expressions). And related issues were the first to be addressed.
 
-Standard C | C Improved
----------- | ----------
-![Standard C macro symbols](http://habrastorage.org/storage3/9ab/a6c/99c/9aba6c99c480b90e7cfb1a841f550787.png) | ![C Improved macro symbols](http://habrastorage.org/storage3/46a/476/c85/46a476c85af7ff8feb6395d4dfdb96ba.png)
+#### Scope
+All preprocessor directives provide a proper *scope* now (`meta.preprocessor`), which means that you can select a whole macro with <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>space</kbd> or <kbd>⌘</kbd>+<kbd>⇧</kbd>+<kbd>space</kbd>. It also allows, for instance, the whole macro body to be styled differently (it is up to a color scheme used though).
 
-### Macro scope and parameters highlighting
-Macros (as well as all other preprocessor directives) provide a *scope* now (`meta.preprocessor`), which means that you can select a whole macro with <kbd>ctrl</kbd> + <kbd>shift</kbd> + <kbd>space</kbd> or <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>space</kbd>.
+#### Macro parameters
 Highlighting of macro parameters (including variable arguments) is added also with handling of some related syntax errors.
 
 Standard C | C Improved
 ---------- | ----------
 ![Standard C macro parameters](http://habrastorage.org/storage3/1f8/118/fda/1f8118fda926989ac597a36ab0466473.png) | ![C Improved macro parameters](http://habrastorage.org/storage3/f31/11a/004/f3111a004bb12c613e909eb16886f101.png)
 
-### Linux kernel support
-If you use ST for Linux kernel development, then you will probably find this fix rather useful.
-It adds a special handling of some common macros widely used across the kernel source code, like `EXPORT_SYMBOL`, `LIST_HEAD` or `DEFINE_XXX`,
+#### Function calls inside macros
+In the following example the standard C package recognizes `check_range(...)` inside a macro as a function definition though it is actually a function call.
+This leads to incorrect highlighting and also adds a bogus symbol into a symbol list.
+Moreover, a function declaration which follows the macro (`int irq_attach(...)`) is not recognized at all.
+
+Standard C | C Improved
+---------- | ----------
+![Standard C macro symbols](http://habrastorage.org/storage3/9ab/a6c/99c/9aba6c99c480b90e7cfb1a841f550787.png) | ![C Improved macro symbols](http://habrastorage.org/storage3/46a/476/c85/46a476c85af7ff8feb6395d4dfdb96ba.png)
+
+### Support for significant projects
+The standard C package provides a special support for functions from C standard library and POSIX. For example, a `printf` function is highlighted differently.
+
+However, most of major software projects implemented in C have their own internal libraries/frameworks and use some established patterns and idioms all across their sources. This includes not only a set of commonly used functions and types; there could be a handful macro for defining some object, a special kind of function attribute/annotation, etc.
+
+If you use Sublime Text for developing some of the following projects, you should find these improvements rather useful.
+
+#### Linux kernel source
+This adds a special handling of some common macros widely used across the kernel source code, like `EXPORT_SYMBOL`, `LIST_HEAD` or `DEFINE_XXX`,
 which would otherwise be recognized as functions thus polluting a symbol index and an outline.
 
 Standard C | C Improved
 ---------- | ----------
 ![Standard C linux support](http://habrastorage.org/storage3/c7b/b01/316/c7bb01316e29e0994ec32aa212911a37.png) | ![C Improved linux support](http://habrastorage.org/storage3/024/daa/2ac/024daa2acbc19b9d6060faf59b23d12b.png)
 
-### CPython interpreter support
+#### CPython interpreter source
+This includes:
+ - Highlighing of Python-related constants (like `PyTrue` or `PyFalse`) and main data structures (`PyObject`, `PyTypeObject`, `PyListObject`, etc.)
+ - Widely used `PyMODINIT_FUNC`, `PyAPI_FUNC(...)` and `Py_LOCAL(...)` function annotation. This sanitizes higlighting of annotated functions and the symbol index
+ - Special highlighting of `PyId_xxx` interned static string literals defined with `_Py_IDENTIFIER(...)` macro
+ - Well-marked highlighting of macros involving transfer of control (like `Py_RETURN_NONE`).
 
 Standard C | C Improved
 ---------- | ----------
@@ -75,7 +91,7 @@ Installation
 ---
 ### Package Control
 With [Package Control](https://sublime.wbond.net/installation) installed:
- - Open Command Palette (<kbd>ctrl</kbd> + <kbd>shift</kbd> + <kbd>P</kbd> or <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>P</kbd>)
+ - Open Command Palette (<kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>P</kbd> or <kbd>⌘</kbd>+<kbd>⇧</kbd>+<kbd>P</kbd>)
  - Select *Package Control: Install Package* (`pkginst`)
  - Search for ***C Improved*** (`cimp`) package and install it
 
@@ -88,10 +104,10 @@ and clone this repository there:
 Usage
 ---
 
-Once installed *C Improved* will be used instead of the standard *C* syntax when opening `.c` and `.h` files, unless you have forcibly bound these extensions to something else.
-In the latter case you can rebind them to be handled by *C Improved* through *View → Syntax → Open all with current extension as… → C Improved*.
+Once installed C Improved will be used instead of the standard C syntax when opening `.c` and `.h` files, unless you have forcibly bound these extensions to something else.
+In the latter case you can rebind them to be handled by C Improved through *View → Syntax → Open all with current extension as… → C Improved*.
 
 Other languages derived from C (like C++ and Objective C) don't need their syntaxes to be changed to something special:
-they usually extend `source.c` under the hood, which is now provided by *C Improved* syntax.
+they usually extend `source.c` under the hood, which is now provided by C Improved syntax.
 
 
