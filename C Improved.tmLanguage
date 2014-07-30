@@ -223,7 +223,7 @@
 					<key>match</key> <string>\b([A-Za-z_]\w*+)(?=(?:\s|/\*.*?\*/)*\{)</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>entity.name.type.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>entity.name.type.class.c entity.name.class.c</string> </dict>
 					</dict>
 				</dict>
 			</array>
@@ -458,7 +458,7 @@
 			<key>captures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.define.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>entity.name.variable.macro.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>entity.name.constant.preprocessor.c</string> </dict>
 			</dict>
 		</dict>
 		<key>ppline-macro-head-function</key>
@@ -467,7 +467,7 @@
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.define.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>entity.name.function.macro.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>entity.name.function.preprocessor.c</string> </dict>
 			</dict>
 			<key>end</key> <string>\)[\s&amp;&amp;[^\n]]*|(?&lt;=^|[^\\])\s*(\n)</string>
 			<key>endCaptures</key>
