@@ -7,15 +7,16 @@ It is primarily focused on pure C overriding a standard syntax definition shippe
 
 What is improved?
 ---
+Most of C Improved features tend to facilitate everyday C development experience. This varies from enabling highlighting of operators to more complex enhancements listed below.
 
 ### Preprocessor issues
-C preprocessor directives are relatively simple to parse (to some extent, even with regular expressions). And related issues were the first to be addressed.
+C preprocessor directives are relatively simple to parse (even with regular expressions, to some extent). And so related issues were addressed first of all.
 
-#### Scope
+#### Scopes for preprocessor directives
 All preprocessor directives provide a proper *scope* now (`meta.preprocessor`), which means that you can select a whole macro with <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>space</kbd> or <kbd>⌘</kbd>+<kbd>⇧</kbd>+<kbd>space</kbd>. It also allows, for instance, the whole macro body to be styled differently (it is up to a color scheme used though).
 
 #### Macro parameters
-Highlighting of macro parameters (including variable arguments) is added also with handling of some related syntax errors.
+Proper highlighting of macro parameters (including variadic arguments) with handling of some related syntax errors.
 
 Standard C | C Improved
 ---------- | ----------
@@ -44,6 +45,9 @@ which would otherwise be recognized as functions thus polluting a symbol index a
 Standard C | C Improved
 ---------- | ----------
 ![Standard C linux support](http://habrastorage.org/storage3/c7b/b01/316/c7bb01316e29e0994ec32aa212911a37.png) | ![C Improved linux support](http://habrastorage.org/storage3/024/daa/2ac/024daa2acbc19b9d6060faf59b23d12b.png)
+
+#### Windows drivers
+Provides special highlighting for SAL function annotations listed [here](http://msdn.microsoft.com/en-us/library/windows/hardware/hh454237.aspx).
 
 #### CPython interpreter source
 This includes:
