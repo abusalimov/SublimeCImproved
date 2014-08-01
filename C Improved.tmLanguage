@@ -431,18 +431,26 @@
 			<dict>
 				<key>0</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)$\n?</string>
+			<key>end</key> <string>(?x)
+				(?: (?&lt;= [^\\] ) \s* (?=\n)$\n?
+				  | (?&lt;= [^\\]\n ) | (?&lt;= \A\n ) )  # unexpected end of line
+			</string>
 			<key>name</key> <string>meta.preprocessor.macro.c</string>
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>match</key> <string>\s*(?:##)</string>
-				</dict>
-				<dict>
-					<key>match</key> <string>\s*(?:#)\s*([a-zA-Z_]\w*+)</string>
+					<key>match</key> <string>\s*(##)</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>variable.parameter.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key> <string>\s*(#)\s*([a-zA-Z_]\w*+)</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>string.macro.stringify.c</string> </dict>
 					</dict>
 				</dict>
 				<dict> <key>include</key> <string>#ppline-macro-head-function</string> </dict>
@@ -477,34 +485,64 @@
 			<key>contentName</key> <string>meta.preprocessor.macro.parameters.c</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
 				<dict>
-					<key>match</key>
-					<string>(?x)
-						\s*
-						( [a-zA-Z_]\w*+ )
-						(?: \s*
-						    ( (?: (?! \s* (?: [(),\n] | \.\.\. | (?&gt;\\\s*\n) | /[/*] ) )
-						          . )+ ) )?
-					</string>
-					<key>captures</key>
+					<key>begin</key>
+					<string>\s*\b([a-zA-Z_]\w*+)\b</string>
+					<key>beginCaptures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>variable.parameter.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.missing-separator.c</string> </dict>
 					</dict>
+					<key>end</key>
+					<string>(?x)
+						(?= (?! (?:\s|/\*.*?\*/)*+
+						        (?! (?'legal' [(),] | \.\.\. | (?&gt;(?:\\\s*)?$\n?) | /[/*] ) ) )
+
+						  | (?!\s|/\*.*?\*/) \g'legal' )
+					</string>
+					<key>contentName</key> <string>invalid.illegal.missing-separator.c</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
+					</array>
 				</dict>
 				<dict>
-					<key>match</key>
+					<key>begin</key>
+					<string>\s*(\.\.\.)</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>punctuation.definition.ellipsis.c</string> </dict>
+					</dict>
+					<key>end</key>
 					<string>(?x)
-						(?: (?&lt;! ^ | \w | \*/ ) \s* (,)
-						  | \s* (,) \s* (?= \) ) )
+						(?= (?! (?:\s|/\*.*?\*/)*+
+						        (?! (?'legal' [()] | (?&gt;(?:\\\s*)?$\n?) | /[/*] ) ) )
+
+						  | (?!\s|/\*.*?\*/) \g'legal' )
 					</string>
-					<key>captures</key>
+					<key>contentName</key> <string>invalid.illegal.expected-closing-paren.c</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>(?x)
+						(?= (?&lt;! ^ | \w | \*/ ) (?:\s|/\*.*?\*/)* (,)
+						  | (?:\s|/\*.*?\*/)* (,) (?:\s|/\*.*?\*/)* \) )
+					</string>
+					<key>end</key>
+					<string>(,)</string>
+					<key>endCaptures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-separator.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.unexpected-separator.c</string> </dict>
 					</dict>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
+					</array>
 				</dict>
+				<dict> <key>include</key> <string>#preprocessor-lex</string> </dict>
 				<dict>
 					<key>match</key> <string>\s*(,)</string>
 					<key>captures</key>
@@ -513,23 +551,8 @@
 					</dict>
 				</dict>
 				<dict>
-					<key>match</key>
-					<string>(?x)
-						\s*
-						( \.\.\. )
-						(?: \s*
-						    ( (?: (?! \s* (?: [()\n] | (?&gt;\\\s*\n) | /[/*] ) )
-						          . )+ ) )?
-					</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key> <dict> <key>name</key> <string>punctuation.definition.ellipsis.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.expected-closing-paren.c</string> </dict>
-					</dict>
-				</dict>
-				<dict>
 					<key>begin</key> <string>\(</string>
-					<key>end</key> <string>\)</string>
+					<key>end</key> <string>\)|(?&lt;=^|[^\\])\s*(?=\n)$</string>
 					<key>name</key> <string>invalid.illegal.unexpected-parens.c</string>
 				</dict>
 				<dict>
