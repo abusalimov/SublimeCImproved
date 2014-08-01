@@ -153,9 +153,9 @@
 			<key>begin</key> <string>(?x)
 				(?&lt;= \A enum | \A (?:class|union) | \A struct |
 				        \W enum | \W (?:class|union) | \W struct ) \b
-				(?= (?:\s|/\*.*?\*/)*
+				(?= (?:\s|/\*.*?\*/)*+
 				    ([A-Za-z_]\w*+)
-				    (?:\s|/\*.*?\*/)*; )
+				    (?:\s|/\*.*?\*/)*+; )
 			</string>
 			<key>end</key>
 			<string>(?&lt;=;)</string>
@@ -200,7 +200,7 @@
 				        (?: [A-Za-z_]\w*+ | ::[^:] )++
 				        (?: (?&lt;= ^ operator | \W operator )  # C++ operator?
 				            (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )?
-				        (?:\s|/\*.*?\*/)* \( )
+				        (?:\s|/\*.*?\*/)*+ \( )
 				  | (?= \s*\b(?: [A-Za-z_]\w*+ ) (?= \s* [\[;] ) ) )
 			</string>
 			<key>name</key> <string>meta.compound.c</string>
@@ -220,7 +220,7 @@
 				<dict> <key>include</key> <string>#block</string> </dict>
 				<dict> <key>include</key> <string>#parens</string> </dict>
 				<dict>
-					<key>match</key> <string>\b([A-Za-z_]\w*+)(?=(?:\s|/\*.*?\*/)*\{)</string>
+					<key>match</key> <string>\b([A-Za-z_]\w*+)(?=(?:\s|/\*.*?\*/)*+\{)</string>
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>entity.name.type.class.c entity.name.class.c</string> </dict>
@@ -246,7 +246,7 @@
 				\s*\b
 				([A-Z0-9_]++)
 				\b
-				(?= (?:\s|/\*.*?\*/)* \( )
+				(?= (?:\s|/\*.*?\*/)*+ \( )
 			</string>
 			<key>end</key> <string>(?&lt;=\))</string>
 			<key>patterns</key>
@@ -274,7 +274,7 @@
 				    (?: (?&lt;= ^ operator | \W operator )  # C++ operator?
 				        (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )? )
 
-				(?= (?:\s|/\*.*?\*/)* (?'parens' \(
+				(?= (?:\s|/\*.*?\*/)*+ (?'parens' \(
 				            (?&gt; \g'parens' |
 				            	"(\\.|[^"])*" | '(\\.|[^'])*' | /\*.*?\*/ |
 				            	(?! /[/*] | [()] ) . )*
@@ -310,7 +310,7 @@
 				    (?: (?&lt;= ^ operator | \W operator )  # C++ operator?
 				        (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )? )
 
-				(?= (?:\s|/\*.*?\*/)* \( )
+				(?= (?:\s|/\*.*?\*/)*+ \( )
 			</string>
 			<key>beginCaptures</key>
 			<dict>
@@ -337,7 +337,7 @@
 				\s*
 				(?= # don't consume to recognize support functions
 				    (?: [A-Za-z_]\w*+ | ::[^:] )++
-				    (?:\s|/\*.*?\*/)* \( )
+				    (?:\s|/\*.*?\*/)*+ \( )
 			</string>
 			<key>end</key> <string>(?&lt;=\))</string>
 			<key>patterns</key>
@@ -494,7 +494,7 @@
 					</dict>
 					<key>end</key>
 					<string>(?x)
-						(?= (?! (?:\s|/\*.*?\*/)*+
+						(?= (?! (?:\s|/\*.*?\*/)*++
 						        (?! (?'legal' [(),] | \.\.\. | (?&gt;(?:\\\s*)?$\n?) | /[/*] ) ) )
 
 						  | (?!\s|/\*.*?\*/) \g'legal' )
@@ -528,8 +528,8 @@
 				<dict>
 					<key>begin</key>
 					<string>(?x)
-						(?= (?&lt;! ^ | \w | \*/ ) (?:\s|/\*.*?\*/)* (,)
-						  | (?:\s|/\*.*?\*/)* (,) (?:\s|/\*.*?\*/)* \) )
+						(?= (?&lt;! ^ | \w | \*/ ) (?:\s|/\*.*?\*/)*+ (,)
+						  | (?:\s|/\*.*?\*/)*+ (,) (?:\s|/\*.*?\*/)*+ \) )
 					</string>
 					<key>end</key>
 					<string>(,)</string>
@@ -1090,7 +1090,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>(\.|-&gt;)(?=(?:\s|/\*.*?\*/)*[A-Za-z_]\w*+)</string>
+					<string>(\.|-&gt;)(?=(?:\s|/\*.*?\*/)*+[A-Za-z_]\w*+)</string>
 					<key>name</key>
 					<string>keyword.operator.dereference.c</string>
 				</dict>
