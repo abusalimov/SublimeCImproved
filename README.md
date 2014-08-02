@@ -51,10 +51,12 @@ Provides special highlighting for SAL function annotations listed [here](http://
 
 #### CPython interpreter source
 This includes:
-- Highlighing of Python-related constants (like `PyTrue` or `PyFalse`) and main data structures (`PyObject`, `PyTypeObject`, `PyListObject`, etc.)
-- Widely used `PyMODINIT_FUNC`, `PyAPI_FUNC(...)` and `Py_LOCAL(...)` function annotation. This sanitizes higlighting of annotated functions and the symbol index
-- Special highlighting of `PyId_xxx` interned static string literals defined with `_Py_IDENTIFIER(...)` macro
-- Well-marked highlighting of macros involving transfer of control (like `Py_RETURN_NONE`).
+
+  - Highlighing of Python-related constants (like `PyTrue` or `PyFalse`) and main data structures (`PyObject`, `PyTypeObject`, `PyListObject`, etc.)
+  - Widely used `PyMODINIT_FUNC`, `PyAPI_FUNC(...)` and `Py_LOCAL(...)` function annotation. This sanitizes higlighting of annotated functions and the symbol index
+  - Special highlighting of `PyId_xxx` interned static string literals defined with `_Py_IDENTIFIER(...)` macro
+  - Well-marked highlighting of macros involving transfer of control (like `Py_RETURN_NONE`).
+
 
 Standard C | C Improved
 ---------- | ----------
@@ -95,13 +97,14 @@ Installation
 ---
 ### Package Control
 With [Package Control](https://sublime.wbond.net/installation) installed:
-- Open Command Palette (<kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>P</kbd> or <kbd>⌘</kbd>+<kbd>⇧</kbd>+<kbd>P</kbd>)
-- Select *Package Control: Install Package* (`pkginst`)
-- Search for ***C Improved*** (`cimp`) package and install it
+
+  - Open Command Palette (<kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>P</kbd> or <kbd>⌘</kbd>+<kbd>⇧</kbd>+<kbd>P</kbd>)
+  - Select *Package Control: Install Package* (`pkginst`)
+  - Search for ***C Improved*** (`cimp`) package and install it
 
 ### Manual
 Locate Sublime Text `Packages` directory (*Preferences → Browse Packages...*)
-and clone this repository there:
+and clone this repository into `C Improved`:
 
     git clone https://github.com/abusalimov/SublimeCImproved.git "C Improved"
 
@@ -113,5 +116,4 @@ In the latter case you can rebind them to be handled by C Improved through *View
 
 Other languages derived from C (like C++ and Objective C) don't need their syntaxes to be changed to something special:
 they usually extend `source.c` under the hood, which is now provided by C Improved syntax.
-
 
