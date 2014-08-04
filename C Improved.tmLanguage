@@ -1041,7 +1041,7 @@
 			<key>captures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.other.line-continuation.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>invalid.illegal.space-after-continuation.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>invalid.deprecated.space-after-continuation.c</string> </dict>
 			</dict>
 		</dict>
 		<key>lex-keyword</key>
