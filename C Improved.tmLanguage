@@ -1036,7 +1036,7 @@
 		</dict>
 		<key>lex-continuation</key>
 		<dict>
-			<key>match</key> <string>(\\)(\s*?)$\n?</string>
+			<key>match</key> <string>(\\)(?:$\n?|(\s+?)(?=\n)$)</string>
 			<key>name</key> <string>punctuation.separator.continuation.c</string>
 			<key>captures</key>
 			<dict>
