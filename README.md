@@ -3,7 +3,7 @@ Sublime C Improved
 
 This package provides better support of C/C++/Objective-C languages in Sublime Text.
 
-It is primarily focused on pure C overriding a standard syntax definition shipped with Sublime Text, though once installed it affects other C-family languages as well. Note that C Improved per se provides only the syntax definition among with some symbol indexing settings, nothing more. That is, it is not a self-sustained package, but only an addition (improvement) to the standard *C++* package.
+It is primarily focused on pure C overriding a standard syntax definition shipped with Sublime Text, though once installed it affects other C-family languages as well. Note that C Improved per se provides only the syntax definition among with some symbol indexing settings, nothing more. That is, it is not a self-sustained package, but only an addition (improvement) to the standard C++ package.
 
 What is improved?
 ---
@@ -12,24 +12,37 @@ Most of C Improved features tend to facilitate everyday C development experience
 ### Preprocessor issues
 C preprocessor directives are relatively simple to parse (even with regular expressions, to some extent). And so related issues were addressed first of all.
 
-#### Scopes for preprocessor directives
-All preprocessor directives provide a proper *scope* now (`meta.preprocessor`), which means that you can select a whole macro with <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>space</kbd> or <kbd>⌘</kbd>+<kbd>⇧</kbd>+<kbd>space</kbd>. It also allows, for instance, the whole macro body to be styled differently (it is up to a color scheme used though).
+#### Macro highlighting and error handling
+Macro parameters (including variadic arguments) and argument stringification now have proper highlighting with handling of some common syntax errors.
 
-#### Macro parameters
-Proper highlighting of macro parameters (including variadic arguments) with handling of some related syntax errors.
+Here is an example of two more or less complex multi-line macros.
 
 Standard C | C Improved
 ---------- | ----------
-![Standard C macro parameters](http://habrastorage.org/storage3/1f8/118/fda/1f8118fda926989ac597a36ab0466473.png) | ![C Improved macro parameters](http://habrastorage.org/storage3/f31/11a/004/f3111a004bb12c613e909eb16886f101.png)
+![Standard C macros](http://habrastorage.org/files/197/00b/a8d/19700ba8de834a08bd49775445e8233c.png) | ![C Improved macros](http://habrastorage.org/files/887/6fd/a09/8876fda0950b438883a694dc08a04b94.png)
 
-#### Function calls inside macros
-In the following example the standard C package recognizes `check_range(...)` inside a macro as a function definition though it is actually a function call.
-This leads to incorrect highlighting and also adds a bogus symbol into a symbol list.
-Moreover, a function declaration which follows the macro (`int irq_attach(...)`) is not recognized at all.
+And below is a result of commenting out a `msg...` vararg (but missing a preceding comma outside the comment) and accidentally putting tabs after some line continuation backslashes.
+
+Standard C | C Improved
+---------- | ----------
+![Standard C macros](http://habrastorage.org/files/bf3/7ca/649/bf37ca6495ab46cb932b1116561c941b.png) | ![C Improved macros](http://habrastorage.org/files/d89/d63/582/d89d63582d344b8891e712026417707f.png)
+
+Both errors are ignored by the standard package, while C Improved highlights a premature closing paren in the first case as an error, and warns about trailing whitespaces after the backslashes (the second one is immediately followed by an error complaining about an unexpected EOL within macro parameters). See an [issue](//github.com/abusalimov/SublimeCImproved/issues/7) about `space-after-continuation` highlighting.
+
+#### Macro innards
+A macro body (with proper line continuations, if needed) is not able to contribute to the symbol index anymore, nor it can interfere with a code surrounding the macro, or anyhow break syntax highlighting.
 
 Standard C | C Improved
 ---------- | ----------
 ![Standard C macro symbols](http://habrastorage.org/storage3/9ab/a6c/99c/9aba6c99c480b90e7cfb1a841f550787.png) | ![C Improved macro symbols](http://habrastorage.org/storage3/46a/476/c85/46a476c85af7ff8feb6395d4dfdb96ba.png)
+
+In this example the standard C package recognizes `check_range(...)` inside a macro as a function definition though it is actually a function call.
+This leads to incorrect highlighting and also adds a bogus symbol into the symbol list.
+Moreover, a function declaration which follows the macro (`int irq_attach(...)`) is not recognized at all.
+
+#### Scopes for preprocessor directives
+All preprocessor directives provide a proper *scope* now (`meta.preprocessor`), which means that you can select a whole macro with <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>space</kbd> or <kbd>⌘</kbd>+<kbd>⇧</kbd>+<kbd>space</kbd>. It also allows, for instance, the whole macro body to be styled differently (this is up to a color scheme though).
+
 
 ### Support for significant projects
 The standard C package provides a special support for functions from C standard library and POSIX. For example, a `printf` function is highlighted differently.
@@ -47,7 +60,7 @@ Standard C | C Improved
 ![Standard C linux support](http://habrastorage.org/storage3/c7b/b01/316/c7bb01316e29e0994ec32aa212911a37.png) | ![C Improved linux support](http://habrastorage.org/storage3/024/daa/2ac/024daa2acbc19b9d6060faf59b23d12b.png)
 
 #### Windows drivers
-Provides special highlighting for SAL function annotations listed [here](http://msdn.microsoft.com/en-us/library/windows/hardware/hh454237.aspx).
+Provides special highlighting for SAL function annotations listed [here](http://msdn.microsoft.com/en-us/library/windows/hardware/hh454237.aspx) (related [issue](//github.com/abusalimov/SublimeCImproved/issues/2)).
 
 #### CPython interpreter source
 This includes:
@@ -68,14 +81,14 @@ You can adjust which symbols are available for navigation and visible in a symbo
 The following scopes and default preferences are provided:
 
 Scope name | Description | Outline<br/><kbd>ctrl</kbd>+<kbd>R</kbd> | Index (ST3) <kbd>F12</kbd><br/><kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>R</kbd>
----------- | ----------- | ---------------------------------------- | -----
-`entity.name.type`                 | type definition (e.g. `struct` or `enum`)    | visible | visible
-`entity.name.type.declaration`     | forward declaration of a type                | visible | **hidden**
-`entity.name.type.typedef`         | type alias (`typedef`)                       | visible | visible
-`entity.name.function`             | function definition                          | visible | visible
-`entity.name.function.declaration` | function declaration                         | visible | **hidden**
-`entity.name.function.preprocessor`| function-like macro (`#define foo(args...)`) | visible | visible
-`entity.name.constant.preprocessor`| object-like macro (`#define BAR`)            | visible | visible
+----------------------------------- | ----------------------------- | ------- | -------
+`entity.name.type`                  | compound type                 | visible | visible
+`entity.name.type.declaration`      | forward declaration of a type | visible | **hidden**
+`entity.name.type.typedef`          | type alias (`typedef`)        | visible | visible
+`entity.name.function`              | function definition           | visible | visible
+`entity.name.function.declaration`  | function declaration          | visible | **hidden**
+`entity.name.function.preprocessor` | function-like macro           | visible | visible
+`entity.name.constant.preprocessor` | object-like macro             | visible | visible
 
 These settings can be changed through `.tmPreferences` files, see `Packages/C Improved/Symbol Index (*).tmPreferences`.
 
