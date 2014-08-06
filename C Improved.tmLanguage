@@ -1036,13 +1036,24 @@
 		</dict>
 		<key>lex-continuation</key>
 		<dict>
-			<key>match</key> <string>(\\)(?:$\n?|(\s+?)(?=\n)$)</string>
-			<key>name</key> <string>punctuation.separator.continuation.c</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key> <dict> <key>name</key> <string>keyword.other.line-continuation.c</string> </dict>
-				<key>2</key> <dict> <key>name</key> <string>invalid.deprecated.space-after-continuation.c</string> </dict>
-			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key> <string>(\\)$\n?</string>
+					<key>name</key> <string>punctuation.separator.continuation.c</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>keyword.other.line-continuation.c</string> </dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key> <string>\\(\s+?)(?=\n)$</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>invalid.deprecated.space-after-continuation.c</string> </dict>
+					</dict>
+				</dict>
+			</array>
 		</dict>
 		<key>lex-keyword</key>
 		<dict>
