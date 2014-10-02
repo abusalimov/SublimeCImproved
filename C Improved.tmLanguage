@@ -66,13 +66,13 @@
 				            (?: /\*.*?\*/ | \s)* ) )
 				    \{ )
 			</string>
-			<key>end</key> <string>(?&lt;=\})</string>
+			<key>end</key> <string>\}</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#lex</string> </dict>
 				<dict>
 					<key>begin</key> <string>\{</string>
-					<key>end</key> <string>\}</string>
+					<key>end</key> <string>(?=\})</string>
 					<key>name</key> <string>meta.block.special.c</string>
 					<key>patterns</key>
 					<array>
@@ -81,10 +81,23 @@
 				</dict>
 			</array>
 		</dict>
+		<!--
+			xxx-lookahead-end rules are introduced to workaround ST2 bugs,
+			see https://github.com/abusalimov/SublimeCImproved/issues/10
+		-->
 		<key>block</key>
 		<dict>
-			<key>begin</key> <string>\{</string>
+			<key>begin</key> <string>(?=\{)</string>
 			<key>end</key> <string>\}</string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#block-lookahead-end</string> </dict>
+			</array>
+		</dict>
+		<key>block-lookahead-end</key>
+		<dict>
+			<key>begin</key> <string>\{</string>
+			<key>end</key> <string>(?=\})</string>
 			<key>name</key> <string>meta.block.c</string>
 			<key>patterns</key>
 			<array>
@@ -104,8 +117,17 @@
 		</dict>
 		<key>parens</key>
 		<dict>
-			<key>begin</key> <string>\(</string>
+			<key>begin</key> <string>(?=\()</string>
 			<key>end</key> <string>\)</string>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#parens-lookahead-end</string> </dict>
+			</array>
+		</dict>
+		<key>parens-lookahead-end</key>
+		<dict>
+			<key>begin</key> <string>\(</string>
+			<key>end</key> <string>(?=\))</string>
 			<key>name</key> <string>meta.parens.c</string>
 			<key>patterns</key>
 			<array>
@@ -248,11 +270,11 @@
 				\b
 				(?= (?:\s|/\*.*?\*/)*+ \( )
 			</string>
-			<key>end</key> <string>(?&lt;=\))</string>
+			<key>end</key> <string>\)</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#lex</string> </dict>
-				<dict> <key>include</key> <string>#parens</string> </dict>
+				<dict> <key>include</key> <string>#parens-lookahead-end</string> </dict>
 			</array>
 		</dict>
 		<key>function-declaration</key>
@@ -316,7 +338,7 @@
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>entity.name.function.definition.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?&lt;=\})|;</string>
+			<key>end</key> <string>\}|;</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#lex</string> </dict>
@@ -325,7 +347,7 @@
 					<key>match</key> <string>\s*\b(const|override)\b</string>
 					<key>name</key> <string>storage.modifier.c</string>
 				</dict>
-				<dict> <key>include</key> <string>#block</string> </dict>
+				<dict> <key>include</key> <string>#block-lookahead-end</string> </dict>
 			</array>
 		</dict>
 
@@ -339,12 +361,12 @@
 				    (?: [A-Za-z_]\w*+ | ::[^:] )++
 				    (?:\s|/\*.*?\*/)*+ \( )
 			</string>
-			<key>end</key> <string>(?&lt;=\))</string>
+			<key>end</key> <string>\)</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#lex</string> </dict>
 				<dict> <key>include</key> <string>#support</string> </dict>
-				<dict> <key>include</key> <string>#parens</string> </dict>
+				<dict> <key>include</key> <string>#parens-lookahead-end</string> </dict>
 			</array>
 		</dict>
 
