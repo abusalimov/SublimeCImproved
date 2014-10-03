@@ -199,10 +199,17 @@
 			<key>begin</key> <string>(?x)
 				(?&lt;= \A enum | \A (?:class|union) | \A struct |
 				        \W enum | \W (?:class|union) | \W struct ) \b
+
+				# Negation of zero-length parts of the end pattern
+				# to prevent entering the rule if it's gonna exit immediately.
+				# (workaround ST2 bugs, see issue #10)
+				(?=\s*(?:[A-Za-z_({]|/[/*]|$))
+				(?! \s*\b(?: [A-Za-z_]\w*+ ) (?= \s* [\[;] ) )
 			</string>
 			<key>end</key>
 			<string>(?x)
 				(?: (?!\s*(?:[A-Za-z_({]|/[/*]|$))
+				  | (?= \s*\b(?: [A-Za-z_]\w*+ ) (?= \s* [\[;] ) )
 				  | (?&lt;!\})(?= \s*
 				        # Prefer function definition over an attribute defined
 				        # through a macro, unless a block has been seen. That is:
@@ -222,8 +229,7 @@
 				        (?: [A-Za-z_]\w*+ | ::[^:] )++
 				        (?: (?&lt;= ^ operator | \W operator )  # C++ operator?
 				            (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )?
-				        (?:\s|/\*.*?\*/)*+ \( )
-				  | (?= \s*\b(?: [A-Za-z_]\w*+ ) (?= \s* [\[;] ) ) )
+				        (?:\s|/\*.*?\*/)*+ \( ) )
 			</string>
 			<key>name</key> <string>meta.compound.c</string>
 			<key>patterns</key>
