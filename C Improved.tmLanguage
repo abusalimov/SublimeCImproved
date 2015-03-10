@@ -1204,6 +1204,20 @@
 						<key>1</key> <dict> <key>name</key> <string>constant.numeric.float.c</string> </dict>
 					</dict>
 				</dict>
+				<dict>
+					<key>match</key> <string>\s*(\b(?i:(0b[01]*)U?L{1,2}))</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>constant.numeric.integer.long.binary.c</string> </dict>
+					</dict>
+				</dict>
+				<dict>
+					<key>match</key> <string>\s*(\b(?i:(0b[01]*)U?))</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>constant.numeric.integer.binary.c</string> </dict>
+					</dict>
+				</dict>
 			</array>
 		</dict>
 		<key>lex-string</key>
