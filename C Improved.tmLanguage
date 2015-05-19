@@ -36,6 +36,25 @@
 
 	<key>repository</key>
 	<dict>
+		<!--
+			TODO:
+				* parentheses are still wonky on function calls.
+				  the two parentheses have different scopes. the only way to
+				  get them to be the same color is to make those two scopes
+				  the same color.
+				  - Added by: Ben Wills, github.com/benwills, 2015.05.18
+				* add structure variables from linux syscall structures.
+				  e.g. tv_sec
+				  http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/include/linux/syscalls.h?id=HEAD
+				  - Added by: Ben Wills, github.com/benwills, 2015.05.18
+				* macro.capitalized, when preceded by an opening parenthesis
+				  and no space between the two, does not trigger
+				  meta.function-call.c.
+				  example:
+				  	works : if ( XXX_YYY_ZZZ(x, j) == NULL)
+				  	broken: if (XXX_YYY_ZZZ(x, j) == NULL)
+				  - Added by: Ben Wills, github.com/benwills, 2015.05.18
+		-->
 		<key>translation_unit</key>
 		<dict>
 			<key>patterns</key>
@@ -46,6 +65,9 @@
 				<dict> <key>include</key> <string>#lex</string> </dict>
 
 				<dict> <key>include</key> <string>#type</string> </dict>
+
+				<!-- Added by Ben Wills: 2015.05.18 -->
+				<dict> <key>include</key> <string>#support_function_linux</string> </dict>
 
 				<dict> <key>include</key> <string>#support-macro</string> </dict>
 				<dict> <key>include</key> <string>#function</string> </dict>
@@ -789,6 +811,7 @@
 				<dict> <key>include</key> <string>#support-type</string> </dict>
 				<dict> <key>include</key> <string>#support-macro</string> </dict>
 				<dict> <key>include</key> <string>#support-function</string> </dict>
+				<dict> <key>include</key> <string>#support_function_linux</string> </dict>
 			</array>
 		</dict>
 		<key>support-type</key>
@@ -986,6 +1009,25 @@
 			</array>
 		</dict>
 
+		<!--
+			linux syscalls
+			source: http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/include/linux/syscalls.h?id=HEAD
+			Added by: Ben Wills, github.com/benwills, 2015.05.18
+					  if you use this, no need to give me credit.
+		-->
+		<key>support_function_linux</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key> <string>\s*\b(a(cc(e(pt4?|ss)|t)|d(d_key|jtimex)|larm)|b(dflush|ind|pf|rk)|c(ap[gs]et|h(dir|mod|own(16)?|root)|lo(ck_(adjtime|get(res|time)|nanosleep|settime)|ne|se)|onnect|reat)|d(elete_module|up[23]?)|e(poll_(c(reate1?|tl)|pwait|wait)|ventfd2?|x(ecve(at)?|it(_group)?))|f(a(ccessat|dvise64(_64)?|llocate|notify_(init|mark))|c(h(dir|mod(at)?|own(16|at)?)|ntl(64)?)|datasync|getxattr|init_module|l(istxattr|ock)|ork|removexattr|s(etxattr|tat(64|at64|fs(64)?)?|ync)|truncate(64)?|ut(ex|imesat))|get(_(mempolicy|robust_list)|c(pu|wd)|dents(64)?|e(gid(16)?|uid(16)?)|g(id(16)?|roups(16)?)|hostname|itimer|p(eername|g(id|rp)|id|pid|riority)|r(andom|es(gid(16)?|uid(16)?)|limit|usage)|s(id|ock(name|opt))|ti(meofday|d)|uid(16)?|xattr)|i(n(it_module|otify_(add_watch|init1?|rm_watch))|o(_(cancel|destroy|getevents|s(etup|ubmit))|ctl|p(erm|rio_[gs]et))|pc)|k(cmp|e(xec_(file_)?load|yctl)|ill)|l(chown(16)?|getxattr|i(nk(at)?|st(en|xattr))|l(istxattr|seek)|ookup_dcookie|removexattr|s(e(ek|txattr)|tat(64)?))|m(advise|bind|emfd_create|i(grate_pages|ncore)|k(dir(at)?|nod(at)?)|lock(all)?|map_pgoff|o(unt|ve_pages)|protect|q_(getsetattr|notify|open|timed(receive|send)|unlink)|remap|s(g(ctl|get|rcv|snd)|ync)|un(lock(all)?|map))|n(a(me_to_handle_at|nosleep)|ew(fstat(at)?|lstat|stat|uname)|i(_syscall|ce))|o(ld(_(getrlimit|mmap|readdir|select)|u(mount|name))|pen(_by_handle_at|at)?)|p(ause|ciconfig_(iobase|read|write)|er(f_event_open|sonality)|i(pe2?|vot_root)|oll|poll|r(ctl|ead(64|v)|limit64|ocess_vm_(read|write)v)|select6|trace|write(64|v))|quotactl|r(e(ad(ahead|link(at)?|v)?|boot|cv(from|mm?sg)?|m(ap_file_pages|ovexattr)|name(at2?)?|quest_key|start_syscall)|mdir|t_(sig(action|p(ending|rocmask)|queueinfo|suspend|timedwait)|tgsigqueueinfo))|s(ched_(get(_priority_m(ax|in)|a(ffinity|ttr)|param|scheduler)|rr_get_interval|set(a(ffinity|ttr)|param|scheduler)|yield)|e(ccomp|lect|m(ctl|get|op|timedop)|nd(file(64)?|mm?sg|to)?|t(_(mempolicy|robust_list|tid_address)|domainname|fs(gid(16)?|uid(16)?)|g(id(16)?|roups(16)?)|hostname|itimer|ns|p(gid|riority)|r(e(gid(16)?|s(gid(16)?|uid(16)?)|uid(16)?)|limit)|s(id|ockopt)|timeofday|uid(16)?|xattr))|getmask|h(m(at|ctl|dt|get)|utdown)|ig(a(ction|ltstack)|nal(fd4?)?|p(ending|rocmask)|suspend)|ocket(call|pair)?|p(lice|u_(create|run))|setmask|t(at(64|fs(64)?)?|ime)|wapo(ff|n)|y(mlink(at)?|nc(_file_range2?|fs)?|s(ctl|fs|info|log)))|t(ee|gkill|ime(r(_(create|delete|get(overrun|time)|settime)|fd_(creat|gettim|settim)e)|s)?|kill|runcate(64)?)|u(m(ask|ount)|n(ame|link(at)?|share)|s(elib|tat)|time(nsat|s)?)|v(fork|hangup|msplice)|w(ait(id|pid|4)|ritev?))\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>support.function.linux.syscall.c</string> </dict>
+					</dict>
+				</dict>
+			</array>
+		</dict>
 		<key>comments</key>
 		<dict>
 			<key>patterns</key>
@@ -1048,6 +1090,8 @@
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#lex-core</string> </dict>
+				<!-- pointers Added by Ben Wills: 2015.05.18 -->
+				<dict> <key>include</key> <string>#pointers</string> </dict>
 				<dict> <key>include</key> <string>#lex-keyword</string> </dict>
 				<dict> <key>include</key> <string>#lex-constant</string> </dict>
 			</array>
@@ -1083,6 +1127,122 @@
 				</dict>
 			</array>
 		</dict>
+		<!--
+			pointers
+			Added by: Ben Wills, github.com/benwills, 2015.05.18
+					  if you use this, no need to give me credit.
+		-->
+		<key>pointers</key>
+		<dict>
+		<key>patterns</key>
+			<array>
+				<!--
+					& pointers
+					Added by: Ben Wills, github.com/benwills, 2015.05.18
+							  if you use this, no need to give me credit.
+				-->
+				<dict>
+					<key>match</key>
+					<string>(&amp;)(?=[a-zA-Z])</string>
+					<key>name</key>
+					<string>keyword.operator.address.c</string>
+				</dict>
+				<!--
+					dereferencing. periods and arrows (->).
+					also catches pointers in parenthesis,
+					when dereferenced by a period.
+					the default from the C Improved package is further down
+					in its original form.
+					Added by: Ben Wills, github.com/benwills, 2015.05.18
+							  if you use this, no need to give me credit.
+				-->
+				<dict>
+					<key>match</key>
+					<string>(?x)
+						(?:
+							(?:[a-zA-Z_][a-zA-Z0-9_]*)
+							(\.|-&gt;)
+							(?:
+								(?:[a-zA-Z_][a-zA-Z0-9_]*)
+								(\.|-&gt;)
+								(?:[a-zA-Z_][a-zA-Z0-9_]*)
+							)*?
+						)
+						|
+						(?:
+							[)](.)
+						)
+					</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>keyword.operator.dereference.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>keyword.operator.dereference.c</string> </dict>
+						<key>3</key> <dict> <key>name</key> <string>keyword.operator.dereference.c</string> </dict>
+					</dict>
+				</dict>
+				<!--
+					dereferencing, asterisks.
+					there may be far better ways to do this.
+					if so, please do let me know.
+					Added by: Ben Wills, github.com/benwills, 2015.05.18
+							  if you use this, no need to give me credit.
+				-->
+				<dict>
+					<key>match</key>
+					<string>(?x)
+							[^a-zA-Z0-9_ ]
+							\s*
+							([*])
+							\s*
+							[^=]
+					</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>keyword.operator.dereference.c</string> </dict>
+					</dict>
+				</dict>
+				<!--
+					dereferencing, asterisks.
+					there may be far better ways to do this.
+					if so, please do let me know.
+					Added by: Ben Wills, github.com/benwills, 2015.05.18
+							  if you use this, no need to give me credit.
+				-->
+				<dict>
+					<key>match</key>
+					<string>(?x)
+							\s*
+							\b
+							(?:
+								((?:u?int(?:(?:_least|_fast)?(?:8|16|32|64)_t|ptr_t|max_t)))
+								|
+								(auto|bool|_Bool|char|_Complex|double|float|_Imaginary|int|long|short|signed|unsigned|void)
+								|
+								(class|struct|union|enum|typedef)
+								|
+								((?:u_char|u_short|u_int|u_long|ushort|uint|(?:u_quad|quad|qaddr|caddr|daddr|dev|fixpt|blkcnt|blksize|gid|in_addr|in_port|ino|key|mode|nlink|id|pid|off|segsz|swblk|uid|id|clock|size|ssize|time|useconds|suseconds)_t))
+								|
+								((?:pthread_(?:t|attr_t|once_t|key_t|(?:cond|mutex|rwlock)(?:attr)?_t)))
+							)
+							\b
+							\s*
+							(?:[a-zA-Z_][a-zA-Z0-9_]*)?
+							\s*
+							([*])
+					</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>support.type.stdint.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
+						<key>3</key> <dict> <key>name</key> <string>storage.type.complex.c</string> </dict>
+						<key>4</key> <dict> <key>name</key> <string>support.type.sys-types.c</string> </dict>
+						<key>5</key> <dict> <key>name</key> <string>support.type.pthread.c</string> </dict>
+
+						<key>6</key> <dict> <key>name</key> <string>keyword.operator.dereference.c</string> </dict>
+					</dict>
+				</dict>
+			</array>
+		</dict>
 		<key>lex-keyword</key>
 		<dict>
 			<key>patterns</key>
@@ -1094,11 +1254,41 @@
 						<key>1</key> <dict> <key>name</key> <string>keyword.operator.c</string> </dict>
 					</dict>
 				</dict>
+				<!--
+					note: removed loop functions. those are further below.
+					Added by: Ben Wills, github.com/benwills, 2015.05.18
+							  if you use this, no need to give me credit.
+				-->
 				<dict>
-					<key>match</key> <string>\s*\b((?:__|(?!\w+__))asm(?:__)?|break|case|continue|default|do|else|for|goto|if|_Pragma|return|switch|while|__extension__)\b</string>
+					<key>match</key> <string>\s*\b((?:__|(?!\w+__))asm(?:__)?|case|default|else|goto|if|_Pragma|switch|__extension__)\b</string>
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>keyword.control.c</string> </dict>
+					</dict>
+				</dict>
+				<!--
+					modified type name from "control" to "control_return"
+					for specificity.
+					Added by: Ben Wills, github.com/benwills, 2015.05.18
+							  if you use this, no need to give me credit.
+				-->
+				<dict>
+					<key>match</key> <string>\s*\b((?:__|(?!\w+__))asm(?:__)?|return)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>keyword.control_return.c</string> </dict>
+					</dict>
+				</dict>
+				<!--
+					separated loop functions for separate theming
+					Added by: Ben Wills, github.com/benwills, 2015.05.18
+							  if you use this, no need to give me credit.
+				-->
+				<dict>
+					<key>match</key> <string>\s*\b((?:__|(?!\w+__))asm(?:__)?|break|continue|for|do|while)\b</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key> <dict> <key>name</key> <string>keyword.control_loop.c</string> </dict>
 					</dict>
 				</dict>
 				<dict>
@@ -1115,14 +1305,95 @@
 						<key>1</key> <dict> <key>name</key> <string>storage.modifier.c</string> </dict>
 					</dict>
 				</dict>
+				<!--
+					created separate label for "complex data structures"
+					this allows for defining different color styles, as
+					is my personal preference.
+					Added by: Ben Wills, github.com/benwills, 2015.05.18
+							  if you use this, no need to give me credit.
+				-->
 				<dict>
 					<key>match</key> <string>\s*\b(class|struct|union|enum|typedef)\b</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>storage.type.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>storage.type.complex.c</string> </dict>
 					</dict>
 				</dict>
 
+				<!--
+					structure types used by linux syscalls
+					must be before variable.double_underscore.c to properly
+					display __old_kernel_stat and __sysctl_args as types.
+					source: http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/include/linux/syscalls.h?id=HEAD
+					Added by: Ben Wills, github.com/benwills, 2015.05.18
+							  if you use this, no need to give me credit.
+				-->
+				<dict>
+					<key>match</key>
+					<string>(?x)
+						((?:__(?:old_kernel_stat|sysctl_args)|bpf_attr|compat_(?:stat|timeval)|epoll_event|file_handle|getcpu_cache|i(?:attr|node|o(?:_event|cb|vec)|timer(?:spec|val))|kexec_segment|li(?:nux_dirent(?:64)?|st_head)|m(?:m(?:ap_arg_struct|sghdr)|q_attr|s(?:gbuf|qid_ds))|n(?:ew_utsname|fsctl_arg)|old(?:_(?:linux_dirent|utsname)|old_utsname)|p(?:erf_event_attr|ollfd)|r(?:limit(?:64)?|obust_list_head|usage)|s(?:ched_(?:attr|param)|e(?:l_arg_struct|m(?:aphore|buf))|hmid_ds|igaltstack|ockaddr|tat(?:64|fs(?:64)?)?|ysinfo)|t(?:ime(?:spec|val|zone|x)|ms)|u(?:ser_msghdr|timbuf)))
+					</string>
+					<key>name</key>
+					<string>variable.linux.syscall.struct.c</string>
+				</dict>
+				<!--
+					system-reserved names.
+					they are also sometimes common in packages,
+					regardless of if they should be used.
+					Added by: Ben Wills, github.com/benwills, 2015.05.18
+							  if you use this, no need to give me credit.
+				-->
+				<dict>
+					<key>match</key>
+					<string>(?x)
+						\b
+						(
+							[_][_]
+							[a-zA-Z0-9_]*
+						)
+						\b
+					</string>
+					<key>name</key>
+					<string>variable.double_underscore.c</string>
+				</dict>
+				<!--
+					capitalized macros.
+					will also catch non-macro functions, obviously.
+					Added by: Ben Wills, github.com/benwills, 2015.05.18
+							  if you use this, no need to give me credit.
+				-->
+				<dict>
+					<key>match</key>
+					<string>(?x)
+						\b
+						[A-Z]
+						[A-Z0-9_]+
+						\s*
+						(?=\()
+					</string>
+					<key>name</key>
+					<string>macro.capitalized.c</string>
+				</dict>
+				<!--
+					capitalized variables/constants.
+					often used as preprocessort constants set by #define
+					Added by: Ben Wills, github.com/benwills, 2015.05.18
+							  if you use this, no need to give me credit.
+				-->
+				<dict>
+					<key>match</key>
+					<string>(?x)
+						\b
+						(?:
+							[A-Z]
+							[A-Z0-9_]+
+							\s+
+							(?!\()
+						)
+					</string>
+					<key>name</key>
+					<string>constant.capitalized.c</string>
+				</dict>
 				<dict>
 					<key>match</key>
 					<string>(\-|\+|\*|\/|%|&amp;|\||\^|&lt;&lt;|&gt;&gt;)?=</string>
@@ -1165,12 +1436,14 @@
 					<key>name</key>
 					<string>keyword.operator.bitwise.c</string>
 				</dict>
-				<dict>
-					<key>match</key>
-					<string>(\.|-&gt;)(?=(?:\s|/\*.*?\*/)*+[A-Za-z_]\w*+)</string>
-					<key>name</key>
-					<string>keyword.operator.dereference.c</string>
-				</dict>
+
+				<!--
+					derefernce definition was originally here. this was
+					removed and replaced by a new definition further above.
+					Added by: Ben Wills, github.com/benwills, 2015.05.18
+							  if you use this, no need to give me credit.
+				-->
+
 			</array>
 		</dict>
 		<key>lex-constant</key>
@@ -1310,3 +1583,4 @@
 	<string>24242A3A-CC4A-414D-B1FA-18D2BABB6754</string>
 </dict>
 </plist>
+
