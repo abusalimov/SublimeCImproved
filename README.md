@@ -106,11 +106,6 @@ C can be quite complicated to parse in some parts, for example related to pointe
 
 Some discussion on this can be found in a related [issue](//github.com/abusalimov/SublimeCImproved/issues/8).
 
-### Highlighting of all function calls
-In C Improved only calls to special support functions (like `printf`) are highlighted, unlike the standard C which highlights all function calls. This is the intended behavior that aims to make the highlighting more informative by emphasizing library functions and consistent with syntax definitions of other languages.
-
-A related [issue](//github.com/abusalimov/SublimeCImproved/issues/11) contains some hints on how to restore the original behavior.
-
 Installation
 ---
 ### Package Control
