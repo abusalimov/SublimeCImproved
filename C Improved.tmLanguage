@@ -419,7 +419,7 @@
 				<dict> <key>include</key> <string>#preprocessor-disabled-conditional</string> </dict>
 				<dict>
 					<key>begin</key> <string>^\s*(#)</string>
-					<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)$\n?</string>
+					<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
 					<key>name</key> <string>comment.other.preprocessor-disabled.c</string>
 				</dict>
 				<dict>
@@ -428,7 +428,7 @@
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.define.c</string> </dict>
 					</dict>
-					<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)$\n?</string>
+					<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
 					<key>name</key> <string>meta.preprocessor.directive.c</string>
 					<key>patterns</key>
 					<array>
@@ -451,7 +451,7 @@
 				<dict> <key>include</key> <string>#preprocessor-disabled-conditional</string> </dict>
 				<dict>
 					<key>begin</key> <string>^\s*(#)</string>
-					<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)$\n?</string>
+					<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
 					<key>name</key> <string>comment.other.preprocessor-disabled.c</string>
 				</dict>
 			</array>
@@ -463,10 +463,7 @@
 			<dict>
 				<key>0</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?x)
-				(?: (?&lt;=^|[^\\])\s*(?=\n)$\n?
-				  | (?&lt;= [^\\]\n ) | (?&lt;= \A\n ) )  # unexpected end of line
-			</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
 			<key>name</key> <string>meta.preprocessor.macro.c</string>
 			<key>patterns</key>
 			<array>
@@ -639,7 +636,7 @@
 				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
 				<key>4</key> <dict> <key>name</key> <string>variable.macro.undef.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)$\n?</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
 			<key>name</key> <string>meta.preprocessor.undef.c</string>
 			<key>patterns</key>
 			<array>
@@ -653,7 +650,7 @@
 			<dict>
 				<key>0</key> <dict> <key>name</key> <string>keyword.other.preprocessor.include.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?:("[^"]*?)|(&lt;[^&gt;]*?))(\n)|(?&lt;=^|[^\\])\s*(?=\n)$\n?</string>
+			<key>end</key> <string>(?:("[^"]*?)|(&lt;[^&gt;]*?))(\n)|(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
 			<key>endCaptures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>string.quoted.double.include.c</string> </dict>
@@ -715,7 +712,7 @@
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.pragma.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)$\n?</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
 			<key>name</key> <string>meta.preprocessor.directive.pragma-mark.c</string>
 			<key>contentName</key> <string>meta.toc-list.pragma-mark.c</string>
 			<key>patterns</key>
@@ -734,7 +731,7 @@
 			<dict>
 				<key>0</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)$\n?</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
 			<key>name</key> <string>meta.preprocessor.directive.c</string>
 			<key>patterns</key>
 			<array>
@@ -756,7 +753,7 @@
 		<key>ppline-directive-obsolete</key>
 		<dict>
 			<key>begin</key> <string>^\s*(#)\s*(assert|unassert|ident|sccs)\b</string>
-			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)$\n?</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
 			<key>name</key> <string>meta.preprocessor.directive.c invalid.deprecated.preprocessor.c</string>
 			<key>patterns</key>
 			<array>
@@ -767,7 +764,7 @@
 		<key>ppline-invalid</key>
 		<dict>
 			<key>begin</key> <string>^\s*(#)(?!\s*(?=/[/*]|(?&gt;\\\s*\n)|\n|$))</string>
-			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)$\n?</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
 			<key>name</key> <string>meta.preprocessor.directive.c invalid.illegal.preprocessor.c</string>
 		</dict>
 
@@ -778,7 +775,7 @@
 			<dict>
 				<key>0</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)$\n?</string>
+			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
 			<key>name</key> <string>meta.preprocessor.directive.null-directive.c</string>
 			<key>patterns</key>
 			<array>
@@ -1029,7 +1026,7 @@
 					<dict>
 						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.comment.c</string> </dict>
 					</dict>
-					<key>end</key> <string>(?&lt;=^|[^\\])\s*(?=\n)$\n?</string>
+					<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
 					<key>name</key> <string>comment.line.double-slash.c++</string>
 					<key>patterns</key>
 					<array>
