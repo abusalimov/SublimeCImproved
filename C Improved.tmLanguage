@@ -373,6 +373,10 @@
 				<dict> <key>include</key> <string>#lex</string> </dict>
 				<dict> <key>include</key> <string>#support-function</string> </dict>
 				<dict>
+					<key>match</key> <string>(?:(?&lt;=\.)|(?&lt;=-&gt;))\b([A-Za-z_]\w*+)\b</string>
+					<key>name</key> <string>variable.other.dot-access.c support.function.any-method.c</string>
+				</dict>
+				<dict>
 					<key>match</key> <string>(?:[A-Za-z_]\w*+|::[^:])++</string>
 					<key>name</key> <string>support.function.any-method.c</string>
 				</dict>
@@ -1058,10 +1062,18 @@
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#comments</string> </dict>
+				<dict> <key>include</key> <string>#lex-access</string> </dict>
 				<dict> <key>include</key> <string>#lex-continuation</string> </dict>
 				<dict> <key>include</key> <string>#lex-number</string> </dict>
 				<dict> <key>include</key> <string>#lex-string</string> </dict>
 			</array>
+		</dict>
+		<key>lex-access</key>
+		<dict>
+			<key>match</key>
+			<string>(?:(?&lt;=\.)|(?&lt;=-&gt;))\b([a-zA-Z_]\w*+)\b(?!(?:\s|/\*.*?\*/)*+\()</string>
+			<key>name</key>
+			<string>variable.other.dot-access.c</string>
 		</dict>
 		<key>lex-continuation</key>
 		<dict>
