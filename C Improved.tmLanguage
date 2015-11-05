@@ -210,12 +210,12 @@
 			<string>(?x)
 				(?: (?!\s*(?:[A-Za-z_({]|/[/*]|$))
 				  | (?= \s*\b(?: [A-Za-z_]\w*+ ) (?= \s* [\[;] ) )
-				  | (?&lt;!\})(?= \s*
+				  | (?&lt;!\})(?=
 				        # Prefer function definition over an attribute defined
 				        # through a macro, unless a block has been seen. That is:
 				        #   struct __packed __aligned(16) foo {...}; - function __aligned
 				        #   struct foo {...} __packed __aligned(16); - structure foo
-				        (?! \b__attribute__\b )
+				        (?! \s* \b__attribute__\b )
 
 				        (?: (?&lt;! (?&lt;!\w) new
 				                | (?&lt;!\w) (?:else|enum) | (?&lt;!\w) (?:class|union)
@@ -223,7 +223,7 @@
 				                | (?&lt;!\w) __typeof | (?&lt;!\w) __typeof__ )
 				            (?&lt;= \w ) \s
 
-        				  | #  or type modifier / closing bracket before name
+				          | #  or type modifier / closing bracket before name
 				            (?&lt;= [^&amp;]&amp; | [*&gt;)}\]] ) ) \s*
 
 				        (?: [A-Za-z_]\w*+ | ::[^:] )++
