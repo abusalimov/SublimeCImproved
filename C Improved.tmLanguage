@@ -43,9 +43,9 @@
 				<dict> <key>include</key> <string>#special_block</string> </dict>
 
 				<dict> <key>include</key> <string>#typedef</string> </dict>
-				<dict> <key>include</key> <string>#lex</string> </dict>
-
 				<dict> <key>include</key> <string>#type</string> </dict>
+
+				<dict> <key>include</key> <string>#lex</string> </dict>
 
 				<dict> <key>include</key> <string>#support-macro</string> </dict>
 				<dict> <key>include</key> <string>#function</string> </dict>
@@ -102,9 +102,9 @@
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#typedef</string> </dict>
-				<dict> <key>include</key> <string>#lex</string> </dict>
-
 				<dict> <key>include</key> <string>#type</string> </dict>
+
+				<dict> <key>include</key> <string>#lex</string> </dict>
 
 				<dict> <key>include</key> <string>#call</string> </dict>
 				<dict> <key>include</key> <string>#support</string> </dict>
@@ -131,12 +131,12 @@
 			<key>name</key> <string>meta.parens.c</string>
 			<key>patterns</key>
 			<array>
+				<dict> <key>include</key> <string>#type</string> </dict>
+
 				<dict> <key>include</key> <string>#lex</string> </dict>
 
 				<dict> <key>include</key> <string>#call</string> </dict>
 				<dict> <key>include</key> <string>#support</string> </dict>
-
-				<dict> <key>include</key> <string>#type</string> </dict>
 
 				<dict> <key>include</key> <string>#block</string> </dict>
 				<dict> <key>include</key> <string>#parens</string> </dict>
