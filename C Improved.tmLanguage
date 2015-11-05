@@ -217,7 +217,8 @@
 				        #   struct foo {...} __packed __aligned(16); - structure foo
 				        (?! \s* \b__attribute__\b )
 
-				        (?: (?&lt;! (?&lt;!\w) new
+				        (?: ^
+				          | (?&lt;! (?&lt;!\w) new
 				                | (?&lt;!\w) (?:else|enum) | (?&lt;!\w) (?:class|union)
 				                | (?&lt;!\w) (?:struct|return|sizeof|typeof)
 				                | (?&lt;!\w) __typeof | (?&lt;!\w) __typeof__ )
@@ -248,7 +249,7 @@
 				<dict> <key>include</key> <string>#block</string> </dict>
 				<dict> <key>include</key> <string>#parens</string> </dict>
 				<dict>
-					<key>match</key> <string>\b([A-Za-z_]\w*+)(?=(?:\s|/\*.*?\*/)*+\{)</string>
+					<key>match</key> <string>\b([A-Za-z_]\w*+)(?=(?:\s|/\*.*?\*/)*+(?:\{|(//.*)?\\?$))</string>
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>entity.name.type.class.c entity.name.class.c</string> </dict>
