@@ -43,9 +43,9 @@
 				<dict> <key>include</key> <string>#special_block</string> </dict>
 
 				<dict> <key>include</key> <string>#typedef</string> </dict>
-				<dict> <key>include</key> <string>#lex</string> </dict>
-
 				<dict> <key>include</key> <string>#type</string> </dict>
+
+				<dict> <key>include</key> <string>#lex</string> </dict>
 
 				<dict> <key>include</key> <string>#support-macro</string> </dict>
 				<dict> <key>include</key> <string>#function</string> </dict>
@@ -102,9 +102,9 @@
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#typedef</string> </dict>
-				<dict> <key>include</key> <string>#lex</string> </dict>
-
 				<dict> <key>include</key> <string>#type</string> </dict>
+
+				<dict> <key>include</key> <string>#lex</string> </dict>
 
 				<dict> <key>include</key> <string>#call</string> </dict>
 				<dict> <key>include</key> <string>#support</string> </dict>
@@ -131,12 +131,12 @@
 			<key>name</key> <string>meta.parens.c</string>
 			<key>patterns</key>
 			<array>
+				<dict> <key>include</key> <string>#type</string> </dict>
+
 				<dict> <key>include</key> <string>#lex</string> </dict>
 
 				<dict> <key>include</key> <string>#call</string> </dict>
 				<dict> <key>include</key> <string>#support</string> </dict>
-
-				<dict> <key>include</key> <string>#type</string> </dict>
 
 				<dict> <key>include</key> <string>#block</string> </dict>
 				<dict> <key>include</key> <string>#parens</string> </dict>
@@ -210,20 +210,21 @@
 			<string>(?x)
 				(?: (?!\s*(?:[A-Za-z_({]|/[/*]|$))
 				  | (?= \s*\b(?: [A-Za-z_]\w*+ ) (?= \s* [\[;] ) )
-				  | (?&lt;!\})(?= \s*
+				  | (?&lt;!\})(?=
 				        # Prefer function definition over an attribute defined
 				        # through a macro, unless a block has been seen. That is:
 				        #   struct __packed __aligned(16) foo {...}; - function __aligned
 				        #   struct foo {...} __packed __aligned(16); - structure foo
-				        (?! \b__attribute__\b )
+				        (?! \s* \b__attribute__\b )
 
-				        (?: (?&lt;! (?&lt;!\w) new
+				        (?: ^
+				          | (?&lt;! (?&lt;!\w) new
 				                | (?&lt;!\w) (?:else|enum) | (?&lt;!\w) (?:class|union)
 				                | (?&lt;!\w) (?:struct|return|sizeof|typeof)
 				                | (?&lt;!\w) __typeof | (?&lt;!\w) __typeof__ )
 				            (?&lt;= \w ) \s
 
-        				  | #  or type modifier / closing bracket before name
+				          | #  or type modifier / closing bracket before name
 				            (?&lt;= [^&amp;]&amp; | [*&gt;)}\]] ) ) \s*
 
 				        (?: [A-Za-z_]\w*+ | ::[^:] )++
@@ -248,7 +249,7 @@
 				<dict> <key>include</key> <string>#block</string> </dict>
 				<dict> <key>include</key> <string>#parens</string> </dict>
 				<dict>
-					<key>match</key> <string>\b([A-Za-z_]\w*+)(?=(?:\s|/\*.*?\*/)*+\{)</string>
+					<key>match</key> <string>\b([A-Za-z_]\w*+)(?=(?:\s|/\*.*?\*/)*+(?:\{|(//.*)?\\?$))</string>
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>entity.name.type.class.c entity.name.class.c</string> </dict>
