@@ -759,7 +759,12 @@
 		<dict>
 			<key>begin</key> <string>^\s*(#)\s*(assert|unassert|ident|sccs)\b</string>
 			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
-			<key>name</key> <string>meta.preprocessor.directive.c invalid.deprecated.preprocessor.c</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>invalid.deprecated.preprocessor.c</string> </dict>
+			</dict>
+			<key>name</key> <string>meta.preprocessor.directive.deprecated.c</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#lex-core</string> </dict>
@@ -768,9 +773,14 @@
 
 		<key>ppline-invalid</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)(?!\s*(?=/[/*]|(?&gt;\\\s*\n)|\n|$))</string>
+			<key>begin</key> <string>^\s*(#)(?!\s*(?=/[/*]|(?&gt;\\\s*\n)|\n|$))\s*(\w*)</string>
 			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
-			<key>name</key> <string>meta.preprocessor.directive.c invalid.illegal.preprocessor.c</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>invalid.illegal.preprocessor.c</string> </dict>
+			</dict>
+			<key>name</key> <string>meta.preprocessor.directive.illegal.c</string>
 		</dict>
 
 		<key>ppline-any</key>
