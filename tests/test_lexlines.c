@@ -33,7 +33,35 @@ REGULAR LINE
 		str_expr, expr, ##args)
 
 #if 0
+comment
+#endif
+
+#if 0 // comment
+comment
+#endif
+
+#if /*1*/0
+comment
+#endif
+
+#if 0+1
+REGULAR LINE
+#endif
+
+#if 0
+comment
+#if 0
+#if 0
 #define COMMENT
+#endif
+#define COMMENT
+comment
+#endif
+#endif
+
+#if 0
+comment
+#endif_comment
 comment
 #endif
 
