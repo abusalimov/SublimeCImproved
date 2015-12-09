@@ -1030,7 +1030,7 @@
 					<key>name</key> <string>comment.block.c</string>
 				</dict>
 				<dict>
-					<key>match</key> <string>\*/(?=[^*].*\n)</string>
+					<key>match</key> <string>\*/(?![/*])</string>
 					<key>name</key> <string>invalid.illegal.stray-comment-end.c</string>
 				</dict>
 				<dict>
