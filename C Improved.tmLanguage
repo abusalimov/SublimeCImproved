@@ -409,6 +409,7 @@
 			<array>
 				<dict> <key>include</key> <string>#comments</string> </dict>
 				<dict> <key>include</key> <string>#lex-continuation</string> </dict>
+				<dict> <key>include</key> <string>#lex-newline</string> </dict>
 			</array>
 		</dict>
 		<key>preprocessor-disabled</key>
@@ -1011,17 +1012,22 @@
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>meta.toc-list.banner.block.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>punctuation.whitespace.newline.c</string> </dict>
 					</dict>
-					<key>match</key> <string>^\s*/\* =(\s*.*?)\s*= \*/$\n?</string>
+					<key>match</key> <string>^\s*/\* =(\s*.*?)\s*= \*/$(\n?)</string>
 					<key>name</key> <string>comment.block.c</string>
 				</dict>
 				<dict>
-					<key>begin</key> <string>\s*/\*</string>
+					<key>begin</key> <string>\s*(/\*)</string>
 					<key>captures</key>
 					<dict>
-						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.comment.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>punctuation.definition.comment.c</string> </dict>
 					</dict>
-					<key>end</key> <string>\*/</string>
+					<key>end</key> <string>(\*/)(\n?)</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>2</key> <dict> <key>name</key> <string>punctuation.whitespace.newline.c</string> </dict>
+					</dict>
 					<key>name</key> <string>comment.block.c</string>
 				</dict>
 				<dict>
@@ -1032,8 +1038,9 @@
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>meta.toc-list.banner.line.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>punctuation.whitespace.newline.c</string> </dict>
 					</dict>
-					<key>match</key> <string>^\s*// =(\s*.*?)\s*=\s*$\n?</string>
+					<key>match</key> <string>^\s*// =(\s*.*?)\s*=\s*$(\n?)</string>
 					<key>name</key> <string>comment.line.banner.c++</string>
 				</dict>
 				<dict>
@@ -1047,6 +1054,7 @@
 					<key>patterns</key>
 					<array>
 						<dict> <key>include</key> <string>#lex-continuation</string> </dict>
+						<dict> <key>include</key> <string>#lex-newline</string> </dict>
 					</array>
 				</dict>
 			</array>
@@ -1076,6 +1084,7 @@
 				<dict> <key>include</key> <string>#comments</string> </dict>
 				<dict> <key>include</key> <string>#lex-access</string> </dict>
 				<dict> <key>include</key> <string>#lex-continuation</string> </dict>
+				<dict> <key>include</key> <string>#lex-newline</string> </dict>
 				<dict> <key>include</key> <string>#lex-number</string> </dict>
 				<dict> <key>include</key> <string>#lex-string</string> </dict>
 			</array>
@@ -1092,11 +1101,12 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>match</key> <string>(\\)$\n?</string>
+					<key>match</key> <string>(\\)$(\n?)</string>
 					<key>name</key> <string>punctuation.separator.continuation.c</string>
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>keyword.other.line-continuation.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>punctuation.whitespace.newline.c</string> </dict>
 					</dict>
 				</dict>
 				<dict>
@@ -1108,6 +1118,12 @@
 				</dict>
 			</array>
 		</dict>
+		<key>lex-newline</key>
+		<dict>
+			<key>match</key> <string>$\n</string>
+			<key>name</key> <string>punctuation.whitespace.newline.c</string>
+		</dict>
+
 		<key>lex-keyword</key>
 		<dict>
 			<key>patterns</key>
