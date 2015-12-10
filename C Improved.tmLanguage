@@ -1008,19 +1008,10 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>captures</key>
-					<dict>
-						<key>1</key> <dict> <key>name</key> <string>meta.toc-list.banner.block.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>punctuation.whitespace.newline.c</string> </dict>
-					</dict>
-					<key>match</key> <string>^\s*/\* =(\s*.*?)\s*= \*/$(\n?)</string>
-					<key>name</key> <string>comment.block.c</string>
-				</dict>
-				<dict>
 					<key>begin</key> <string>\s*(/\*)</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>punctuation.definition.comment.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>punctuation.definition.comment.block.c</string> </dict>
 					</dict>
 					<key>end</key> <string>(\*/)(\n?)</string>
 					<key>endCaptures</key>
@@ -1028,35 +1019,49 @@
 						<key>2</key> <dict> <key>name</key> <string>punctuation.whitespace.newline.c</string> </dict>
 					</dict>
 					<key>name</key> <string>comment.block.c</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#comment-innards</string> </dict>
+					</array>
 				</dict>
 				<dict>
 					<key>match</key> <string>\*/(?![/*])</string>
 					<key>name</key> <string>invalid.illegal.stray-comment-end.c</string>
 				</dict>
 				<dict>
-					<key>captures</key>
-					<dict>
-						<key>1</key> <dict> <key>name</key> <string>meta.toc-list.banner.line.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>punctuation.whitespace.newline.c</string> </dict>
-					</dict>
-					<key>match</key> <string>^\s*// =(\s*.*?)\s*=\s*$(\n?)</string>
-					<key>name</key> <string>comment.line.banner.c++</string>
-				</dict>
-				<dict>
-					<key>begin</key> <string>\s*//</string>
+					<key>begin</key> <string>\s*(//)</string>
 					<key>beginCaptures</key>
 					<dict>
-						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.comment.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>punctuation.definition.comment.line.double-slash.c++</string> </dict>
 					</dict>
 					<key>end</key> <string>(?&lt;=$\n)(?&lt;!\\$\n)</string>
 					<key>name</key> <string>comment.line.double-slash.c++</string>
 					<key>patterns</key>
 					<array>
-						<dict> <key>include</key> <string>#lex-continuation</string> </dict>
-						<dict> <key>include</key> <string>#lex-newline</string> </dict>
+						<dict> <key>include</key> <string>#comment-innards</string> </dict>
 					</array>
 				</dict>
 			</array>
+		</dict>
+
+		<key>comment-innards</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#comment-banner-line</string> </dict>
+				<dict> <key>include</key> <string>#lex-continuation</string> </dict>
+				<dict> <key>include</key> <string>#lex-newline</string> </dict>
+			</array>
+		</dict>
+
+		<key>comment-banner-line</key>
+		<dict>
+			<key>match</key> <string>(?:(?&lt;=//)|(?&lt;=/\*)|^)[\s/*]*(=+\s*(.*?)\s*=+(?:(?=[\s/*+\-]*\*/)|$(\n?)))</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>meta.toc-list.banner.c</string> </dict>
+				<key>3</key> <dict> <key>name</key> <string>punctuation.whitespace.newline.c</string> </dict>
+			</dict>
 		</dict>
 
 		<key>lex</key>
