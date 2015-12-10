@@ -1049,6 +1049,7 @@
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#comment-banner-line</string> </dict>
+				<dict> <key>include</key> <string>#comment-task-tag-line</string> </dict>
 				<dict> <key>include</key> <string>#lex-continuation</string> </dict>
 				<dict> <key>include</key> <string>#lex-newline</string> </dict>
 			</array>
@@ -1062,6 +1063,91 @@
 				<key>1</key> <dict> <key>name</key> <string>meta.toc-list.banner.c</string> </dict>
 				<key>3</key> <dict> <key>name</key> <string>punctuation.whitespace.newline.c</string> </dict>
 			</dict>
+		</dict>
+
+		<key>comment-task-tag-line</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key> <string>(?ix)
+					    (?= (?-i: @[a-zA-Z_]++ | \b [A-Z_]++) \b) @? \b (?:
+					        (FIXME) | (XXX) | (WTF)
+					    ) \b
+					</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>0</key> <dict> <key>name</key> <string>keyword.other.task-tag.prio-high.c</string> </dict>
+					</dict>
+					<key>end</key> <string>(?=[\s/*]*\*/)|(?&lt;=$\n)</string>
+					<key>name</key> <string>meta.toc-list.task-tag.prio-high.c</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#comment-task-tag-line-innards</string> </dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key> <string>(?ix)
+					    (?= (?-i: @[a-zA-Z_]++ | \b [A-Z_]++) \b) @? \b (?:
+					        (TODO)
+					    ) \b
+					</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>0</key> <dict> <key>name</key> <string>keyword.other.task-tag.prio-normal.c</string> </dict>
+					</dict>
+					<key>end</key> <string>(?=[\s/*]*\*/)|(?&lt;=$\n)</string>
+					<key>name</key> <string>meta.toc-list.task-tag.prio-normal.c</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#comment-task-tag-line-innards</string> </dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key> <string>(?ix)
+					    (?= (?-i: @[a-zA-Z_]++ | \b [A-Z_]++) \b) @? \b (?:
+					        (TBD) | (REVIEW)
+					    ) \b
+					</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>0</key> <dict> <key>name</key> <string>keyword.other.task-tag.prio-low.c</string> </dict>
+					</dict>
+					<key>end</key> <string>(?=[\s/*]*\*/)|(?&lt;=$\n)</string>
+					<key>name</key> <string>meta.toc-list.task-tag.prio-low.c</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#comment-task-tag-line-innards</string> </dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key> <string>(?ix)
+					    (?= (?-i: @[a-zA-Z_]++ | \b [A-Z_]++) \b) @? \b (?:
+					        (NOTE) | (NB) | (CHANGED) | (IDEA) | (IMPORTANT) | (HACK) | (BUG)
+					    ) \b
+					</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>0</key> <dict> <key>name</key> <string>keyword.other.task-tag.note.c</string> </dict>
+					</dict>
+					<key>end</key> <string>(?=[\s/*]*\*/)|(?&lt;=$\n)</string>
+					<key>name</key> <string>meta.toc-list.task-tag.note.c</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#comment-task-tag-line-innards</string> </dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+
+		<key>comment-task-tag-line-innards</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict> <key>include</key> <string>#comment-task-tag-line</string> </dict>
+				<dict> <key>include</key> <string>#lex-continuation</string> </dict>
+				<dict> <key>include</key> <string>#lex-newline</string> </dict>
+			</array>
 		</dict>
 
 		<key>lex</key>

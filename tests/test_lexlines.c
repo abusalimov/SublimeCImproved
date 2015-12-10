@@ -75,3 +75,29 @@ REGULAR LINE
 #assert <- DEPRECATED
 #sdfasd <- INVALID
 #line
+
+// === Task tags examples ===
+
+/*
+ * My awesome structure.
+ * More docs TBD -- Eldar */
+struct aww {}; // NOTE really awesome, but still empty
+               // new comment line      \
+               // and TODO continuation \
+               // still the same comment line
+               // simple multiline comment   \
+                  Hey you! FIXME -- PF       \
+                  Just another brick in the wall
+
+// XXX move to a header
+extern int barf(void);
+
+#pragma mark MAIN
+
+int main(int argc, char const *argv[])
+{
+	mode_t mode;
+	mode = S_IFBLK; // XXX this should be an argument
+	mode |= S_IRALL | S_IWALL; // TODO umask. -- Eldar
+	return 0;
+}
