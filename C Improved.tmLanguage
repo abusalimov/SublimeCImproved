@@ -1078,6 +1078,9 @@
 					<key>beginCaptures</key>
 					<dict>
 						<key>0</key> <dict> <key>name</key> <string>keyword.other.task-tag.prio-high.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>storage.type.class.fixme.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>storage.type.class.xxx.c</string> </dict>
+						<key>3</key> <dict> <key>name</key> <string>storage.type.class.wtf.c</string> </dict>
 					</dict>
 					<key>end</key> <string>(?=[\s/*]*\*/)|(?&lt;=$\n)</string>
 					<key>name</key> <string>meta.toc-list.task-tag.prio-high.c</string>
@@ -1095,6 +1098,7 @@
 					<key>beginCaptures</key>
 					<dict>
 						<key>0</key> <dict> <key>name</key> <string>keyword.other.task-tag.prio-normal.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>storage.type.class.todo.c</string> </dict>
 					</dict>
 					<key>end</key> <string>(?=[\s/*]*\*/)|(?&lt;=$\n)</string>
 					<key>name</key> <string>meta.toc-list.task-tag.prio-normal.c</string>
@@ -1112,6 +1116,8 @@
 					<key>beginCaptures</key>
 					<dict>
 						<key>0</key> <dict> <key>name</key> <string>keyword.other.task-tag.prio-low.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>storage.type.class.tbd.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>storage.type.class.review.c</string> </dict>
 					</dict>
 					<key>end</key> <string>(?=[\s/*]*\*/)|(?&lt;=$\n)</string>
 					<key>name</key> <string>meta.toc-list.task-tag.prio-low.c</string>
@@ -1129,6 +1135,13 @@
 					<key>beginCaptures</key>
 					<dict>
 						<key>0</key> <dict> <key>name</key> <string>keyword.other.task-tag.note.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>storage.type.class.note.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>storage.type.class.nb.c</string> </dict>
+						<key>3</key> <dict> <key>name</key> <string>storage.type.class.changed.c</string> </dict>
+						<key>4</key> <dict> <key>name</key> <string>storage.type.class.idea.c</string> </dict>
+						<key>5</key> <dict> <key>name</key> <string>storage.type.class.important.c</string> </dict>
+						<key>6</key> <dict> <key>name</key> <string>storage.type.class.hack.c</string> </dict>
+						<key>7</key> <dict> <key>name</key> <string>storage.type.class.bug.c</string> </dict>
 					</dict>
 					<key>end</key> <string>(?=[\s/*]*\*/)|(?&lt;=$\n)</string>
 					<key>name</key> <string>meta.toc-list.task-tag.note.c</string>
