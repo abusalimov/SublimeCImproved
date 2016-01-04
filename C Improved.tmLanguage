@@ -52,6 +52,7 @@
 				<dict> <key>include</key> <string>#support</string> </dict>
 
 				<dict> <key>include</key> <string>#block</string> </dict>
+				<dict> <key>include</key> <string>#parens</string> </dict>
 			</array>
 		</dict>
 		<key>special_block</key>
@@ -76,7 +77,7 @@
 					<key>name</key> <string>meta.block.special.c</string>
 					<key>patterns</key>
 					<array>
-						<dict> <key>include</key> <string>#translation_unit</string> </dict>
+						<dict> <key>include</key> <string>$base</string> </dict>
 					</array>
 				</dict>
 			</array>
@@ -111,8 +112,7 @@
 
 				<dict> <key>include</key> <string>#function</string> </dict>
 
-				<dict> <key>include</key> <string>#parens</string> </dict>
-				<dict> <key>include</key> <string>#block</string> </dict>
+				<dict> <key>include</key> <string>$base</string> </dict>
 			</array>
 		</dict>
 		<key>parens</key>
@@ -138,8 +138,7 @@
 				<dict> <key>include</key> <string>#call</string> </dict>
 				<dict> <key>include</key> <string>#support</string> </dict>
 
-				<dict> <key>include</key> <string>#block</string> </dict>
-				<dict> <key>include</key> <string>#parens</string> </dict>
+				<dict> <key>include</key> <string>$base</string> </dict>
 			</array>
 		</dict>
 
