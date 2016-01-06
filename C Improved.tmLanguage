@@ -1358,7 +1358,7 @@
 					<key>name</key> <string>constant.numeric.float.hexadecimal.c</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>string.other.number.prefix.hexadecimal.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>storage.type.number.prefix.hexadecimal.c</string> </dict>
 						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.number.missing-fragment.significand.c</string> </dict>
 						<key>3</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.float.whole-number.c</string> </dict>
 						<key>4</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.float.fraction.c</string> </dict>
@@ -1366,7 +1366,7 @@
 						<key>6</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.float.exponent.c</string> </dict>
 						<key>7</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.float.exponent.c</string> </dict>
 						<key>8</key> <dict> <key>name</key> <string>invalid.illegal.number.missing-fragment.exponent.c</string> </dict>
-						<key>9</key> <dict> <key>name</key> <string>string.other.number.suffix.float.c</string> </dict>
+						<key>9</key> <dict> <key>name</key> <string>storage.type.number.suffix.float.c</string> </dict>
 					</dict>
 				</dict>
 				<dict>
@@ -1387,11 +1387,11 @@
 					<key>name</key> <string>constant.numeric.float.hexadecimal.c</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>string.other.number.prefix.hexadecimal.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>storage.type.number.prefix.hexadecimal.c</string> </dict>
 						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.float.whole-number.c</string> </dict>
 						<key>3</key> <dict> <key>name</key> <string>invalid.illegal.number.hexadecimal-float-requires-exponent.c</string> </dict>
 						<key>4</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.float.fraction.c</string> </dict>
-						<key>5</key> <dict> <key>name</key> <string>string.other.number.suffix.float.c</string> </dict>
+						<key>5</key> <dict> <key>name</key> <string>storage.type.number.suffix.float.c</string> </dict>
 					</dict>
 				</dict>
 				<dict>
@@ -1422,12 +1422,12 @@
 						<key>1</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.float.whole-number.c</string> </dict>
 						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.float.fraction.c</string> </dict>
 						<key>3</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.float.whole-number.c</string> </dict>
-						<key>4</key> <dict> <key>name</key> <string>keyword.other.exponent.c</string> </dict>
+						<key>4</key> <dict> <key>name</key> <string>keyword.other.exponent.decimal.c</string> </dict>
 						<key>5</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.float.exponent.c</string> </dict>
 						<key>6</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.float.exponent.c</string> </dict>
 						<key>7</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.float.exponent.c</string> </dict>
 						<key>8</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.float.exponent.c</string> </dict>
-						<key>9</key> <dict> <key>name</key> <string>string.other.number.suffix.float.c</string> </dict>
+						<key>9</key> <dict> <key>name</key> <string>storage.type.number.suffix.float.c</string> </dict>
 					</dict>
 				</dict>
 				<dict>
@@ -1440,8 +1440,8 @@
 					<key>name</key> <string>constant.numeric.integer.zero.c</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>string.other.number.prefix.hexadecimal.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>string.other.number.suffix.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>storage.type.number.prefix.hexadecimal.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>storage.type.number.suffix.c</string> </dict>
 					</dict>
 				</dict>
 				<dict>
@@ -1456,9 +1456,9 @@
 					<key>name</key> <string>invalid.illegal.invalid-number-literal.c</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>string.other.number.prefix.hexadecimal.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>string.other.number.prefix.binary.c</string> </dict>
-						<key>3</key> <dict> <key>name</key> <string>string.other.number.suffix.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>storage.type.number.prefix.hexadecimal.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>storage.type.number.prefix.binary.c</string> </dict>
+						<key>3</key> <dict> <key>name</key> <string>storage.type.number.suffix.c</string> </dict>
 					</dict>
 				</dict>
 				<dict>
@@ -1478,9 +1478,9 @@
 					<key>name</key> <string>constant.numeric.integer.hexadecimal.c</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>string.other.number.prefix.hexadecimal.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>storage.type.number.prefix.hexadecimal.c</string> </dict>
 						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.integer.c</string> </dict>
-						<key>3</key> <dict> <key>name</key> <string>string.other.number.suffix.c</string> </dict>
+						<key>3</key> <dict> <key>name</key> <string>storage.type.number.suffix.c</string> </dict>
 					</dict>
 				</dict>
 				<dict>
@@ -1500,9 +1500,9 @@
 					<key>name</key> <string>constant.numeric.integer.binary.c</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>string.other.number.prefix.binary.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>storage.type.number.prefix.binary.c</string> </dict>
 						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.integer.c</string> </dict>
-						<key>3</key> <dict> <key>name</key> <string>string.other.number.suffix.c</string> </dict>
+						<key>3</key> <dict> <key>name</key> <string>storage.type.number.suffix.c</string> </dict>
 					</dict>
 				</dict>
 				<dict>
@@ -1522,9 +1522,9 @@
 					<key>name</key> <string>constant.numeric.integer.octal.c</string>
 					<key>captures</key>
 					<dict>
-						<key>1</key> <dict> <key>name</key> <string>string.other.number.prefix.octal.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>storage.type.number.prefix.octal.c</string> </dict>
 						<key>2</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.integer.c</string> </dict>
-						<key>3</key> <dict> <key>name</key> <string>string.other.number.suffix.c</string> </dict>
+						<key>3</key> <dict> <key>name</key> <string>storage.type.number.suffix.c</string> </dict>
 					</dict>
 				</dict>
 				<dict>
@@ -1545,7 +1545,7 @@
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>invalid.illegal.numeric-literal-character.integer.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>string.other.number.suffix.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>storage.type.number.suffix.c</string> </dict>
 					</dict>
 				</dict>
 			</array>
