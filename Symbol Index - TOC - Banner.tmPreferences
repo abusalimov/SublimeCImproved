@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>scope</key>
-    <string>source.c entity.name.type.declaration</string>
+    <string>source.c meta.toc-list.banner - punctuation.whitespace.newline</string>
     <key>settings</key>
     <dict>
 		<key>showInIndexedSymbolList</key>
@@ -12,7 +12,10 @@
 		<string>1</string>
 		<key>symbolTransformation</key>
 		<string>
-		s/^.*$/ ⒞  $0 ; — type declaration/g;
+		s/^=+\s*(.*?)\s*=+\s*\\?\s*$\n?/$1/mg;
+		s/^.*$/=== $0 ========================================================/g;
+		s/=  =/= ===/g;
+		s/^(.{0,80}).*?$/$1/g;
 		</string>
     </dict>
 </dict>
