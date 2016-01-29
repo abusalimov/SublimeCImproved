@@ -408,58 +408,60 @@
 			<array>
 				<dict> <key>include</key> <string>#comments</string> </dict>
 				<dict> <key>include</key> <string>#lex-continuation</string> </dict>
+				<dict> <key>include</key> <string>#lex-newline</string> </dict>
 			</array>
 		</dict>
 		<key>preprocessor-disabled</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)(?=\s*(if)\s+(0[xX])?0++\b)</string>
+			<key>begin</key> <string>^\s*(#)(?=\s*(if)\b(?=(?:\s|/\*.*?\*/)*+(0[xX])?0++\b(?:\s|/\*.*?\*/)*+(//.*)?\\?$))</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>0</key> <dict> <key>name</key> <string>meta.preprocessor.directive.c keyword.other.preprocessor.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?=^\s*(#)\s*(endif|else|elif))</string>
+			<key>end</key> <string>(?=^\s*(#)\s*(endif|else|elif)\b)</string>
 			<key>patterns</key>
 			<array>
-				<dict> <key>include</key> <string>#preprocessor-disabled-conditional</string> </dict>
 				<dict>
-					<key>begin</key> <string>^\s*(#)</string>
-					<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
+					<key>begin</key> <string>^</string>
+					<key>end</key> <string>$\n?</string>
 					<key>name</key> <string>comment.other.preprocessor-disabled.c</string>
+					<key>patterns</key>
+					<array>
+						<dict> <key>include</key> <string>#preprocessor-disabled-conditional</string> </dict>
+						<dict> <key>include</key> <string>#preprocessor-disabled-directive</string> </dict>
+					</array>
 				</dict>
 				<dict>
-					<key>begin</key> <string>(?&lt;!##)(?&lt;=#)(\s*if)\s+(?=(0[xX])?0++\b)</string>
+					<key>begin</key> <string>(?&lt;!##)(?&lt;=#)\s*(if)\b(?=(?:\s|/\*.*?\*/)*+(0[xX])?0++\b(?:\s|/\*.*?\*/)*+(//.*)?\\?$)</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.define.c</string> </dict>
 					</dict>
-					<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
+					<key>end</key> <string>(?&lt;=$\n)(?&lt;!\\$\n)</string>
 					<key>name</key> <string>meta.preprocessor.directive.c</string>
 					<key>patterns</key>
 					<array>
 						<dict> <key>include</key> <string>#lex-core</string> </dict>
 					</array>
 				</dict>
-				<dict>
-					<key>match</key> <string>.</string>
-					<key>name</key> <string>comment.other.preprocessor-disabled.c</string>
-				</dict>
 			</array>
 		</dict>
 		<key>preprocessor-disabled-conditional</key>
 		<dict>
 			<key>begin</key> <string>^\s*(#)\s*if(n?def)?\b</string>
-			<key>end</key> <string>^\s*(#)\s*endif\b.*$</string>
-			<key>name</key> <string>comment.other.preprocessor-disabled.c</string>
+			<key>end</key> <string>^\s*(#)\s*endif\b.*$\n?</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#preprocessor-disabled-conditional</string> </dict>
-				<dict>
-					<key>begin</key> <string>^\s*(#)</string>
-					<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
-					<key>name</key> <string>comment.other.preprocessor-disabled.c</string>
-				</dict>
+				<dict> <key>include</key> <string>#preprocessor-disabled-directive</string> </dict>
 			</array>
 		</dict>
+		<key>preprocessor-disabled-directive</key>
+		<dict>
+			<key>begin</key> <string>^\s*(#)</string>
+			<key>end</key> <string>(?&lt;=$\n)(?&lt;!\\$\n)</string>
+		</dict>
+
 		<key>ppline-macro</key>
 		<dict>
 			<key>begin</key> <string>^\s*(#)(?=\s*(define)\s+[a-zA-Z_]\w*+)</string>
@@ -467,7 +469,7 @@
 			<dict>
 				<key>0</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
+			<key>end</key> <string>(?&lt;=$\n)(?&lt;!\\$\n)</string>
 			<key>name</key> <string>meta.preprocessor.macro.c</string>
 			<key>patterns</key>
 			<array>
@@ -640,7 +642,7 @@
 				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
 				<key>4</key> <dict> <key>name</key> <string>variable.macro.undef.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
+			<key>end</key> <string>(?&lt;=$\n)(?&lt;!\\$\n)</string>
 			<key>name</key> <string>meta.preprocessor.undef.c</string>
 			<key>patterns</key>
 			<array>
@@ -654,7 +656,7 @@
 			<dict>
 				<key>0</key> <dict> <key>name</key> <string>keyword.other.preprocessor.include.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?:("[^"]*?)|(&lt;[^&gt;]*?))(\n)|(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
+			<key>end</key> <string>(?:("[^"]*?)|(&lt;[^&gt;]*?))(\n)|(?&lt;=$\n)(?&lt;!\\$\n)</string>
 			<key>endCaptures</key>
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>string.quoted.double.include.c</string> </dict>
@@ -716,7 +718,7 @@
 			<dict>
 				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.pragma.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
+			<key>end</key> <string>(?&lt;=$\n)(?&lt;!\\$\n)</string>
 			<key>name</key> <string>meta.preprocessor.directive.pragma-mark.c</string>
 			<key>contentName</key> <string>meta.toc-list.pragma-mark.c</string>
 			<key>patterns</key>
@@ -735,7 +737,7 @@
 			<dict>
 				<key>0</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
+			<key>end</key> <string>(?&lt;=$\n)(?&lt;!\\$\n)</string>
 			<key>name</key> <string>meta.preprocessor.directive.c</string>
 			<key>patterns</key>
 			<array>
@@ -757,8 +759,13 @@
 		<key>ppline-directive-obsolete</key>
 		<dict>
 			<key>begin</key> <string>^\s*(#)\s*(assert|unassert|ident|sccs)\b</string>
-			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
-			<key>name</key> <string>meta.preprocessor.directive.c invalid.deprecated.preprocessor.c</string>
+			<key>end</key> <string>(?&lt;=$\n)(?&lt;!\\$\n)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>invalid.deprecated.preprocessor.c</string> </dict>
+			</dict>
+			<key>name</key> <string>meta.preprocessor.directive.deprecated.c</string>
 			<key>patterns</key>
 			<array>
 				<dict> <key>include</key> <string>#lex-core</string> </dict>
@@ -767,9 +774,14 @@
 
 		<key>ppline-invalid</key>
 		<dict>
-			<key>begin</key> <string>^\s*(#)(?!\s*(?=/[/*]|(?&gt;\\\s*\n)|\n|$))</string>
-			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
-			<key>name</key> <string>meta.preprocessor.directive.c invalid.illegal.preprocessor.c</string>
+			<key>begin</key> <string>^\s*(#)(?!\s*(?=/[/*]|(?&gt;\\\s*\n)|\n|$))\s*(\w*)</string>
+			<key>end</key> <string>(?&lt;=$\n)(?&lt;!\\$\n)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
+				<key>2</key> <dict> <key>name</key> <string>invalid.illegal.preprocessor.c</string> </dict>
+			</dict>
+			<key>name</key> <string>meta.preprocessor.directive.illegal.c</string>
 		</dict>
 
 		<key>ppline-any</key>
@@ -779,7 +791,7 @@
 			<dict>
 				<key>0</key> <dict> <key>name</key> <string>keyword.other.preprocessor.c</string> </dict>
 			</dict>
-			<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
+			<key>end</key> <string>(?&lt;=$\n)(?&lt;!\\$\n)</string>
 			<key>name</key> <string>meta.preprocessor.directive.null-directive.c</string>
 			<key>patterns</key>
 			<array>
@@ -999,17 +1011,22 @@
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>meta.toc-list.banner.block.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>punctuation.whitespace.newline.c</string> </dict>
 					</dict>
-					<key>match</key> <string>^\s*/\* =(\s*.*?)\s*= \*/$\n?</string>
+					<key>match</key> <string>^\s*/\* =(\s*.*?)\s*= \*/$(\n?)</string>
 					<key>name</key> <string>comment.block.c</string>
 				</dict>
 				<dict>
-					<key>begin</key> <string>\s*/\*</string>
+					<key>begin</key> <string>\s*(/\*)</string>
 					<key>captures</key>
 					<dict>
-						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.comment.c</string> </dict>
+						<key>1</key> <dict> <key>name</key> <string>punctuation.definition.comment.c</string> </dict>
 					</dict>
-					<key>end</key> <string>\*/</string>
+					<key>end</key> <string>(\*/)(\n?)</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>2</key> <dict> <key>name</key> <string>punctuation.whitespace.newline.c</string> </dict>
+					</dict>
 					<key>name</key> <string>comment.block.c</string>
 				</dict>
 				<dict>
@@ -1020,8 +1037,9 @@
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>meta.toc-list.banner.line.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>punctuation.whitespace.newline.c</string> </dict>
 					</dict>
-					<key>match</key> <string>^\s*// =(\s*.*?)\s*=\s*$\n?</string>
+					<key>match</key> <string>^\s*// =(\s*.*?)\s*=\s*$(\n?)</string>
 					<key>name</key> <string>comment.line.banner.c++</string>
 				</dict>
 				<dict>
@@ -1030,11 +1048,12 @@
 					<dict>
 						<key>0</key> <dict> <key>name</key> <string>punctuation.definition.comment.c</string> </dict>
 					</dict>
-					<key>end</key> <string>(?&lt;=^|[^\\])(?=\s*(//.*)?\n)$\n?|(?&lt;=[^\\]\n)|(?&lt;=\A\n)</string>
+					<key>end</key> <string>(?&lt;=$\n)(?&lt;!\\$\n)</string>
 					<key>name</key> <string>comment.line.double-slash.c++</string>
 					<key>patterns</key>
 					<array>
 						<dict> <key>include</key> <string>#lex-continuation</string> </dict>
+						<dict> <key>include</key> <string>#lex-newline</string> </dict>
 					</array>
 				</dict>
 			</array>
@@ -1064,6 +1083,7 @@
 				<dict> <key>include</key> <string>#comments</string> </dict>
 				<dict> <key>include</key> <string>#lex-access</string> </dict>
 				<dict> <key>include</key> <string>#lex-continuation</string> </dict>
+				<dict> <key>include</key> <string>#lex-newline</string> </dict>
 				<dict> <key>include</key> <string>#lex-number</string> </dict>
 				<dict> <key>include</key> <string>#lex-string</string> </dict>
 			</array>
@@ -1080,11 +1100,12 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>match</key> <string>(\\)$\n?</string>
+					<key>match</key> <string>(\\)$(\n?)</string>
 					<key>name</key> <string>punctuation.separator.continuation.c</string>
 					<key>captures</key>
 					<dict>
 						<key>1</key> <dict> <key>name</key> <string>keyword.other.line-continuation.c</string> </dict>
+						<key>2</key> <dict> <key>name</key> <string>punctuation.whitespace.newline.c</string> </dict>
 					</dict>
 				</dict>
 				<dict>
@@ -1096,6 +1117,12 @@
 				</dict>
 			</array>
 		</dict>
+		<key>lex-newline</key>
+		<dict>
+			<key>match</key> <string>$\n</string>
+			<key>name</key> <string>punctuation.whitespace.newline.c</string>
+		</dict>
+
 		<key>lex-keyword</key>
 		<dict>
 			<key>patterns</key>
