@@ -1,34 +1,57 @@
+/**
+ * Test numeric literals: both integers and floats.
+ */
+
 int main(int argc, char const *argv[])
 {
 	GOOD = {
+		/* zeroes */
 		0,
 		0.0l,
 		.0,
 		0.f,
 		0UL,
 		0x0ull,
-		7e5,
+
+		/* decimal integers */
+		42,
+		-123,
+
+		/* GNU C binary literals */
+		0b100110,
+		0b100110ul,
+
+		/* hexadecimal integers */
+		0xFF,
+		0xcf400000ul,
+		0xFull,
+		0xC0FFEE,
+		0xdeadbeef,
+
+		/* octal integers */
+		0777,
+		0123l,  // long
+
+		089e3l,  // but: decimal float
+
+		/* decimal floats */
+		3.1415926,
+		.015625,
+		7e5,  // 7.0 * 10^5
 		7.3,
 		7.3E+5,
 		7.E+5,
 		.3E+5f,
-		7.3+5,
-		7.3+E,
-		0x73e5f,
-		0x7.3p5f,
-		0x7.3p-5f,
-		0x7p5f,
-		029e3l,
+		7.3e5l,  // long double
 
-		2,
-		256,
-		0.015625,
-		0.857421875,
-		0x1p-1074,
-		3.1415926,
-		0.1,
-		0x3.334p-5,
-		0xcc.cdp-11,
+		7.3+E,  // a sum, i.e. 7.3 + E
+		7.3+5,  // also a sum
+
+		/* hexadecimal floats */
+		0x7.0p5,  // 7.0 * 2^5
+		0xcf7p5,
+		0xcc.dp-11,
+		0x13p-10,
 	};
 
 	BAD = {
