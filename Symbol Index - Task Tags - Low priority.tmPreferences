@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>scope</key>
-    <string>source.c meta.toc-list.task-tag.prio-low - punctuation.whitespace.newline</string>
+    <string>source.c meta.toc-list.task-tag.prio-low</string>
     <key>settings</key>
     <dict>
 		<key>showInIndexedSymbolList</key>
