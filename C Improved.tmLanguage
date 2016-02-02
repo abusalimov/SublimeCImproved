@@ -1400,10 +1400,10 @@
 
 						(?!0x)
 						# significand
-						(?: (?: [0-9]++ ([0-9a-z&amp;&amp;[^e]]*?) [0-9]+* )?
-						    \.  [0-9]++ ([0-9a-z.&amp;&amp;[^e]]*?) [0-9]+*
+						(?: (?: [0-9]++ ([0-9a-z&amp;&amp;[^e]]*?) [0-9]*+ )?
+						    \.  [0-9]++ ([0-9a-z.&amp;&amp;[^e]]*?) [0-9]*+
 
-						  |     [0-9]++ ([0-9a-z&amp;&amp;[^e]]*?) [0-9]+* (?: \. | (?=e)) )
+						  |     [0-9]++ ([0-9a-z&amp;&amp;[^e]]*?) [0-9]*+ (?: \. | (?=e)) )
 
 						# exponent (optional)
 						(?: (e) (?: [+\-]  [0-9]++ ([0-9a-z]*?)
@@ -1454,12 +1454,6 @@
 						\b (?!\.)
 					</string>
 					<key>name</key> <string>invalid.illegal.invalid-number-literal.c</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key> <dict> <key>name</key> <string>storage.type.number.prefix.hexadecimal.c</string> </dict>
-						<key>2</key> <dict> <key>name</key> <string>storage.type.number.prefix.binary.c</string> </dict>
-						<key>3</key> <dict> <key>name</key> <string>storage.type.number.suffix.c</string> </dict>
-					</dict>
 				</dict>
 				<dict>
 					<key>match</key> <string>(?ix)
