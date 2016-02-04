@@ -1,0 +1,1045 @@
+comment: |-
+  https://github.com/abusalimov/SublimeCImproved
+
+  Derived from C.tmLanguage - the original TextMate and Sublime Text
+  syntax definition.
+name: C Improved
+scopeName: source.c
+fileTypes: [c, h]
+uuid: 24242A3A-CC4A-414D-B1FA-18D2BABB6754
+firstLineMatch: -[*]-( Mode:)? C -[*]-
+foldingStartMarker: |-
+  (?x)
+   /\*\*(?!\*)
+  |^(?![^{]*?//|[^{]*?/\*(?!.*?\*/.*?\{)).*?\{\s*($|//|/\*(?!.*?\*/.*\S))
+foldingStopMarker: (?<!\*)\*\*/|^\s*\}
+keyEquivalent: ^~C
+
+patterns:
+- include: '#translation_unit'
+
+repository:
+  translation_unit:
+    patterns:
+    - include: '#special_block'
+    - include: '#typedef'
+    - include: '#type'
+    - include: '#lex'
+    - include: '#support-macro'
+    - include: '#function'
+    - include: '#support'
+    - include: '#block'
+    - include: '#parens'
+
+  special_block:
+    begin: |-
+      (?x)
+      (?= \s*
+          (?:
+              (?: \b extern \b
+                  (?: "(\\.|[^"])*" | '(\\.|[^'])*' | /\*.*?\*/ | \s)* ) |
+              (?: \b namespace \b
+                  (?: (?: /\*.*?\*/ | \s)* \b [A-Za-z_]\w*+ \b)?
+                  (?: /\*.*?\*/ | \s)* ) )
+          \{ )
+    end: \}
+    patterns:
+    - include: '#lex'
+    - name: meta.block.special.c
+      begin: \{
+      end: (?=\})
+      patterns:
+      - include: $base
+
+  block:
+    begin: (?=\{)
+    end: \}
+    patterns:
+    - include: '#block-lookahead-end'
+
+  block-lookahead-end:
+    name: meta.block.c
+    begin: \{
+    end: (?=\})
+    patterns:
+    - include: '#typedef'
+    - include: '#type'
+    - include: '#lex'
+    - include: '#call'
+    - include: '#support'
+    - include: '#function'
+    - include: $base
+
+  parens:
+    begin: (?=\()
+    end: \)
+    patterns:
+    - include: '#parens-lookahead-end'
+
+  parens-lookahead-end:
+    name: meta.parens.c
+    begin: \(
+    end: (?=\))
+    patterns:
+    - include: '#type'
+    - include: '#lex'
+    - include: '#call'
+    - include: '#support'
+    - include: $base
+
+  typedef:
+    name: meta.typedef.c
+    begin: (?x) (?<= \A typedef | \W typedef ) \b
+    end: ;
+    patterns:
+    - include: '#lex'
+    - include: '#type-definition'
+    - include: '#block'
+    - match: \s*\b([A-Za-z_]\w*+)(?=\s*[\[;])
+      captures:
+        '1': {name: entity.name.type.typedef.c}
+
+  type:
+    patterns:
+    - include: '#type-declaration'
+    - include: '#type-definition'
+
+  type-declaration:
+    name: meta.compound.c
+    begin: |-
+      (?x)
+      (?<= \A enum | \A (?:class|union) | \A struct |
+              \W enum | \W (?:class|union) | \W struct ) \b
+      (?= (?:\s|/\*.*?\*/)*+
+          ([A-Za-z_]\w*+)
+          (?:\s|/\*.*?\*/)*+; )
+    end: (?<=;)
+    patterns:
+    - include: '#lex'
+    - match: \s*\b([A-Za-z_]\w*+)\b
+      captures:
+        '1': {name: entity.name.type.declaration.c}
+
+  type-definition:
+    name: meta.compound.c
+    begin: |-
+      (?x)
+      (?<= \A enum | \A (?:class|union) | \A struct |
+              \W enum | \W (?:class|union) | \W struct ) \b
+
+      # Negation of zero-length parts of the end pattern
+      # to prevent entering the rule if it's gonna exit immediately.
+      # (workaround ST2 bugs, see issue #10)
+      (?=\s*(?:[A-Za-z_({]|/[/*]|$))
+      (?! \s*\b(?: [A-Za-z_]\w*+ ) (?= \s* [\[;] ) )
+    end: |-
+      (?x)
+      (?: (?!\s*(?:[A-Za-z_({]|/[/*]|$))
+        | (?= \s*\b(?: [A-Za-z_]\w*+ ) (?= \s* [\[;] ) )
+        | (?<!\})(?=
+              # Prefer function definition over an attribute defined
+              # through a macro, unless a block has been seen. That is:
+              #   struct __packed __aligned(16) foo {...}; - function __aligned
+              #   struct foo {...} __packed __aligned(16); - structure foo
+              (?! \s* \b__attribute__\b )
+
+              (?: ^
+                | (?<! (?<!\w) new
+                      | (?<!\w) (?:else|enum) | (?<!\w) (?:class|union)
+                      | (?<!\w) (?:struct|return|sizeof|typeof)
+                      | (?<!\w) __typeof | (?<!\w) __typeof__ )
+                  (?<= \w ) \s
+
+                | #  or type modifier / closing bracket before name
+                  (?<= [^&]& | [*>)}\]] ) ) \s*
+
+              (?: [A-Za-z_]\w*+ | ::[^:] )++
+              (?: (?<= ^ operator | \W operator )  # C++ operator?
+                  (?: [-*&<>=+!]+ | \(\) | \[\] ) )?
+              (?:\s|/\*.*?\*/)*+ \( ) )
+    patterns:
+    - begin: (?<=\})
+      end: (?!\s*(?:[A-Za-z_({]|/[/*]|$))
+      patterns:
+      - include: '#lex'
+      - include: '#block'
+      - include: '#parens'
+    - include: '#lex'
+    - include: '#block'
+    - include: '#parens'
+    - match: \b([A-Za-z_]\w*+)(?=(?:\s|/\*.*?\*/)*+(?:\{|(//.*)?\\?$))
+      captures:
+        '1': {name: entity.name.type.class.c entity.name.class.c}
+
+  function:
+    patterns:
+    - include: '#function-fixup-macro'
+    - include: '#function-declaration'
+    - include: '#function-definition'
+
+  function-fixup-macro:
+    begin: |-
+      (?x)
+      ^ # Begin of line, capital letters: most probably it is a macro
+      \s*\b
+      ([A-Z0-9_]++)
+      \b
+      (?= (?:\s|/\*.*?\*/)*+ \( )
+    end: \)
+    patterns:
+    - include: '#lex'
+    - include: '#parens-lookahead-end'
+
+  function-declaration:
+    name: meta.function.c
+    begin: |-
+      (?x)
+      (?: ^
+        | (?<! (?<!\w) new
+              | (?<!\w) (?:else|enum) | (?<!\w) (?:class|union)
+              | (?<!\w) (?:struct|return|sizeof|typeof)
+              | (?<!\w) __typeof | (?<!\w) __typeof__ )
+          (?<= \w ) \s
+
+        | #  or type modifier / closing bracket before name
+          (?<= [^&]& | [*>)}\]] ) ) \s*
+
+      (   (?: [A-Za-z_]\w*+ | ::[^:] )++
+          (?: (?<= ^ operator | \W operator )  # C++ operator?
+              (?: [-*&<>=+!]+ | \(\) | \[\] ) )? )
+
+      (?= (?:\s|/\*.*?\*/)*+ (?'parens' \(
+                  (?> \g'parens' |
+                      "(\\.|[^"])*" | '(\\.|[^'])*' | /\*.*?\*/ |
+                      (?! /[/*] | [()] ) . )*
+              \) ) \s* ; )
+    beginCaptures:
+      '1': {name: entity.name.function.declaration.c}
+    end: ;
+    patterns:
+    - include: '#lex'
+    - include: '#parens'
+
+  function-definition:
+    name: meta.function.c
+    begin: |-
+      (?x)
+      (?: ^
+        | (?<! (?<!\w) new
+              | (?<!\w) (?:else|enum) | (?<!\w) (?:class|union)
+              | (?<!\w) (?:struct|return|sizeof|typeof)
+              | (?<!\w) __typeof | (?<!\w) __typeof__ )
+          (?<= \w ) \s
+
+        | #  or type modifier / closing bracket before name
+          (?<= [^&]& | [*>)}\]] ) ) \s*
+
+      (   (?: [A-Za-z_]\w*+ | ::[^:] )++
+          (?: (?<= ^ operator | \W operator )  # C++ operator?
+              (?: [-*&<>=+!]+ | \(\) | \[\] ) )? )
+
+      (?= (?:\s|/\*.*?\*/)*+ \( )
+    beginCaptures:
+      '1': {name: entity.name.function.definition.c}
+    end: \}|;
+    patterns:
+    - include: '#lex'
+    - include: '#parens'
+    - name: storage.modifier.c
+      match: \s*\b(const|override)\b
+    - include: '#block-lookahead-end'
+
+  call:
+    name: meta.function-call.c
+    begin: |-
+      (?x)
+      \s*
+      (?= # don't consume to recognize support functions
+          (?: [A-Za-z_]\w*+ | ::[^:] )++
+          (?:\s|/\*.*?\*/)*+ \( )
+    end: \)
+    patterns:
+    - include: '#lex'
+    - include: '#support-function'
+    - name: variable.other.dot-access.c support.function.any-method.c
+      match: (?:(?<=\.)|(?<=->))\b([A-Za-z_]\w*+)\b
+    - name: support.function.any-method.c
+      match: (?:[A-Za-z_]\w*+|::[^:])++
+    - include: '#parens-lookahead-end'
+
+  preprocessor:
+    begin: (?=^\s*(#))
+    end: (?!^\s*(#))
+    patterns:
+    - include: '#preprocessor-disabled'
+    - include: '#ppline-directive-invalid-usage'
+    - include: '#ppline-macro'
+    - include: '#ppline-undef'
+    - include: '#ppline-pragma-mark'
+    - include: '#ppline-include'
+    - include: '#ppline-directive'
+    - include: '#ppline-directive-obsolete'
+    - include: '#ppline-invalid'
+    - include: '#ppline-any'
+
+  preprocessor-lex:
+    patterns:
+    - include: '#comments'
+    - include: '#lex-continuation'
+    - include: '#lex-newline'
+
+  preprocessor-disabled:
+    begin: ^\s*(#)(?=\s*(if)\b(?=(?:\s|/\*.*?\*/)*+(0[xX])?0++\b(?:\s|/\*.*?\*/)*+(//.*)?\\?$))
+    beginCaptures:
+      '0': {name: meta.preprocessor.directive.c keyword.other.preprocessor.c}
+    end: (?=^\s*(#)\s*(endif|else|elif)\b)
+    patterns:
+    - name: comment.other.preprocessor-disabled.c
+      begin: ^
+      end: $\n?
+      patterns:
+      - include: '#preprocessor-disabled-conditional'
+      - include: '#preprocessor-disabled-directive'
+    - name: meta.preprocessor.directive.c
+      begin: (?<!##)(?<=#)\s*(if)\b(?=(?:\s|/\*.*?\*/)*+(0[xX])?0++\b(?:\s|/\*.*?\*/)*+(//.*)?\\?$)
+      beginCaptures:
+        '1': {name: keyword.other.preprocessor.define.c}
+      end: (?<=$\n)(?<!\\$\n)
+      patterns:
+      - include: '#lex-core'
+
+  preprocessor-disabled-conditional:
+    begin: ^\s*(#)\s*if(n?def)?\b
+    end: ^\s*(#)\s*endif\b.*$\n?
+    patterns:
+    - include: '#preprocessor-disabled-conditional'
+    - include: '#preprocessor-disabled-directive'
+
+  preprocessor-disabled-directive:
+    begin: ^\s*(#)
+    end: (?<=$\n)(?<!\\$\n)
+
+  ppline-macro:
+    name: meta.preprocessor.macro.c
+    begin: ^\s*(#)(?=\s*(define)\s+[a-zA-Z_]\w*+)
+    beginCaptures:
+      '0': {name: keyword.other.preprocessor.c}
+    end: (?<=$\n)(?<!\\$\n)
+    patterns:
+    - match: \s*(##)
+      captures:
+        '1': {name: keyword.other.preprocessor.c}
+    - match: \s*(#)\s*([a-zA-Z_]\w*+)
+      captures:
+        '1': {name: keyword.other.preprocessor.c}
+        '2': {name: string.macro.stringify.c}
+    - include: '#ppline-macro-head-function'
+    - include: '#ppline-macro-head-object'
+    - include: '#lex-in-preprocessor'
+    - include: '#support'
+
+  ppline-macro-head-object:
+    match: (?<!##)(?<=#)(\s*define)\s+([a-zA-Z_]\w*+)(?!\()[\s&&[^\n]]*
+    captures:
+      '1': {name: keyword.other.preprocessor.define.c}
+      '2': {name: entity.name.constant.preprocessor.c}
+
+  ppline-macro-head-function:
+    contentName: meta.preprocessor.macro.parameters.c
+    begin: (?<!##)(?<=#)(\s*define)\s+([a-zA-Z_]\w*+)(\()
+    beginCaptures:
+      '1': {name: keyword.other.preprocessor.define.c}
+      '2': {name: entity.name.function.preprocessor.c}
+      '3': {name: meta.preprocessor.macro.parameters.c}
+    end: (?<=\))|(?<=^|[^\\])\s*(\n)
+    endCaptures:
+      '1': {name: invalid.illegal.unexpected-end-of-line.c}
+    patterns:
+    - match: \)
+    - begin: \b([a-zA-Z_]\w*+)\b
+      beginCaptures:
+        '1': {name: variable.parameter.c}
+      end: (?<=\))|(?=(?<=^|[^\\])\s*(\n))
+      patterns:
+      - match: \)
+      - include: '#ppline-macro-param-next'
+      - include: '#ppline-macro-param-vararg'
+      - include: '#ppline-macro-param-lex'
+      - include: '#ppline-macro-param-lex-invalid'
+    - include: '#ppline-macro-param-vararg'
+    - include: '#ppline-macro-param-lex'
+    - include: '#ppline-macro-param-lex-invalid'
+
+  ppline-macro-param-next:
+    begin: (,)
+    beginCaptures:
+      '1': {name: punctuation.separator.parameter.c}
+    end: \b([a-zA-Z_]\w*+)\b|(?=\.\.\.)|(\))|(?=(?<=^|[^\\])\s*(\n))
+    endCaptures:
+      '1': {name: variable.parameter.c}
+      '2': {name: invalid.illegal.unexpected-closing-paren.c}
+    patterns:
+    - include: '#ppline-macro-param-lex'
+    - name: invalid.illegal.unexpected-character.c
+      match: |-
+        (?x)
+        (?: (?! (?:\s|/\*.*?\*/)*+
+                (?: \b([a-zA-Z_]\w*+)\b | \.\.\. | \) | (?>(?:\\\s*)?$\n?) | /[/*] ) )
+            .)*
+
+  ppline-macro-param-vararg:
+    begin: (\.\.\.)
+    beginCaptures:
+      '1': {name: punctuation.definition.ellipsis.c}
+    end: (\))|(?=(?<=^|[^\\])\s*(\n))
+    patterns:
+    - include: '#ppline-macro-param-lex'
+    - name: invalid.illegal.unexpected-character.c
+      match: |-
+        (?x)
+        (?: (?! (?:\s|/\*.*?\*/)*+
+                (?: \) | (?>(?:\\\s*)?$\n?) | /[/*] ) )
+            .)*
+
+  ppline-macro-param-lex:
+    patterns:
+    - match: \s*
+    - name: invalid.illegal.unexpected-end-of-line.c
+      begin: \s*//
+      beginCaptures:
+        '0': {name: punctuation.definition.comment.c}
+      end: (?<=^|[^\\])\s*(?=\n)$
+      patterns:
+      - include: '#lex-continuation'
+    - include: '#preprocessor-lex'
+
+  ppline-macro-param-lex-invalid:
+    patterns:
+    - name: invalid.illegal.unexpected-character.c
+      match: |-
+        (?x)
+        (?: (?! (?:\s|/\*.*?\*/)*+
+                (?: \) | (?>(?:\\\s*)?$\n?) | /[/*] ) )
+            .) # no star unlike its friends in arg/vararg
+
+  ppline-undef:
+    name: meta.preprocessor.undef.c
+    begin: (^\s*(#)\s*(undef))\s+([a-zA-Z_]\w*+)
+    beginCaptures:
+      '1': {name: keyword.other.preprocessor.c}
+      '4': {name: variable.macro.undef.c}
+    end: (?<=$\n)(?<!\\$\n)
+    patterns: []
+
+  ppline-include:
+    name: meta.preprocessor.include.c meta.preprocessor.c.include
+    begin: ^\s*(#)\s*(include|include_next|import)\b
+    beginCaptures:
+      '0': {name: keyword.other.preprocessor.include.c}
+    end: (?:("[^"]*?)|(<[^>]*?))(\n)|(?<=$\n)(?<!\\$\n)
+    endCaptures:
+      '1': {name: string.quoted.double.include.c}
+      '2': {name: string.quoted.other.lt-gt.include.c}
+      '3': {name: invalid.illegal.unexpected-end-of-line.c}
+    patterns:
+    - include: '#ppline-include-innards'
+
+  ppline-include-innards:
+    patterns:
+    - include: '#preprocessor-lex'
+    - name: string.quoted.double.include.c
+      begin: '"|(?=.*?")'
+      beginCaptures:
+        '0': {name: punctuation.definition.string.begin.c}
+      end: '"|(?<=^|[^\\])(?=\s*\n)'
+      endCaptures:
+        '0': {name: punctuation.definition.string.end.c}
+    - name: string.quoted.other.lt-gt.include.c
+      begin: <(?=.*?>)
+      beginCaptures:
+        '0': {name: punctuation.definition.string.begin.c}
+      end: '>|(?<=^|[^\\])(?=\s*\n)'
+      endCaptures:
+        '0': {name: punctuation.definition.string.end.c}
+    - name: meta.parens.c
+      begin: \(
+      end: \)|(?<=^|[^\\])(?=\s*\n)
+      patterns:
+      - include: '#ppline-include-innards'
+
+  ppline-pragma-mark:
+    name: meta.preprocessor.directive.pragma-mark.c
+    contentName: meta.toc-list.pragma-mark.c
+    begin: (^\s*(#)\s*(pragma\s+mark)\b)[\s&&[^\n]]*
+    beginCaptures:
+      '1': {name: keyword.other.preprocessor.pragma.c}
+    end: (?<=$\n)(?<!\\$\n)
+    patterns:
+    - include: '#preprocessor-lex'
+    - name: string.other.pragma-mark.c
+      match: .
+
+  ppline-directive:
+    name: meta.preprocessor.directive.c
+    begin: ^\s*(#)\s*(if|ifdef|ifndef|elif|else|endif|pragma|line|define|undef|error|warning)\b
+    beginCaptures:
+      '0': {name: keyword.other.preprocessor.c}
+    end: (?<=$\n)(?<!\\$\n)
+    patterns:
+    - include: '#lex-core'
+
+  ppline-directive-invalid-usage:
+    name: meta.preprocessor.directive.c
+    match: (^\s*(#)\s*(if|ifdef|ifndef|elif|pragma|define|undef|include|include_next|import)\b)\s*?(\n|$)
+    captures:
+      '1': {name: keyword.other.preprocessor.c}
+      '4': {name: invalid.illegal.invalid-usage-of-preprocessor-directive.c}
+
+  ppline-directive-obsolete:
+    name: meta.preprocessor.directive.deprecated.c
+    begin: ^\s*(#)\s*(assert|unassert|ident|sccs)\b
+    beginCaptures:
+      '1': {name: keyword.other.preprocessor.c}
+      '2': {name: invalid.deprecated.preprocessor.c}
+    end: (?<=$\n)(?<!\\$\n)
+    patterns:
+    - include: '#lex-core'
+
+  ppline-invalid:
+    name: meta.preprocessor.directive.illegal.c
+    begin: ^\s*(#)(?!\s*(?=/[/*]|(?>\\\s*\n)|\n|$))\s*(\w*)
+    beginCaptures:
+      '1': {name: keyword.other.preprocessor.c}
+      '2': {name: invalid.illegal.preprocessor.c}
+    end: (?<=$\n)(?<!\\$\n)
+
+  ppline-any:
+    name: meta.preprocessor.directive.null-directive.c
+    begin: ^\s*(#)
+    beginCaptures:
+      '0': {name: keyword.other.preprocessor.c}
+    end: (?<=$\n)(?<!\\$\n)
+    patterns:
+    - include: '#lex-core'
+
+  support:
+    patterns:
+    - include: '#support-type'
+    - include: '#support-macro'
+    - include: '#support-function'
+
+  support-type:
+    patterns:
+    - match: \s*\b(u_char|u_short|u_int|u_long|ushort|uint|(?:u_quad|quad|qaddr|caddr|daddr|dev|fixpt|blkcnt|blksize|gid|in_addr|in_port|ino|key|mode|nlink|id|pid|off|segsz|swblk|uid|id|clock|size|ssize|time|useconds|suseconds)_t)\b
+      captures:
+        '1': {name: support.type.sys-types.c}
+    - match: \s*\b(pthread_(?:t|attr_t|once_t|key_t|(?:cond|mutex|rwlock)(?:attr)?_t))\b
+      captures:
+        '1': {name: support.type.pthread.c}
+    - match: \s*\b(u?int(?:(?:_least|_fast)?(?:8|16|32|64)_t|ptr_t|max_t))\b
+      captures:
+        '1': {name: support.type.stdint.c}
+    - match: \s*\b(noErr|kNilOptions|kInvalidID|kVariableLengthArray)\b
+      captures:
+        '1': {name: support.constant.mac-classic.c}
+    - match: \s*\b(AbsoluteTime|Boolean|Byte|ByteCount|ByteOffset|BytePtr|CompTimeValue|ConstLogicalAddress|ConstStrFileNameParam|ConstStringPtr|Duration|Fixed|FixedPtr|Float32|Float32Point|Float64|Float80|Float96|FourCharCode|Fract|FractPtr|Handle|ItemCount|LogicalAddress|OptionBits|OSErr|OSStatus|OSType|OSTypePtr|PhysicalAddress|ProcessSerialNumber|ProcessSerialNumberPtr|ProcHandle|Ptr|ResType|ResTypePtr|ShortFixed|ShortFixedPtr|SignedByte|SInt16|SInt32|SInt64|SInt8|Size|StrFileName|StringHandle|StringPtr|TimeBase|TimeRecord|TimeScale|TimeValue|TimeValue64|UInt16|UInt32|UInt64|UInt8|UniChar|UniCharCount|UniCharCountPtr|UniCharPtr|UnicodeScalarValue|UniversalProcHandle|UniversalProcPtr|UnsignedFixed|UnsignedFixedPtr|UnsignedWide|UTF16Char|UTF32Char|UTF8Char)\b
+      captures:
+        '1': {name: support.type.mac-classic.c}
+    - match: |-
+        (?x)
+        \s*\b
+        (   Py(?:Var|Type|HeapType|Dict|Set|List|Tuple|BaseException)?Object
+          | PyType_(?:Spec|Slot) )
+        \b
+      captures:
+        '1': {name: support.type.cpython.c}
+    - match: |-
+        (?x)
+        \s*\b
+        (   Py(?:BaseObject|Type|Super|Bool|Dict
+                |DictIter(?:Key|Value|Item)
+                |Dict(?:Key|Value|Item)s
+                |(?:Set|List|Tuple)(?:Iter)?
+                |FrozenSet|ListRevIter)_Type
+          | _?PyExc_\w++
+          | Py_(?:False|True|None|NotImplemented) )
+        \b
+      captures:
+        '1': {name: support.constant.cpython.c}
+
+  support-macro:
+    patterns:
+    - match: \s*\b(__builtin_\w++)\b
+      captures:
+        '1': {name: support.function.intrinsic.c}
+    - match: |-
+        (?x)
+        \s*\b
+        (   (?:__)?(?:DECL(?:ARE)?|DEF(?:INE)?)_[A-Z0-9_]+
+          | (?:__)?[A-Z_][A-Z0-9_]*_(?:DECL(?:ARE)?|DEF(?:INE)?)
+          | EXPORT(?:_UNUSED)?(?:_PER_CPU)?_SYMBOL(?:_GPL(?:_FUTURE)?)?
+          | MODULE_(?:INFO|ALIAS|LICENSE|AUTHOR|DESCRIPTION|DEVICE_TABLE|VERSION|FIRMWARE)
+          | (?:__)?MODULE_PARM_(?:TYPE|DESC)
+          | module_param(?:(?:_array)?(?:_named)?|_call)
+          | (?:module|core|postcore|arch|subsys|fs|device|late)_param_cb
+          | [HL]?LIST_HEAD
+          | (?:_|__BIN|BIN|BUS|DRIVER|CLASS|DEVICE)_ATTR(?:_R[OW])? )
+        \b
+      captures:
+        '1': {name: support.function.linux-kernel.macro.c}
+    - match: |-
+        (?x)
+        \s*\b
+        (   _(?:IRQL|Kernel)_\w+_
+          | _Interlocked_operand_
+          | _Dispatch_type_
+          | _Flt_CompletionContext_Outptr_ )
+        \b
+      captures:
+        '1': {name: support.function.windows-sal2.annotation.c}
+    - match: |-
+        (?x)
+        \s*\b
+        (   PyAPI_(?:FUNC|DATA)
+          | PyMODINIT_FUNC
+          | Py_LOCAL(?:_INLINE)?
+          | PyDoc_(?:STR(?:VAR)?|VAR)
+          | PyObject(?:_VAR)?_HEAD
+          | _PyObject_HEAD_EXTRA
+          | PyException_HEAD
+          | Py(?:Var)?Object_HEAD_INIT
+          | PyModuleDef_HEAD_INIT
+          | Py_(RETURN)_(?:FALSE|TRUE|NONE|NOTIMPLEMENTED|NAN|INF) )
+        \b
+      captures:
+        '1': {name: support.function.cpython.macro.c}
+        '2': {name: keyword.control.c}
+    - match: \s*\b(_Py_IDENTIFIER)\b\s*\(\s*([A-Za-z_]\w*+)\s*\)
+      captures:
+        '1': {name: support.function.cpython.macro.c}
+        '2': {name: string.support.cpython.identifier.c}
+    - match: \s*\bPyId_([A-Za-z_]\w*+)\b
+      captures:
+        '1': {name: string.support.cpython.identifier.c}
+    - match: \s*\b((?:CONFIG|HAVE)_[A-Z0-9_]++)\b
+      captures:
+        '1': {name: support.constant.config.c}
+
+  support-function:
+    patterns:
+    - match: \s*\b(hypot(f|l)?|s(scanf|ystem|nprintf|ca(nf|lb(n(f|l)?|ln(f|l)?))|i(n(h(f|l)?|f|l)?|gn(al|bit))|tr(s(tr|pn)|nc(py|at|mp)|c(spn|hr|oll|py|at|mp)|to(imax|d|u(l(l)?|max)|k|f|l(d|l)?)|error|pbrk|ftime|len|rchr|xfrm)|printf|et(jmp|vbuf|locale|buf)|qrt(f|l)?|w(scanf|printf)|rand)|n(e(arbyint(f|l)?|xt(toward(f|l)?|after(f|l)?))|an(f|l)?)|c(s(in(h(f|l)?|f|l)?|qrt(f|l)?)|cos(h(f)?|f|l)?|imag(f|l)?|t(ime|an(h(f|l)?|f|l)?)|o(s(h(f|l)?|f|l)?|nj(f|l)?|pysign(f|l)?)|p(ow(f|l)?|roj(f|l)?)|e(il(f|l)?|xp(f|l)?)|l(o(ck|g(f|l)?)|earerr)|a(sin(h(f|l)?|f|l)?|cos(h(f|l)?|f|l)?|tan(h(f|l)?|f|l)?|lloc|rg(f|l)?|bs(f|l)?)|real(f|l)?|brt(f|l)?)|t(ime|o(upper|lower)|an(h(f|l)?|f|l)?|runc(f|l)?|gamma(f|l)?|mp(nam|file))|i(s(space|n(ormal|an)|cntrl|inf|digit|u(nordered|pper)|p(unct|rint)|finite|w(space|c(ntrl|type)|digit|upper|p(unct|rint)|lower|al(num|pha)|graph|xdigit|blank)|l(ower|ess(equal|greater)?)|al(num|pha)|gr(eater(equal)?|aph)|xdigit|blank)|logb(f|l)?|max(div|abs))|di(v|fftime)|_Exit|unget(c|wc)|p(ow(f|l)?|ut(s|c(har)?|wc(har)?)|error|rintf)|e(rf(c(f|l)?|f|l)?|x(it|p(2(f|l)?|f|l|m1(f|l)?)?))|v(s(scanf|nprintf|canf|printf|w(scanf|printf))|printf|f(scanf|printf|w(scanf|printf))|w(scanf|printf)|a_(start|copy|end|arg))|qsort|f(s(canf|e(tpos|ek))|close|tell|open|dim(f|l)?|p(classify|ut(s|c|w(s|c))|rintf)|e(holdexcept|set(e(nv|xceptflag)|round)|clearexcept|testexcept|of|updateenv|r(aiseexcept|ror)|get(e(nv|xceptflag)|round))|flush|w(scanf|ide|printf|rite)|loor(f|l)?|abs(f|l)?|get(s|c|pos|w(s|c))|re(open|e|ad|xp(f|l)?)|m(in(f|l)?|od(f|l)?|a(f|l|x(f|l)?)?))|l(d(iv|exp(f|l)?)|o(ngjmp|cal(time|econv)|g(1(p(f|l)?|0(f|l)?)|2(f|l)?|f|l|b(f|l)?)?)|abs|l(div|abs|r(int(f|l)?|ound(f|l)?))|r(int(f|l)?|ound(f|l)?)|gamma(f|l)?)|w(scanf|c(s(s(tr|pn)|nc(py|at|mp)|c(spn|hr|oll|py|at|mp)|to(imax|d|u(l(l)?|max)|k|f|l(d|l)?|mbs)|pbrk|ftime|len|r(chr|tombs)|xfrm)|to(b|mb)|rtomb)|printf|mem(set|c(hr|py|mp)|move))|a(s(sert|ctime|in(h(f|l)?|f|l)?)|cos(h(f|l)?|f|l)?|t(o(i|f|l(l)?)|exit|an(h(f|l)?|2(f|l)?|f|l)?)|b(s|ort))|g(et(s|c(har)?|env|wc(har)?)|mtime)|r(int(f|l)?|ound(f|l)?|e(name|alloc|wind|m(ove|quo(f|l)?|ainder(f|l)?))|a(nd|ise))|b(search|towc)|m(odf(f|l)?|em(set|c(hr|py|mp)|move)|ktime|alloc|b(s(init|towcs|rtowcs)|towc|len|r(towc|len))))\b
+      captures:
+        '1': {name: support.function.C99.c}
+    - match: |-
+        (?x)
+        \s*\b
+        (   Py_REFCNT | Py_TYPE | Py_SIZE
+          | Py_X?(?:INC|DEC)REF | Py_CLEAR
+          | _?Py(?:Object|Type|HeapType|Dict|Set|List|Tuple|Long|Exception|Err)_\w++ )
+        \b
+      captures:
+        '1': {name: support.function.cpython.c}
+
+  comments:
+    patterns:
+    - name: comment.block.c
+      begin: \s*(/\*)
+      end: (\*/)(\n?)
+      endCaptures:
+        '2': {name: punctuation.whitespace.newline.c}
+      captures:
+        '1': {name: punctuation.definition.comment.block.c}
+      patterns:
+      - include: '#comment-innards'
+    - name: invalid.illegal.stray-comment-end.c
+      match: \*/(?![/*])
+    - name: comment.line.double-slash.c++
+      begin: \s*(//)
+      beginCaptures:
+        '1': {name: punctuation.definition.comment.line.double-slash.c++}
+      end: (?<=$\n)(?<!\\$\n)
+      patterns:
+      - include: '#comment-innards'
+
+  comment-innards:
+    patterns:
+    - include: '#comment-banner-line'
+    - include: '#comment-task-tag-line'
+    - include: '#lex-continuation'
+    - include: '#lex-newline'
+
+  comment-banner-line:
+    match: (?:(?<=//)|(?<=/\*)|^)[\s/*]*(=+\s*(.*?)\s*=+(?:(?=[\s/*+\-]*\*/)|$(\n?)))
+    captures:
+      '1': {name: meta.toc-list.banner.c}
+      '3': {name: punctuation.whitespace.newline.c}
+
+  comment-task-tag-line:
+    patterns:
+    - name: meta.toc-list.task-tag.prio-high.c
+      begin: |-
+        (?ix)
+        (?= (?-i: @[a-zA-Z_]++ | \b [A-Z_]++) \b) @? \b (?:
+            (FIXME) | (XXX) | (WTF)
+        ) \b
+      beginCaptures:
+        '0': {name: keyword.other.task-tag.prio-high.c}
+        '1': {name: storage.type.class.fixme.c}
+        '2': {name: storage.type.class.xxx.c}
+        '3': {name: storage.type.class.wtf.c}
+      end: (?=[\s/*]*\*/)|(?<=$\n)
+      patterns:
+      - include: '#comment-task-tag-line-innards'
+    - name: meta.toc-list.task-tag.prio-normal.c
+      begin: |-
+        (?ix)
+        (?= (?-i: @[a-zA-Z_]++ | \b [A-Z_]++) \b) @? \b (?:
+            (TODO)
+        ) \b
+      beginCaptures:
+        '0': {name: keyword.other.task-tag.prio-normal.c}
+        '1': {name: storage.type.class.todo.c}
+      end: (?=[\s/*]*\*/)|(?<=$\n)
+      patterns:
+      - include: '#comment-task-tag-line-innards'
+    - name: meta.toc-list.task-tag.prio-low.c
+      begin: |-
+        (?ix)
+        (?= (?-i: @[a-zA-Z_]++ | \b [A-Z_]++) \b) @? \b (?:
+            (TBD) | (REVIEW)
+        ) \b
+      beginCaptures:
+        '0': {name: keyword.other.task-tag.prio-low.c}
+        '1': {name: storage.type.class.tbd.c}
+        '2': {name: storage.type.class.review.c}
+      end: (?=[\s/*]*\*/)|(?<=$\n)
+      patterns:
+      - include: '#comment-task-tag-line-innards'
+    - name: meta.toc-list.task-tag.note.c
+      begin: |-
+        (?ix)
+        (?= (?-i: @[a-zA-Z_]++ | \b [A-Z_]++) \b) @? \b (?:
+            (NOTE) | (NB) | (CHANGED) | (IDEA) | (IMPORTANT) | (HACK) | (BUG)
+        ) \b
+      beginCaptures:
+        '0': {name: keyword.other.task-tag.note.c}
+        '1': {name: storage.type.class.note.c}
+        '2': {name: storage.type.class.nb.c}
+        '3': {name: storage.type.class.changed.c}
+        '4': {name: storage.type.class.idea.c}
+        '5': {name: storage.type.class.important.c}
+        '6': {name: storage.type.class.hack.c}
+        '7': {name: storage.type.class.bug.c}
+      end: (?=[\s/*]*\*/)|(?<=$\n)
+      patterns:
+      - include: '#comment-task-tag-line-innards'
+
+  comment-task-tag-line-innards:
+    patterns:
+    - include: '#comment-task-tag-line'
+    - include: '#lex-continuation'
+    - include: '#lex-newline'
+
+  lex:
+    patterns:
+    - include: '#lex-in-preprocessor'
+    - include: '#preprocessor'
+
+  lex-in-preprocessor:
+    patterns:
+    - include: '#lex-core'
+    - include: '#lex-keyword'
+    - include: '#lex-constant'
+
+  lex-core:
+    patterns:
+    - include: '#comments'
+    - include: '#lex-access'
+    - include: '#lex-continuation'
+    - include: '#lex-newline'
+    - include: '#lex-number'
+    - include: '#lex-string'
+
+  lex-access:
+    name: variable.other.dot-access.c
+    match: (?:(?<=\.)|(?<=->))\b([a-zA-Z_]\w*+)\b(?!(?:\s|/\*.*?\*/)*+\()
+
+  lex-continuation:
+    patterns:
+    - name: punctuation.separator.continuation.c
+      match: (\\)$(\n?)
+      captures:
+        '1': {name: keyword.other.line-continuation.c}
+        '2': {name: punctuation.whitespace.newline.c}
+    - match: \\(\s+?)(?=\n)$
+      captures:
+        '1': {name: invalid.deprecated.space-after-continuation.c}
+
+  lex-newline:
+    name: punctuation.whitespace.newline.c
+    match: $\n
+
+  lex-keyword:
+    patterns:
+    - match: \s*\b(sizeof|(?:__|(?!\w+__))typeof(?:__)?)\b
+      captures:
+        '1': {name: keyword.operator.c}
+    - match: \s*\b((?:__|(?!\w+__))asm(?:__)?|break|case|continue|default|do|else|for|goto|if|_Pragma|return|switch|while|__extension__)\b
+      captures:
+        '1': {name: keyword.control.c}
+    - match: \s*\b(auto|bool|_Bool|char|_Complex|double|float|_Imaginary|int|long|short|signed|unsigned|void)\b
+      captures:
+        '1': {name: storage.type.c}
+    - match: \s*\b(extern|static|register|__attribute__|(?:__|(?!\w+__))(?:const|restrict|volatile|inline)(?:__)?)\b
+      captures:
+        '1': {name: storage.modifier.c}
+    - match: \s*\b(class|struct|union|enum|typedef)\b
+      captures:
+        '1': {name: storage.type.c}
+    - name: keyword.operator.assignment.c
+      match: (\-|\+|\*|\/|%|&|\||\^|<<|>>)?=
+    - name: keyword.operator.comparison.c
+      match: (==|!=|<=|>=|<>|<|>)
+    - name: keyword.operator.increment-decrement.c
+      match: (\-\-|\+\+)
+    - name: keyword.operator.ternary.c
+      match: (\?|:)
+    - name: keyword.operator.arithmetic.c
+      match: (\-|\+|\*|\/|%)
+    - name: keyword.operator.logical.c
+      match: (!|&&|\|\|)
+    - name: keyword.operator.bitwise.c
+      match: (~|&|\||\^|<<|>>)
+    - name: keyword.operator.dereference.c
+      match: (\.|->)(?=(?:\s|/\*.*?\*/)*+[A-Za-z_]\w*+)
+
+  lex-constant:
+    patterns:
+    - match: \s*\b(NULL|true|false|TRUE|FALSE)\b
+      captures:
+        '1': {name: constant.language.c}
+
+  lex-number:
+    patterns:
+    - name: constant.numeric.float.hexadecimal.c
+      match: |-
+        (?ix)  # hexadecimal float
+        (?<!\.) \b
+
+        (0x)
+
+        # significand
+        (?: (\.) (?=p)  # invalid
+          |        [0-9a-f]*+ ([0-9a-z]*?) [0-9a-f]*+
+            (?: \. [0-9a-f]*+ ([0-9a-z.]*?) [0-9a-f]*+ )? )
+
+        # exponent (required)
+        (?: (p) (?:        [+\-]  [0-9]++ ([0-9a-z]*?)
+                  | (?=[0-9a-z.]) [0-9]*+ ([0-9a-z.]*?) )
+          | (p) )
+
+        # remaining valid chars and type
+        [0-9]*+ ([fl]?)
+
+        \b (?!\.)
+      captures:
+        '1': {name: storage.type.number.prefix.hexadecimal.c}
+        '2': {name: invalid.illegal.number.missing-fragment.significand.c}
+        '3': {name: invalid.illegal.numeric-literal-character.float.whole-number.c}
+        '4': {name: invalid.illegal.numeric-literal-character.float.fraction.c}
+        '5': {name: keyword.other.exponent.hexadecimal.c}
+        '6': {name: invalid.illegal.numeric-literal-character.float.exponent.c}
+        '7': {name: invalid.illegal.numeric-literal-character.float.exponent.c}
+        '8': {name: invalid.illegal.number.missing-fragment.exponent.c}
+        '9': {name: storage.type.number.suffix.float.c}
+    - name: constant.numeric.float.hexadecimal.c
+      match: |-
+        (?ix)  # hexadecimal float without required exponent
+        (?<!\.) \b
+
+        (0x)
+
+        # significand (at least a period)
+             [0-9a-f]*+ ([0-9a-z&&[^p]]*?) [0-9a-f]*+
+        (\.) [0-9a-f]*+ ([0-9a-z.&&[^p]]*?) [0-9a-f]*+
+
+        # type
+        (l?)
+
+        (?:(?<=\.)|\b) (?!\.)
+      captures:
+        '1': {name: storage.type.number.prefix.hexadecimal.c}
+        '2': {name: invalid.illegal.numeric-literal-character.float.whole-number.c}
+        '3': {name: invalid.illegal.number.hexadecimal-float-requires-exponent.c}
+        '4': {name: invalid.illegal.numeric-literal-character.float.fraction.c}
+        '5': {name: storage.type.number.suffix.float.c}
+    - name: constant.numeric.float.c
+      match: |-
+        (?ix)  # decimal float literal
+        (?<!\.) (?:(?=\.)|\b)
+
+        (?!0x)
+        # significand
+        (?: (?: [0-9]++ ([0-9a-z&&[^e]]*?) [0-9]*+ )?
+            \.  [0-9]++ ([0-9a-z.&&[^e]]*?) [0-9]*+
+
+          |     [0-9]++ ([0-9a-z&&[^e]]*?) [0-9]*+ (?: \. | (?=e)) )
+
+        # exponent (optional)
+        (?: (e) (?: [+\-]  [0-9]++ ([0-9a-z]*?)
+                  |        [0-9]++ ([0-9a-z.]*?) )
+          | ( p     [+\-]? [0-9]++
+            | [ep]                  [0-9a-z.]*?) )?
+
+        # any invalid chars and type
+        ([0-9a-z]*?) [0-9]*+ ([fl]?)
+
+        (?:(?<=\.)|\b) (?!\.)
+      captures:
+        '1': {name: invalid.illegal.numeric-literal-character.float.whole-number.c}
+        '2': {name: invalid.illegal.numeric-literal-character.float.fraction.c}
+        '3': {name: invalid.illegal.numeric-literal-character.float.whole-number.c}
+        '4': {name: keyword.other.exponent.decimal.c}
+        '5': {name: invalid.illegal.numeric-literal-character.float.exponent.c}
+        '6': {name: invalid.illegal.numeric-literal-character.float.exponent.c}
+        '7': {name: invalid.illegal.numeric-literal-character.float.exponent.c}
+        '8': {name: invalid.illegal.numeric-literal-character.float.exponent.c}
+        '9': {name: storage.type.number.suffix.float.c}
+    - name: constant.numeric.integer.zero.c
+      match: |-
+        (?ix)
+        (?<!\.) \b
+        (0x)? 0++
+        (u?l{0,2}|lul?|llu)
+        \b (?!\.)
+      captures:
+        '1': {name: storage.type.number.prefix.hexadecimal.c}
+        '2': {name: storage.type.number.suffix.c}
+    - name: invalid.illegal.invalid-number-literal.c
+      match: |-
+        (?ix)
+        (?<!\.) \b
+
+        (?: (0x) | (0b) )
+        (u?l{0,2}|lul?|llu)
+
+        \b (?!\.)
+    - name: constant.numeric.integer.hexadecimal.c
+      match: |-
+        (?ix)
+        (?<!\.) \b
+
+        (0x) [0-9a-f]++
+
+        # any invalid chars
+        ([0-9a-z]*?)
+
+        # the remainder (after invalid chars, if any) and a type
+        [0-9a-f]* (u?l{0,2}|lul?|llu)
+
+        \b (?!\.)
+      captures:
+        '1': {name: storage.type.number.prefix.hexadecimal.c}
+        '2': {name: invalid.illegal.numeric-literal-character.integer.c}
+        '3': {name: storage.type.number.suffix.c}
+    - name: constant.numeric.integer.binary.c
+      match: |-
+        (?ix)
+        (?<!\.) \b
+
+        (0b) [01]++
+
+        # any invalid chars
+        ([0-9a-z]*?)
+
+        # the remainder (after invalid chars, if any) and a type
+        [01]* (u?l{0,2}|lul?|llu)
+
+        \b (?!\.)
+      captures:
+        '1': {name: storage.type.number.prefix.binary.c}
+        '2': {name: invalid.illegal.numeric-literal-character.integer.c}
+        '3': {name: storage.type.number.suffix.c}
+    - name: constant.numeric.integer.octal.c
+      match: |-
+        (?ix)
+        (?<!\.) \b
+
+        (0) [0-7]++
+
+        # any invalid chars
+        ([0-9a-z]*?)
+
+        # the remainder (after invalid chars, if any) and a type
+        [0-7]* (u?l{0,2}|lul?|llu)
+
+        \b (?!\.)
+      captures:
+        '1': {name: storage.type.number.prefix.octal.c}
+        '2': {name: invalid.illegal.numeric-literal-character.integer.c}
+        '3': {name: storage.type.number.suffix.c}
+    - name: constant.numeric.integer.decimal.c
+      match: |-
+        (?ix)
+        (?<!\.) \b
+
+        [0-9]++
+
+        # any invalid chars
+        ([0-9a-z]*?)
+
+        # the remainder (after invalid chars, if any) and a type
+        [0-9]* (u?l{0,2}|lul?|llu)
+
+        \b (?!\.)
+      captures:
+        '1': {name: invalid.illegal.numeric-literal-character.integer.c}
+        '2': {name: storage.type.number.suffix.c}
+
+  lex-string:
+    patterns:
+    - name: string.quoted.double.c
+      begin: '"'
+      beginCaptures:
+        '0': {name: punctuation.definition.string.begin.c}
+      end: (")|(?<=^|[^\\])\s*(\n)
+      endCaptures:
+        '1': {name: punctuation.definition.string.end.c}
+        '2': {name: invalid.illegal.unexpected-end-of-line.c}
+      patterns:
+      - include: '#lex-continuation'
+      - include: '#string_escaped_char'
+      - include: '#string_placeholder'
+    - name: string.quoted.single.c
+      begin: ''''
+      beginCaptures:
+        '0': {name: punctuation.definition.string.begin.c}
+      end: (')|(?<=^|[^\\])\s*(\n)
+      endCaptures:
+        '1': {name: punctuation.definition.string.end.c}
+        '2': {name: invalid.illegal.unexpected-end-of-line.c}
+      patterns:
+      - include: '#lex-continuation'
+      - include: '#string_escaped_char'
+
+  string_escaped_char:
+    patterns:
+    - name: constant.character.escape.c
+      match: \\(\\|[abefnprtv'"?]|[0-3]\d{,2}|[4-7]\d?|x[a-fA-F0-9]{,2}|u[a-fA-F0-9]{,4}|U[a-fA-F0-9]{,8})
+    - name: invalid.illegal.unknown-escape.c
+      match: \\.
+
+  string_placeholder:
+    patterns:
+    - name: constant.other.placeholder.c
+      match: |-
+        (?x)%
+        (\d+\$)?                             # field (argument #)
+        [#0\- +']*                           # flags
+        [,;:_]?                              # separator character (AltiVec)
+        ((-?\d+)|\*(-?\d+\$)?)?              # minimum field width
+        (\.((-?\d+)|\*(-?\d+\$)?)?)?         # precision
+        (hh|h|ll|l|j|t|z|q|L|vh|vl|v|hv|hl)? # length modifier
+        [diouxXDOUeEfFgGaACcSspn%]           # conversion type
+    - name: invalid.illegal.placeholder.c
+      match: '%'
